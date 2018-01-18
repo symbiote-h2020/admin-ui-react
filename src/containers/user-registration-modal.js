@@ -1,13 +1,16 @@
-import React, {Component, Fragment} from "react";
-import {connect} from "react-redux";
+import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import { Modal, Button, FormControl, InputGroup, Glyphicon } from "react-bootstrap";
+import { Modal, Button, FormGroup, FormControl, InputGroup, Glyphicon, HelpBlock } from "react-bootstrap";
 import _ from "lodash";
 import RFReactSelect from "../helpers/redux-form-react-selector-integrator";
 import { changeModalState } from "../actions/index";
 import { USER_REGISTRATION_MODAL } from "../reducers/modal-reducer";
 import { FieldError } from "../helpers/errors";
-import {fetchUserRoles, registerUser} from "../actions/user-actions";
+import { fetchUserRoles, registerUser } from "../actions/user-actions";
+import { getValidationState, isEmpty } from "../validation/helpers";
+import { getRegisterUserFormValidity } from "../selectors";
+import { validateId, validatePassword, validateEmail } from "../validation/user-registration-validation";
 
 class UserRegistrationModal extends Component {
 
@@ -37,9 +40,12 @@ class UserRegistrationModal extends Component {
     };
 
     renderInputField = (field) => {
-        const { input, type, placeholder, icon } = field;
+        const { input, type, placeholder, icon, subElement, helpMessage,
+            errorField, meta : { touched, invalid, error } } = field;
+        const validationState = getValidationState(input.value, touched, invalid);
 
         return (
+            <FormGroup controlId={input.name} validationState={validationState}>
                 <InputGroup>
                     <InputGroup.Addon>
                         <Glyphicon glyph={icon}/>
@@ -48,13 +54,18 @@ class UserRegistrationModal extends Component {
                         {...input}
                         type={type}
                         placeholder={placeholder} />
+                    <FormControl.Feedback className={subElement ? "sub-element" : ""}/>
                 </InputGroup>
+                <HelpBlock>{validationState === "error" ? error : helpMessage}</HelpBlock>
+                <FieldError error={errorField} />
+            </FormGroup>
         );
     };
 
     render() {
         const { userRegistrationState : { validationErrors, errorMessage },
-            userRoles, modalState, handleSubmit } = this.props;
+            userRoles, modalState, handleSubmit, registerUserFormValidity } = this.props;
+        const opts = { disabled : !registerUserFormValidity };
 
         return(
             <Fragment>
@@ -74,21 +85,21 @@ class UserRegistrationModal extends Component {
 
                             <Field
                                 type="text" error={validationErrors.validUsername}
-                                icon="user" placeholder="Username"
+                                icon="user" placeholder="Username" subElement={true}
                                 name="validUsername" component={this.renderInputField}
                             />
                             <FieldError error={validationErrors.validUsername} />
 
                             <Field
                                 type="password"
-                                icon="lock" placeholder="Password"
+                                icon="lock" placeholder="Password" subElement={true}
                                 name="validPassword" component={this.renderInputField}
                             />
                             <FieldError error={validationErrors.validPassword} />
 
                             <Field
                                 type="text"
-                                icon="envelope" placeholder="Email"
+                                icon="envelope" placeholder="Email" subElement={true}
                                 name="recoveryMail" component={this.renderInputField}
                             />
                             <FieldError error={validationErrors.recoveryMail} />
@@ -105,25 +116,42 @@ class UserRegistrationModal extends Component {
 
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button type="submit" bsStyle="primary">Register</Button>
+                            <Button type="submit" bsStyle="primary" {...opts}>Register</Button>
                         </Modal.Footer>
                     </form>
                 </Modal>
             </Fragment>
-        );
+        )
     }
+}
+
+function validate(values) {
+    const errors = {};
+    const validationFunctions = {
+        "validUsername" : validateId,
+        "validPassword" : validatePassword,
+        "recoveryMail" : validateEmail,
+        "role" : isEmpty
+    };
+
+    Object.keys(validationFunctions).forEach(function (key) {
+        errors[key] = validationFunctions[key](values[key]);
+    });
+    return errors;
 }
 
 function mapStateToProps(state) {
     return {
         userRoles: state.userRoles,
         userRegistrationState: state.userRegistrationState,
-        modalState: state.modalState
+        modalState: state.modalState,
+        registerUserFormValidity: getRegisterUserFormValidity(state)
     };
 }
 
 export default reduxForm({
-    form: 'RegisterUserForm'
+    form: 'RegisterUserForm',
+    validate
 })(
     connect(mapStateToProps, { fetchUserRoles, registerUser, changeModalState })(UserRegistrationModal)
 );

@@ -5,6 +5,7 @@ const getPlatformRegistrationForm = (state) => state.form.PlatformRegistrationFo
 const getInfoModelRegistrationForm = (state) => state.form.InformationModelRegistrationForm;
 const getPlatformConfigurationForm = (state) => state.form.PlatformConfigurationForm;
 const getFederationRegistrationForm = (state) => state.form.FederationRegistrationForm;
+const getRegisterUserForm = (state) => state.form.RegisterUserForm;
 
 const checkForm =  (form) => {
     const { syncErrors, anyTouched } = form;
@@ -29,4 +30,8 @@ export const getPlatformConfigurationValidity = createSelector(
 
 export const getFederationRegistrationValidity = createSelector(
     [ getFederationRegistrationForm ], checkForm
+);
+
+export const getRegisterUserFormValidity = createSelector(
+    [ getRegisterUserForm ], checkForm
 );

@@ -2,11 +2,9 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Modal, Button, FormControl, InputGroup, Glyphicon } from "react-bootstrap";
-import axios from "axios";
 import { changeModalState } from "../actions/index";
 import { FieldError } from "../helpers/errors";
 import { userLogin } from "../actions/user-actions";
-import {ROOT_URL} from "../configuration";
 
 class SignInModal extends Component {
 
@@ -20,11 +18,7 @@ class SignInModal extends Component {
     }
 
     open() {
-        // First just get the /user/login just in case you have cached an currently invalid token
-        axios
-            .get(`${ROOT_URL}/user/login`)
-            .then(() => this.props.changeModalState(this.modalName, true))
-            .catch(() => alert("Refresh the page"));
+        this.props.changeModalState(this.modalName, true);
     }
 
     close() {
