@@ -5,6 +5,7 @@ import {
     DISMISS_FEDERATION_DELETION_SUCCESS_ALERT, DISMISS_FEDERATION_DELETION_ERROR_ALERT,
     REMOVE_FEDERATION_REGISTRATION_ERRORS
 } from "../actions";
+import {ROOT_URL} from "../configuration";
 
 export default function(state = {}, action) {
     switch(action.type) {
@@ -41,21 +42,27 @@ export default function(state = {}, action) {
                 }
             }
             else {
-                const response = JSON.parse(action.payload.request.response);
-                const { federationRule } = response;
-                const { federationId } =  federationRule;
-                const successfulFederationRegistration = `Registration of federation "${federationId}" was successful!`;
+                const pattern = new RegExp(`${ROOT_URL}$`);
 
-                let newFederations = {
-                    ...state.availableFederations,
-                    [federationId] : federationRule
-                };
+                if (pattern.test(action.payload.request.responseURL))
+                    return state;
+                else {
+                    const response = JSON.parse(action.payload.request.response);
+                    const { federationRule } = response;
+                    const { federationId } =  federationRule;
+                    const successfulFederationRegistration = `Registration of federation "${federationId}" was successful!`;
 
-                return {
-                    ...removeErrors(state),
-                    availableFederations : newFederations,
-                    successfulFederationRegistration,
-                };
+                    let newFederations = {
+                        ...state.availableFederations,
+                        [federationId] : federationRule
+                    };
+
+                    return {
+                        ...removeErrors(state),
+                        availableFederations : newFederations,
+                        successfulFederationRegistration,
+                    };
+                }
             }
         case DELETE_FEDERATION:
             if (action.error) {
@@ -69,16 +76,22 @@ export default function(state = {}, action) {
                 }
             }
             else {
-                const federationId = action.payload.config.data.get("federationIdToDelete");
-                const successfulFederationDeletion = `The federation with id "${federationId}" was deleted successfully!`;
+                const pattern = new RegExp(`${ROOT_URL}$`);
 
-                let newState = _.omit(state, "federationDeletionError");
+                if (pattern.test(action.payload.request.responseURL))
+                    return state;
+                else {
+                    const federationId = action.payload.config.data.get("federationIdToDelete");
+                    const successfulFederationDeletion = `The federation with id "${federationId}" was deleted successfully!`;
 
-                return {
-                    ...newState,
-                    availableFederations : _.omit(state.availableFederations, federationId),
-                    successfulFederationDeletion
-                };
+                    let newState = _.omit(state, "federationDeletionError");
+
+                    return {
+                        ...newState,
+                        availableFederations : _.omit(state.availableFederations, federationId),
+                        successfulFederationDeletion
+                    };
+                }
             }
         case DISMISS_FEDERATION_REGISTRATION_SUCCESS_ALERT:
             return _.omit(state, "successfulFederationRegistration");

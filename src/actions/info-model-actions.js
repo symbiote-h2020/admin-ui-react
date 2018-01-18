@@ -68,7 +68,6 @@ export function registerInfoModel(props, cb, uploadingInfoModelProgress) {
             cb(res);
             return res;
         });
-
     return {
         type: REGISTER_INFO_MODEL,
         payload: request
@@ -82,7 +81,7 @@ export function uploadingInfoModelProgress(loadedPerCent) {
     };
 }
 
-export function deleteInfoModel(infoModelId) {
+export function deleteInfoModel(infoModelId, cb) {
     const url = `${ROOT_URL}/user/cpanel/delete_information_model`;
     // eslint-disable-next-line
     const customHeaders = {...headers, ['Content-Type']: 'application/x-www-form-urlencoded; charset=UTF-8'};
@@ -96,7 +95,11 @@ export function deleteInfoModel(infoModelId) {
         headers: customHeaders
     };
 
-    const request = axios.request(config);
+    const request = axios.request(config)
+        .then((res) => {
+            cb(res);
+            return res;
+        });
 
     return {
         type: DELETE_INFO_MODEL,

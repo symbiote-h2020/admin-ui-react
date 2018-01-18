@@ -1,0 +1,68 @@
+.popup {
+
+    display: table;
+    margin: 213px auto;
+
+    background-color: white;
+    border: 3px solid rgba(0,0,0, 0.6);
+    box-shadow: 2px 2px 5px 5px rgba(0,0,0, 0.2);
+}
+
+.popup form, .popup .denied {
+
+    width: 400px;
+}
+
+.popup .success {
+
+    width: 769px;
+    text-align: center;
+}
+
+
+.popup>form>div {
+
+    margin-bottom: 10px;
+    padding: 0 5px;
+}
+
+.popup .title {
+
+    padding: 15px 0;
+
+    background-color: rgb( 240, 240, 240);
+    border-bottom: 1px solid rgba(0,0,0, 0.08);
+
+    font-size: 24px;
+    color: rgb(59, 137, 178);
+    font-weight: bold;
+    text-align: center;
+}
+
+.popup .alert {
+
+    padding: 10px 5px 10px;
+    text-align: left;
+}
+
+.popup .controls a {
+
+    float: right;
+    padding-top: 6px;
+}
+
+.popup .controls .btn {
+
+    float: left;
+    margin-bottom: 5px
+}
+
+.popup .panel {
+
+    margin-top: 20px;
+    text-align: left;
+}
+
+.popup textarea {
+    resize: none;
+}

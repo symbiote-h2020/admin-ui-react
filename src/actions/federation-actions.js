@@ -45,7 +45,7 @@ export function registerFederation(props, cb) {
     };
 }
 
-export function deleteFederation(federationIdToDelete) {
+export function deleteFederation(federationIdToDelete, cb) {
     const url = `${ROOT_URL}/admin/cpanel/delete_federation`;
     // eslint-disable-next-line
     const customHeaders = {...headers, ['Content-Type']: 'application/x-www-form-urlencoded; charset=UTF-8'};
@@ -59,7 +59,11 @@ export function deleteFederation(federationIdToDelete) {
         headers: customHeaders
     };
 
-    const request = axios.request(config);
+    const request = axios.request(config)
+        .then((res) => {
+            cb(res);
+            return res;
+        });
 
     return {
         type: DELETE_FEDERATION,

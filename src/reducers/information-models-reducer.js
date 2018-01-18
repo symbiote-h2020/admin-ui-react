@@ -5,6 +5,7 @@ import {
     DISMISS_INFO_MODEL_REGISTRATION_SUCCESS_ALERT, FETCH_ALL_INFORMATION_MODELS, FETCH_USER_INFORMATION_MODELS,
     REGISTER_INFO_MODEL, REMOVE_INFO_MODEL_REGISTRATION_ERRORS
 } from "../actions";
+import {ROOT_URL} from "../configuration";
 
 export default function(state = {}, action) {
     switch(action.type) {
@@ -22,7 +23,6 @@ export default function(state = {}, action) {
             }
         case REGISTER_INFO_MODEL:
             if (action.error) {
-
                 if (action.payload.response) {
                     const message = action.payload.response.data;
                     let newState = {};
@@ -47,26 +47,32 @@ export default function(state = {}, action) {
                 }
             }
             else {
-                const response = JSON.parse(action.payload.request.response);
-                const { id, name } = response;
-                const successfulInfoModelRegistration = `Registration of information model "${name}" was successful!`;
+                const pattern = new RegExp(`${ROOT_URL}$`);
 
-                let newAvailableInfoModels = {
-                    ...state.availableInfoModels,
-                    [id] : response
-                };
+                if (pattern.test(action.payload.request.responseURL))
+                    return _.omit(state, "uploadedPerCent", "completed");
+                else {
+                    const response = JSON.parse(action.payload.request.response);
+                    const { id, name } = response;
+                    const successfulInfoModelRegistration = `Registration of information model "${name}" was successful!`;
 
-                let newAvailableUserInfoModels = {
-                    ...state.availableUserInfoModels,
-                    [id] : response
-                };
-                return {
-                    ...removeErrors(state),
-                    availableInfoModels : newAvailableInfoModels,
-                    availableUserInfoModels : newAvailableUserInfoModels,
-                    successfulInfoModelRegistration,
-                    completed: true
-                };
+                    let newAvailableInfoModels = {
+                        ...state.availableInfoModels,
+                        [id] : response
+                    };
+
+                    let newAvailableUserInfoModels = {
+                        ...state.availableUserInfoModels,
+                        [id] : response
+                    };
+                    return {
+                        ...removeErrors(state),
+                        availableInfoModels : newAvailableInfoModels,
+                        availableUserInfoModels : newAvailableUserInfoModels,
+                        successfulInfoModelRegistration,
+                        completed: true
+                    };
+                }
             }
         case DELETE_INFO_MODEL:
             if (action.error) {
@@ -80,17 +86,23 @@ export default function(state = {}, action) {
                 }
             }
             else {
-                const infoModelId = action.payload.config.data.get("infoModelIdToDelete");
-                const successfulInfoModelDeletion = `Information Model "${state.availableInfoModels[infoModelId].name}" was deleted successfully!`;
+                const pattern = new RegExp(`${ROOT_URL}$`);
 
-                let newState = _.omit(state, "infoModelDeletionError");
+                if (pattern.test(action.payload.request.responseURL))
+                    return state;
+                else {
+                    const infoModelId = action.payload.config.data.get("infoModelIdToDelete");
+                    const successfulInfoModelDeletion = `Information Model "${state.availableInfoModels[infoModelId].name}" was deleted successfully!`;
 
-                return {
-                    ...newState,
-                    availableInfoModels : _.omit(state.availableInfoModels, infoModelId),
-                    availableUserInfoModels : _.omit(state.availableUserInfoModels, infoModelId),
-                    successfulInfoModelDeletion
-                };
+                    let newState = _.omit(state, "infoModelDeletionError");
+
+                    return {
+                        ...newState,
+                        availableInfoModels : _.omit(state.availableInfoModels, infoModelId),
+                        availableUserInfoModels : _.omit(state.availableUserInfoModels, infoModelId),
+                        successfulInfoModelDeletion
+                    };
+                }
             }
         case UPLOADING_INFO_MODEL_PROGRESS:
             return { ...state, uploadedPerCent : action.payload, completed: false };

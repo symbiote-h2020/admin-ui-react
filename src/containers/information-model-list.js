@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import _ from "lodash";
 import CollapsibleInformationModelPanel from "../components/user-cpanel/information-models/collapsible-information-model-panel";
@@ -8,9 +9,10 @@ import {
     fetchUserInformationModels, deleteInfoModel,
     activateInfoModelDeleteModal, deactivateInfoModelDeleteModal
 } from "../actions/info-model-actions";
-import {
-    dismissAlert} from "../actions/index";
-import {DISMISS_INFO_MODEL_DELETION_ERROR_ALERT, DISMISS_INFO_MODEL_DELETION_SUCCESS_ALERT} from "../actions/index";
+import { changeModalState, dismissAlert } from "../actions";
+import { DISMISS_INFO_MODEL_DELETION_ERROR_ALERT, DISMISS_INFO_MODEL_DELETION_SUCCESS_ALERT } from "../actions";
+import { ROOT_URL } from "../configuration";
+import { USER_LOGIN_MODAL } from "../reducers/modal-reducer";
 
 class InformationModelList extends Component {
 
@@ -19,7 +21,16 @@ class InformationModelList extends Component {
     }
 
     handleDeleteInfoModel= () => {
-        this.props.deleteInfoModel(this.props.infoModelDeleteModal.infoModelIdToDelete);
+        this.props.deleteInfoModel(this.props.infoModelDeleteModal.infoModelIdToDelete, (res) => {
+            const pattern = new RegExp(`${ROOT_URL}$`);
+
+            // If the root url is returned, that means that the user is not authenticated (possibly the
+            // session is expired, so we redirect to the homepage and open the login modal
+            if (pattern.test(res.request.responseURL)) {
+                this.props.changeModalState(USER_LOGIN_MODAL, true);
+                this.props.history.push(ROOT_URL);
+            }
+        });
         this.props.deactivateInfoModelDeleteModal();
     };
 
@@ -80,8 +91,9 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
     fetchUserInformationModels,
+    changeModalState,
     deleteInfoModel,
     dismissAlert,
     activateInfoModelDeleteModal,
     deactivateInfoModelDeleteModal
-})(InformationModelList);
+})(withRouter(InformationModelList));

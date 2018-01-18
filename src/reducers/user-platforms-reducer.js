@@ -4,6 +4,7 @@ import {
     DISMISS_PLATFORM_REGISTRATION_ERROR_ALERT, DISMISS_PLATFORM_REGISTRATION_SUCCESS_ALERT, FETCH_USER_PLATFORMS,
     REGISTER_PLATFORM, DELETE_PLATFORM, REMOVE_PLATFORM_REGISTRATION_ERRORS, DISMISS_PLATFORM_DELETION_ERROR_ALERT
 } from "../actions";
+import {ROOT_URL} from "../configuration";
 
 export default function(state = {}, action) {
     switch(action.type) {
@@ -53,16 +54,22 @@ export default function(state = {}, action) {
                 }
             }
             else {
-                const response = JSON.parse(action.payload.request.response);
-                const { id, name } = response;
-                const successfulPlatformRegistration = `Registration of platform "${name}" was successful!`;
+                const pattern = new RegExp(`${ROOT_URL}$`);
 
-                let newAvailablePlatforms = {
-                    ...state.availablePlatforms,
-                    [id] : response
-                };
+                if (pattern.test(action.payload.request.responseURL))
+                    return state;
+                else {
+                    const response = JSON.parse(action.payload.request.response);
+                    const { id, name } = response;
+                    const successfulPlatformRegistration = `Registration of platform "${name}" was successful!`;
 
-                return { ...removeErrors(state), availablePlatforms : newAvailablePlatforms, successfulPlatformRegistration };
+                    let newAvailablePlatforms = {
+                        ...state.availablePlatforms,
+                        [id] : response
+                    };
+
+                    return { ...removeErrors(state), availablePlatforms : newAvailablePlatforms, successfulPlatformRegistration };
+                }
             }
         case DELETE_PLATFORM:
             if (action.error) {
@@ -76,16 +83,22 @@ export default function(state = {}, action) {
                 }
             }
             else {
-                const platformId = action.payload.config.data.get("platformIdToDelete");
-                const successfulPlatformDeletion = `Platform "${state.availablePlatforms[platformId].name}" was deleted successfully!`;
+                const pattern = new RegExp(`${ROOT_URL}$`);
 
-                let newState = _.omit(state, "platformDeletionError");
+                if (pattern.test(action.payload.request.responseURL))
+                    return state;
+                else {
+                    const platformId = action.payload.config.data.get("platformIdToDelete");
+                    const successfulPlatformDeletion = `Platform "${state.availablePlatforms[platformId].name}" was deleted successfully!`;
 
-                return {
-                    ...newState,
-                    availablePlatforms : _.omit(state.availablePlatforms, platformId),
-                    successfulPlatformDeletion
-                };
+                    let newState = _.omit(state, "platformDeletionError");
+
+                    return {
+                        ...newState,
+                        availablePlatforms : _.omit(state.availablePlatforms, platformId),
+                        successfulPlatformDeletion
+                    };
+                }
             }
         case DISMISS_PLATFORM_REGISTRATION_SUCCESS_ALERT:
             return _.omit(state, "successfulPlatformRegistration");

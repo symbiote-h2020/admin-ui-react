@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from "react";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Modal, Button, FormGroup, FormControl, ControlLabel, Row, Col, HelpBlock } from "react-bootstrap";
-import { FEDERATION_REGISTRATION_MODAL } from "../reducers/modal-reducer";
+import { ADMIN_LOGIN_MODAL, FEDERATION_REGISTRATION_MODAL } from "../reducers/modal-reducer";
 import { getFederationRegistrationValidity } from "../selectors/index";
 import { FieldError, AlertDismissable } from "../helpers/errors";
 import { CreateFederationRequest } from "../helpers/object-definitions";
@@ -16,6 +17,7 @@ import {
     DISMISS_FEDERATION_REGISTRATION_ERROR_ALERT, DISMISS_FEDERATION_REGISTRATION_SUCCESS_ALERT,
     REMOVE_FEDERATION_REGISTRATION_ERRORS
 } from "../actions/index";
+import {ROOT_URL} from "../configuration";
 
 class FederationRegistrationModal extends Component {
 
@@ -46,7 +48,15 @@ class FederationRegistrationModal extends Component {
         this.props.registerFederation(
             federationRequest,
             (res) => {
-                if (res.status === 201) {
+                const pattern = new RegExp(`${ROOT_URL}$`);
+
+                // If the root url is returned, that means that the user is not authenticated (possibly the
+                // session is expired, so we redirect to the homepage and open the login modal
+                if (pattern.test(res.request.responseURL)) {
+                    this.props.history.push(ROOT_URL);
+                    this.props.changeModalState(ADMIN_LOGIN_MODAL, true);
+                }
+                else if (res.status === 201) {
                     this.close();
                 }
 
@@ -185,5 +195,5 @@ export default reduxForm({
     connect(mapStateToProps, {
         changeModalState, registerFederation,
         dismissAlert, removeErrors
-    })(FederationRegistrationModal)
+    })(withRouter(FederationRegistrationModal))
 );

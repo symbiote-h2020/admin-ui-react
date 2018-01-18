@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from "react";
+import { withRouter } from "react-router-dom";
 import { Button, Modal, FormGroup, FormControl, ControlLabel, HelpBlock, Row, Col } from "react-bootstrap";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { getPlatformConfiguration, deactivatePlatformModal } from "../actions/platform-actions";
-import { dismissAlert} from "../actions/index";
+import { changeModalState, dismissAlert} from "../actions/index";
 import { getValidationState, isEmpty } from "../validation/helpers";
 import { validateTokenValidity } from "../validation/platform-config-validation";
 import { FieldError } from "../helpers/errors";
@@ -12,6 +13,8 @@ import RFReactSelect from "../helpers/redux-form-react-selector-integrator";
 import { PlatformConfigurationMessage } from "../helpers/object-definitions";
 import { AlertDismissable } from "../helpers/errors";
 import { DISMISS_PLATFORM_CONFIG_ERROR_ALERT, DEACTIVATE_PLATFORM_CONFIG_MODAL } from "../actions/index";
+import { ROOT_URL } from "../configuration";
+import { USER_LOGIN_MODAL } from "../reducers/modal-reducer";
 
 class PlatformConfigModal extends Component {
 
@@ -67,7 +70,15 @@ class PlatformConfigModal extends Component {
         );
 
         this.props.getPlatformConfiguration(platformConfigurationMessage, (res) => {
-            if (res.status === 200) {
+            const pattern = new RegExp(`${ROOT_URL}$`);
+
+            // If the root url is returned, that means that the user is not authenticated (possibly the
+            // session is expired, so we redirect to the homepage and open the login modal
+            if (pattern.test(res.request.responseURL)) {
+                this.props.history.push(ROOT_URL);
+                this.props.changeModalState(USER_LOGIN_MODAL, true);
+            }
+            else if (res.status === 200) {
                 this.close();
                 let filename = "";
                 const disposition = res.headers["content-disposition"];
@@ -317,5 +328,7 @@ export default reduxForm({
     form: 'PlatformConfigurationForm',
     validate
 })(
-    connect(mapStateToProps, { getPlatformConfiguration, deactivatePlatformModal, dismissAlert })(PlatformConfigModal)
+    connect(mapStateToProps, {
+        changeModalState, getPlatformConfiguration, deactivatePlatformModal, dismissAlert
+    })(withRouter(PlatformConfigModal))
 );

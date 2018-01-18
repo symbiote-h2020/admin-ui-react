@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import _ from "lodash";
 import CollapsibleFederationPanel from "../components/admin-cpanel/federation-list/collapsible-federation-panel";
@@ -9,9 +10,11 @@ import {
     activateFederationDeleteModal, deactivateFederationDeleteModal
 } from "../actions/federation-actions";
 import {
-    dismissAlert, DISMISS_FEDERATION_DELETION_ERROR_ALERT,
+    changeModalState, dismissAlert, DISMISS_FEDERATION_DELETION_ERROR_ALERT,
     DISMISS_FEDERATION_DELETION_SUCCESS_ALERT, DEACTIVATE_FEDERATION_DELETE_MODAL
 } from "../actions/index";
+import {ROOT_URL} from "../configuration";
+import { ADMIN_LOGIN_MODAL } from "../reducers/modal-reducer";
 
 class FederationList extends Component {
 
@@ -28,7 +31,16 @@ class FederationList extends Component {
     }
 
     handleDeleteFederation = () => {
-        this.props.deleteFederation(this.props.federationDeleteModal.federationIdToDelete);
+        this.props.deleteFederation(this.props.federationDeleteModal.federationIdToDelete, (res) => {
+            const pattern = new RegExp(`${ROOT_URL}$`);
+
+            // If the root url is returned, that means that the user is not authenticated (possibly the
+            // session is expired, so we redirect to the homepage and open the login modal
+            if (pattern.test(res.request.responseURL)) {
+                this.props.changeModalState(ADMIN_LOGIN_MODAL, true);
+                this.props.history.push(ROOT_URL);
+            }
+        });
         this.props.deactivateFederationDeleteModal(DEACTIVATE_FEDERATION_DELETE_MODAL);
     };
 
@@ -90,8 +102,9 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
     fetchFederations,
+    changeModalState,
     deleteFederation,
     activateFederationDeleteModal,
     deactivateFederationDeleteModal,
     dismissAlert
-})(FederationList);
+})(withRouter(FederationList));

@@ -71,6 +71,8 @@ export function userLogout(cb) {
     const request = axios.request(config)
         .then(res => {
             cb(res);
+            // Regain a valid Cookie for logging in again
+            axios.get(`${ROOT_URL}/user/login`);
             return res;
         });
 

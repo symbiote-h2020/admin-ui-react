@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from "react";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Modal, Button, FormGroup, FormControl, ControlLabel, Row, Col, HelpBlock } from "react-bootstrap";
 import _ from "lodash";
-import { PLATFORM_REGISTRATION_MODAL } from "../reducers/modal-reducer";
+import {PLATFORM_REGISTRATION_MODAL, USER_LOGIN_MODAL} from "../reducers/modal-reducer";
 import RFReactSelect from "../helpers/redux-form-react-selector-integrator";
 import { InterworkingService, Platform } from "../helpers/object-definitions";
 import { getPlatformRegistrationValidity } from "../selectors/index";
@@ -22,6 +23,7 @@ import {
 } from "../validation/platform-registration-validation";
 import { fetchAllInformationModels } from "../actions/info-model-actions";
 import { registerPlatform} from "../actions/platform-actions";
+import {ROOT_URL} from "../configuration";
 
 class PlatformRegistrationModal extends Component {
 
@@ -86,7 +88,15 @@ class PlatformRegistrationModal extends Component {
         const newPlatform = new Platform(id, name, descriptions, interworkingServices, type);
 
         this.props.registerPlatform(newPlatform, (res) => {
-            if (res.status === 201) {
+            const pattern = new RegExp(`${ROOT_URL}$`);
+
+            // If the root url is returned, that means that the user is not authenticated (possibly the
+            // session is expired, so we redirect to the homepage and open the login modal
+            if (pattern.test(res.request.responseURL)) {
+                this.props.history.push(ROOT_URL);
+                this.props.changeModalState(USER_LOGIN_MODAL, true);
+            }
+            else if (res.status === 201) {
                 this.close();
             }
 
@@ -250,5 +260,5 @@ export default reduxForm({
     connect(mapStateToProps, {
         changeModalState, fetchInformationModels: fetchAllInformationModels,
         registerPlatform, dismissAlert, removeErrors
-    })(PlatformRegistrationModal)
+    })(withRouter(PlatformRegistrationModal))
 );

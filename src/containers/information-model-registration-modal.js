@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from "react";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Modal, Button, FormGroup, FormControl, ControlLabel, Row, Col, HelpBlock, ProgressBar } from "react-bootstrap";
-import { INFORMATION_MODEL_REGISTRATION_MODAL } from "../reducers/modal-reducer";
+import { INFORMATION_MODEL_REGISTRATION_MODAL, USER_LOGIN_MODAL } from "../reducers/modal-reducer";
 import { getInfoModelRegistrationValidity } from "../selectors/index";
 import ProgressBarWrapper from "../helpers/ProgressBarWrapper";
 import { FieldError, AlertDismissable } from "../helpers/errors";
@@ -14,8 +15,9 @@ import {
     changeModalState, DISMISS_INFO_MODEL_REGISTRATION_ERROR_ALERT, DISMISS_INFO_MODEL_REGISTRATION_SUCCESS_ALERT
 } from "../actions/index";
 import {
-    dismissAlert, removeErrors, REMOVE_INFO_MODEL_REGISTRATION_ERRORS } from "../actions/index";
-import {registerInfoModel, uploadingInfoModelProgress} from "../actions/info-model-actions";
+    dismissAlert, removeErrors, REMOVE_INFO_MODEL_REGISTRATION_ERRORS } from "../actions";
+import { registerInfoModel, uploadingInfoModelProgress } from "../actions/info-model-actions";
+import { ROOT_URL } from "../configuration";
 
 class InformationModelRegistrationModal extends Component {
 
@@ -35,7 +37,15 @@ class InformationModelRegistrationModal extends Component {
         this.props.registerInfoModel(
             props,
             (res) => {
-                if (res.status === 201) {
+                const pattern = new RegExp(`${ROOT_URL}$`);
+
+                // If the root url is returned, that means that the user is not authenticated (possibly the
+                // session is expired, so we redirect to the homepage and open the login modal
+                if (pattern.test(res.request.responseURL)) {
+                    this.props.history.push(ROOT_URL);
+                    this.props.changeModalState(USER_LOGIN_MODAL, true);
+                }
+                else if (res.status === 201) {
                     this.close();
                 }
 
@@ -213,5 +223,5 @@ export default reduxForm({
     connect(mapStateToProps, {
         changeModalState, registerInfoModel, uploadingInfoModelProgress,
         dismissAlert, removeErrors
-    })(InformationModelRegistrationModal)
+    })(withRouter(InformationModelRegistrationModal))
 );

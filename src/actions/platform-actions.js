@@ -71,7 +71,7 @@ export function getPlatformConfiguration(platformConfig, cb) {
     };
 }
 
-export function deletePlatform(platformId) {
+export function deletePlatform(platformId, cb) {
     const url = `${ROOT_URL}/user/cpanel/delete_platform`;
     // eslint-disable-next-line
     const customHeaders = {...headers, ['Content-Type']: 'application/x-www-form-urlencoded; charset=UTF-8'};
@@ -86,7 +86,11 @@ export function deletePlatform(platformId) {
         headers: customHeaders
     };
 
-    const request = axios.request(config);
+    const request = axios.request(config)
+        .then((res) => {
+            cb(res);
+            return res;
+        });
 
     return {
         type: DELETE_PLATFORM,

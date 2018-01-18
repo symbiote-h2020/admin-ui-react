@@ -1,5 +1,3 @@
-import Cookie from "react-cookie";
-
 // Modals
 export const CHANGE_MODAL_STATE = "CHANGE_MODAL_STATE";
 
@@ -54,8 +52,7 @@ export const DISMISS_FEDERATION_DELETION_SUCCESS_ALERT = "DISMISS_FEDERATION_DEL
 export const DISMISS_FEDERATION_DELETION_ERROR_ALERT = "DISMISS_FEDERATION_DELETION_ERROR_ALERT";
 
 export const headers = {
-    'X-Requested-With': 'XMLHttpRequest',
-    'X-XSRF-TOKEN': Cookie.load('XSRF-TOKEN')
+    'X-Requested-With': 'XMLHttpRequest'
 };
 
 export function changeModalState(modal, state) {
