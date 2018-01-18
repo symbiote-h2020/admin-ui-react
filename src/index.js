@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import promise from "redux-promise";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import { composeWithDevTools } from "redux-devtools-extension";
 import reducers from "./reducers";
 import Home from "./components/home/home";
@@ -29,13 +29,14 @@ ReactDOM.render(
       <Router>
           <Switch>
               <Route exact path="/administration" component={Home} />
-              <SuccessPrivateRoute path="/administration/success" component={Success} />
-              <UserPrivateRoute path="/administration/user/cpanel" component={UserControlPanel}/>
+              <SuccessPrivateRoute exact path="/administration/success" component={Success} />
+              <UserPrivateRoute exact path="/administration/user/cpanel" component={UserControlPanel}/>
               <AdminPrivateRoute
-                  path="/administration/admin/cpanel"
+                  exact path="/administration/admin/cpanel"
                   component={AdminControlPanel}
                   deniedComponent={Denied}
               />
+              <Redirect to="/administration" />
           </Switch>
       </Router>
   </Provider>
