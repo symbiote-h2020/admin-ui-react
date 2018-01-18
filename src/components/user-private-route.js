@@ -1,9 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
-import {
-    Route,
-    Redirect,
-} from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 import {ROOT_URL} from "../configuration";
 
 axios.defaults.withCredentials = true;

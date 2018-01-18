@@ -7,7 +7,7 @@ import RFReactSelect from "../helpers/redux-form-react-selector-integrator";
 import { changeModalState } from "../actions/index";
 import { USER_REGISTRATION_MODAL } from "../reducers/modal-reducer";
 import { FieldError } from "../helpers/errors";
-import { fetchUserRoles, registerUser } from "../actions/user-actions";
+import { fetchUserRoles, registerUser, setSuccessfulUserRegistrationFlag } from "../actions/user-actions";
 import { getValidationState, isEmpty } from "../validation/helpers";
 import { getRegisterUserFormValidity } from "../selectors";
 import { validateId, validatePassword, validateEmail } from "../validation/user-registration-validation";
@@ -29,6 +29,7 @@ class UserRegistrationModal extends Component {
     onSubmit(props) {
         this.props.registerUser(props, () => {
             this.props.changeModalState(USER_REGISTRATION_MODAL, false);
+            this.props.setSuccessfulUserRegistrationFlag(true);
             this.props.history.push('/administration/success');
         });
     }
@@ -153,5 +154,7 @@ export default reduxForm({
     form: 'RegisterUserForm',
     validate
 })(
-    connect(mapStateToProps, { fetchUserRoles, registerUser, changeModalState })(UserRegistrationModal)
+    connect(mapStateToProps, {
+        fetchUserRoles, registerUser, changeModalState, setSuccessfulUserRegistrationFlag
+    })(UserRegistrationModal)
 );

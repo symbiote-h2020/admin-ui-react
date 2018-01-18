@@ -1,6 +1,8 @@
 import axios from "axios";
-import {USER_CPANEL_URL, ROOT_URL, ADMIN_CPANEL_URL} from "../configuration";
-import {FETCH_USER_ROLES, headers, REGISTER_USER, USER_LOGIN, USER_LOGOUT} from "./index";
+import { USER_CPANEL_URL, ROOT_URL, ADMIN_CPANEL_URL } from "../configuration";
+import {
+    FETCH_USER_ROLES, headers, REGISTER_USER, USER_LOGIN, USER_LOGOUT, SET_SUCCESSFUL_USER_REGISTRATION_FLAG
+} from "./index";
 
 
 axios.defaults.withCredentials = true;
@@ -79,5 +81,12 @@ export function userLogout(cb) {
     return {
         type: USER_LOGOUT,
         payload: request
+    };
+}
+
+export function setSuccessfulUserRegistrationFlag(value) {
+    return {
+        type: SET_SUCCESSFUL_USER_REGISTRATION_FLAG,
+        payload: value
     };
 }

@@ -13,6 +13,7 @@ import AdminControlPanel from "./components/admin-cpanel/admin-cpanel";
 import Denied from "./components/denied";
 import UserPrivateRoute from "./components/user-private-route";
 import AdminPrivateRoute from "./components/admin-private-route";
+import SuccessPrivateRoute from "./components/success-private-route";
 
 export const store = createStore(reducers, composeWithDevTools(
     applyMiddleware(promise),
@@ -28,7 +29,7 @@ ReactDOM.render(
       <Router>
           <Switch>
               <Route exact path="/administration" component={Home} />
-              <Route path="/administration/success" component={Success} />
+              <SuccessPrivateRoute path="/administration/success" component={Success} />
               <UserPrivateRoute path="/administration/user/cpanel" component={UserControlPanel}/>
               <AdminPrivateRoute
                   path="/administration/admin/cpanel"
