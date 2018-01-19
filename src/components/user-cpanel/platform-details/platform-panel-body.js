@@ -4,7 +4,7 @@ import { Panel, Row, Col, FormGroup, FormControl, ControlLabel } from "react-boo
 
 const PlatformPanelBody = ({ platform, informationModelOptions, platformOptions }) => {
 
-    const renderInputField = (value, label, type, componentClass, rows) => {
+    const renderInputField = (value, label, type, componentClass, rows=null) => {
         return (
             <FormGroup>
                 {label ? <ControlLabel>{label}</ControlLabel> : ""}
@@ -19,19 +19,28 @@ const PlatformPanelBody = ({ platform, informationModelOptions, platformOptions 
         <Panel.Body>
             <Row>
                 <Col sm={6}>
-                    {renderInputField(platform.id, "Platform Id", "text", "input", null)}
+                    {renderInputField(platform.id, "Platform Id", "text", "input")}
                 </Col>
                 <Col sm={6}>
-                    {renderInputField(platform.name, "Platform Name", "text", "input", null)}
+                    {renderInputField(platform.name, "Platform Name", "text", "input")}
                 </Col>
             </Row>
-            {renderInputField(platform.description[0].description, "Platform Description", "text", "textarea", 3)}
+            {
+                platform.description.map(
+                    (descriptionObject, index) =>  {
+                        return renderInputField(
+                            descriptionObject.description,
+                            index ? "" : "Platform Description",
+                            "text", "textarea", 3);
+                    })
+
+            }
 
             <FormGroup>
                 <ControlLabel>Interworking Services</ControlLabel>
                 <Row className="interworking-service">
                     <Col sm={8}>
-                        {renderInputField(platform.interworkingServices[0].url, null, "text", "input", null)}
+                        {renderInputField(platform.interworkingServices[0].url, null, "text", "input")}
                     </Col>
                     <Col sm={4}>
                         <Select

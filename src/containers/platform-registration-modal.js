@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-import { Modal, Button, FormGroup, FormControl, ControlLabel, Row, Col, HelpBlock } from "react-bootstrap";
+import { Field, FieldArray, reduxForm } from "redux-form";
+import { Modal, Button, FormGroup, InputGroup, FormControl, ControlLabel, Row, Col, HelpBlock, Glyphicon } from "react-bootstrap";
 import _ from "lodash";
 import {PLATFORM_REGISTRATION_MODAL, USER_LOGIN_MODAL} from "../reducers/modal-reducer";
 import RFReactSelect from "../helpers/redux-form-react-selector-integrator";
@@ -18,7 +18,7 @@ import {
 import {
     dismissAlert} from "../actions/index";
 import {
-    validateId, validateName, validateDescription,
+    validateId, validateName, validateDescriptions,
     validateInterworkingInterfaceUrl, validateInformationModel
 } from "../validation/platform-registration-validation";
 import { fetchAllInformationModels } from "../actions/info-model-actions";
@@ -40,6 +40,7 @@ class PlatformRegistrationModal extends Component {
             }
         ];
         this.typeDefault = "false";
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -70,9 +71,8 @@ class PlatformRegistrationModal extends Component {
         this.props.dismissAlert(DISMISS_PLATFORM_REGISTRATION_ERROR_ALERT)
     }
 
-    onSubmit(props) {
-        let { id, name, description, interworkingServiceUrl, informationModel, type } = props;
-        let descriptions = [];
+    onSubmit = (props) => {
+        let { id, name, descriptions, interworkingServiceUrl, informationModel, type } = props;
         let interworkingServices = [];
 
         if (!id)
@@ -81,10 +81,9 @@ class PlatformRegistrationModal extends Component {
         if (!type)
             type = this.typeDefault;
 
-        descriptions.push(description ? description : "");
 
         interworkingServices.push(new InterworkingService(interworkingServiceUrl, informationModel));
-        
+
         const newPlatform = new Platform(id, name, descriptions, interworkingServices, type);
 
         this.props.registerPlatform(newPlatform, (res) => {
@@ -101,26 +100,102 @@ class PlatformRegistrationModal extends Component {
             }
 
         });
-    }
+    };
 
 
-    renderInputField = (field) => {
-        const { input, type, placeholder, componentClass, rows, subElement, errorField,
-            label, helpMessage, maxLength, meta : { touched, invalid, error } } = field;
+    renderInputField = ({ input, type, placeholder, componentClass, rows, subElement, errorField,
+                            label, helpMessage, maxLength, meta : { touched, invalid, error } }) => {
         const validationState = getValidationState(input.value, touched, invalid);
 
         return (
             <FormGroup controlId={input.name} validationState={validationState}>
                 {label ? <ControlLabel>{label}</ControlLabel> : ""}
-                <FormControl
-                    { ...input } componentClass={componentClass} rows={rows}
-                    type={type} placeholder={placeholder} maxLength={maxLength} />
+                    <FormControl
+                        { ...input } componentClass={componentClass} rows={rows}
+                        type={type} placeholder={placeholder} maxLength={maxLength} />
+
                 <FormControl.Feedback className={subElement ? "sub-element" : ""}/>
                 <HelpBlock>{validationState === "error" ? error : helpMessage}</HelpBlock>
                 <FieldError error={errorField} />
             </FormGroup>
         );
     };
+
+    renderDescriptionField = ({ input, type, placeholder, componentClass, rows,
+                                  subElement, errorField, label, helpMessage, maxLength,
+                                  onAdd, onDelete, meta : { touched, invalid, error } }) => {
+        const validationState = getValidationState(input.value, touched, invalid);
+
+        return (
+            <FormGroup controlId={input.name} validationState={validationState}>
+                {label ? <ControlLabel>{label}</ControlLabel> : ""}
+                <InputGroup>
+                    <FormControl
+                        { ...input } componentClass={componentClass} rows={rows}
+                        type={type} placeholder={placeholder} maxLength={maxLength} />
+                    <InputGroup.Button className="description-input-group">
+                        <Button
+                            bsStyle="primary"
+                            className="description-btn"
+                            type="button"
+                            onClick={onAdd}
+                        >
+                            <Glyphicon glyph="plus"/>
+                        </Button>
+                    </InputGroup.Button>
+                    <InputGroup.Button className="description-input-group">
+                        <Button
+                            bsStyle="danger"
+                            className="description-btn"
+                            style={{marginLeft: "0.25em", borderRadius: "4px"}}
+                            type="button"
+                            onClick={onDelete}
+                        >
+                            <Glyphicon glyph="minus"/>
+                        </Button>
+                    </InputGroup.Button>
+                </InputGroup>
+                <FormControl.Feedback className={subElement ? "sub-element-description" : ""}/>
+                <HelpBlock>{validationState === "error" ? error : helpMessage}</HelpBlock>
+                <FieldError error={errorField} />
+            </FormGroup>
+        );
+    };
+
+    renderDescriptions = ({ fields, componentClass, rows, maxLength, label, placeholder, helpMessage, errorField }) => {
+
+        if (fields.length === 0)
+            fields.push({});
+
+        return(
+            <FormGroup>
+                <ControlLabel>{label}</ControlLabel>
+                <ul style={{listStyle: "none", paddingLeft: 0}}>
+                    {fields.map((member, index) => (
+                        <li key={index} style={{overflow: "hidden"}}>
+                            <Field
+                                name={`${member}.description`} componentClass={componentClass}
+                                rows={rows} maxLength={maxLength}
+                                placeholder={placeholder} helpMessage={helpMessage}
+                                errorField={errorField}
+                                onDelete={
+                                    () => {
+                                        if (fields.length > 1)
+                                            fields.remove(index)
+                                    }
+                                }
+                                onAdd={() => fields.push({})}
+                                subElement={true}
+                                component={this.renderDescriptionField}
+                            />
+                        </li>
+                    ))}
+                </ul>
+            </FormGroup>
+
+        )
+    };
+
 
     render() {
         const { handleSubmit, modalState, informationModels,
@@ -143,7 +218,7 @@ class PlatformRegistrationModal extends Component {
                     <Modal.Header closeButton>
                         <Modal.Title>Platform Registration</Modal.Title>
                     </Modal.Header>
-                    <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                    <form onSubmit={handleSubmit(this.onSubmit)}>
                         <Modal.Body>
                             <AlertDismissable alertStyle="danger" message={userPlatforms.platformRegistrationError}
                                               dismissHandler={this.dismissPlatformRegistrationErrorAlert.bind(this)} />
@@ -170,13 +245,13 @@ class PlatformRegistrationModal extends Component {
                                     />
                                 </Col>
                             </Row>
-                            <Field
-                                name="description" componentClass="textarea"
-                                rows={3} maxLength={30} label="Platform Description"
+
+                            <FieldArray
+                                name="descriptions" componentClass="textarea"
+                                rows={3} maxLength={300} label="Platform Descriptions"
                                 placeholder="Enter the platform description" helpMessage="From 4 to 300 characters"
-                                errorField={userPlatforms.description_error}
-                                component={this.renderInputField}
-                            />
+                                errorField={userPlatforms.description_error} component={this.renderDescriptions} />
+
                             <FormGroup>
                                 <ControlLabel>Interworking Services</ControlLabel>
                                 <Row className="interworking-service">
@@ -233,7 +308,7 @@ function validate(values) {
     const validationFunctions = {
         "id" : validateId,
         "name" : validateName,
-        "description" : validateDescription,
+        "descriptions" : validateDescriptions,
         "interworkingServiceUrl" : validateInterworkingInterfaceUrl,
         "informationModel" : validateInformationModel
     };
@@ -241,6 +316,7 @@ function validate(values) {
     Object.keys(validationFunctions).forEach(function (key) {
         errors[key] = validationFunctions[key](values[key]);
     });
+
     return errors;
 }
 

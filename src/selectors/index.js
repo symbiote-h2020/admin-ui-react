@@ -11,9 +11,19 @@ const checkForm =  (form) => {
     const { syncErrors, anyTouched } = form;
     const noErrors = _.filter(syncErrors, (error) => {
         // Filtering the nulls
+
+        // For FieldArrays
+        if (error instanceof Array && error.length > 0) {
+            const arrayErrors = _.filter(error, (err) => err.description);
+
+            return arrayErrors.length ? arrayErrors : null;
+        }
+
+        // Normal Fields
         return error;
-    }).length;
-    return !noErrors && anyTouched;
+    });
+
+    return !noErrors.length && anyTouched;
 };
 
 export const getPlatformRegistrationValidity = createSelector(
