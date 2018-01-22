@@ -4,13 +4,14 @@ import { Panel, Row, Col, FormGroup, FormControl, ControlLabel } from "react-boo
 
 const PlatformPanelBody = ({ platform, informationModelOptions, platformOptions }) => {
 
-    const renderInputField = (value, label, type, componentClass, rows=null) => {
+    const RenderInputField = ({ value, label, type, componentClass, rows }) => {
         return (
             <FormGroup>
                 {label ? <ControlLabel>{label}</ControlLabel> : ""}
                 <FormControl
                     componentClass={componentClass} rows={rows}
-                    type={type} value={value} disabled={true} />
+                    type={type} value={value} disabled={true}
+                />
             </FormGroup>
         );
     };
@@ -19,19 +20,24 @@ const PlatformPanelBody = ({ platform, informationModelOptions, platformOptions 
         <Panel.Body>
             <Row>
                 <Col sm={6}>
-                    {renderInputField(platform.id, "Platform Id", "text", "input")}
+                    <RenderInputField
+                        value={platform.id} label="Platform Id" type="text" componentClass="input"
+                    />
                 </Col>
                 <Col sm={6}>
-                    {renderInputField(platform.name, "Platform Name", "text", "input")}
+                    <RenderInputField
+                        value={platform.name} label="Platform Name" type="text" componentClass="input"
+                    />
                 </Col>
             </Row>
             {
                 platform.description.map(
                     (descriptionObject, index) =>  {
-                        return renderInputField(
-                            descriptionObject.description,
-                            index ? "" : "Platform Description",
-                            "text", "textarea", 3);
+                        return <RenderInputField
+                            value={descriptionObject.description} label={index ? "" : "Platform Description"}
+                            type="text" componentClass="textarea" rows={3} key={`description[${index}]`}
+                        />
+
                     })
 
             }
@@ -40,7 +46,9 @@ const PlatformPanelBody = ({ platform, informationModelOptions, platformOptions 
                 <ControlLabel>Interworking Services</ControlLabel>
                 <Row className="interworking-service">
                     <Col sm={8}>
-                        {renderInputField(platform.interworkingServices[0].url, null, "text", "input")}
+                        <RenderInputField
+                            value={platform.interworkingServices[0].url} type="text" componentClass="input"
+                        />
                     </Col>
                     <Col sm={4}>
                         <Select

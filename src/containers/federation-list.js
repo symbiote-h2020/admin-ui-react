@@ -14,7 +14,7 @@ import {
     DISMISS_FEDERATION_DELETION_SUCCESS_ALERT, DEACTIVATE_FEDERATION_DELETE_MODAL
 } from "../actions/index";
 import {ROOT_URL} from "../configuration";
-import { ADMIN_LOGIN_MODAL } from "../reducers/modal-reducer";
+import { ADMIN_LOGIN_MODAL } from "../reducers/modal/modal-reducer";
 
 class FederationList extends Component {
 

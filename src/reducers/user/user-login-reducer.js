@@ -1,4 +1,4 @@
-import { USER_LOGIN } from "../actions/index";
+import { USER_LOGIN } from "../../actions/index";
 
 const INITIAL_STATE = { error: "" };
 

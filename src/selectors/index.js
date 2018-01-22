@@ -2,19 +2,25 @@ import { createSelector } from "reselect";
 import _ from "lodash";
 
 const getPlatformRegistrationForm = (state) => state.form.PlatformRegistrationForm;
+const getPlatformUpdateForm = (state) => state.form.PlatformUpdateForm;
 const getInfoModelRegistrationForm = (state) => state.form.InformationModelRegistrationForm;
 const getPlatformConfigurationForm = (state) => state.form.PlatformConfigurationForm;
 const getFederationRegistrationForm = (state) => state.form.FederationRegistrationForm;
 const getRegisterUserForm = (state) => state.form.RegisterUserForm;
+const getUserPlatforms = (state) => state.userPlatforms.availablePlatforms;
+const getPlatformIdToUpdate = (state) => state.platformUpdateModal.platformIdToUpdate;
 
 const checkForm =  (form) => {
-    const { syncErrors, anyTouched } = form;
+    if (!form)
+        return {};
+
+    const { syncErrors, anyTouched, active } = form;
     const noErrors = _.filter(syncErrors, (error) => {
         // Filtering the nulls
 
         // For FieldArrays
         if (error instanceof Array && error.length > 0) {
-            const arrayErrors = _.filter(error, (err) => err.description);
+            const arrayErrors = _.filter(error, (err) => err && err.description);
 
             return arrayErrors.length ? arrayErrors : null;
         }
@@ -23,11 +29,15 @@ const checkForm =  (form) => {
         return error;
     });
 
-    return !noErrors.length && anyTouched;
+    return !noErrors.length && (anyTouched || active);
 };
 
 export const getPlatformRegistrationValidity = createSelector(
     [ getPlatformRegistrationForm ], checkForm
+);
+
+export const getPlatformUpdateValidity = createSelector(
+    [ getPlatformUpdateForm ], checkForm
 );
 
 export const getInfoModelRegistrationValidity = createSelector(
@@ -44,4 +54,29 @@ export const getFederationRegistrationValidity = createSelector(
 
 export const getRegisterUserFormValidity = createSelector(
     [ getRegisterUserForm ], checkForm
+);
+
+export const getFieldsForPlatformToUpdate = createSelector(
+    [ getUserPlatforms, getPlatformIdToUpdate ],
+    (userPlatforms, platformIdToUpdate) => {
+
+        if (!platformIdToUpdate)
+            return {};
+        else {
+            const platformToBeUpdated = userPlatforms[platformIdToUpdate];
+            let descriptions = [];
+
+            for(let desc of platformToBeUpdated.description)
+                descriptions.push({description: desc.description})
+
+            return {
+                id : platformToBeUpdated.id,
+                name : platformToBeUpdated.name,
+                descriptions : descriptions,
+                interworkingServiceUrl : platformToBeUpdated.interworkingServices[0].url,
+                informationModel : platformToBeUpdated.interworkingServices[0].informationModelId,
+                type : platformToBeUpdated.isEnabler ? "true" : "false"
+            }
+        }
+    }
 );

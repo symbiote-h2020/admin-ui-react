@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Panel, Glyphicon, Button } from "react-bootstrap";
 import PlatformPanelBody from "./platform-panel-body";
 import {
-    ACTIVATE_PLATFORM_DELETE_MODAL, ACTIVATE_PLATFORM_CONFIG_MODAL
+    ACTIVATE_PLATFORM_DELETE_MODAL, ACTIVATE_PLATFORM_CONFIG_MODAL, ACTIVATE_PLATFORM_UPDATE_MODAL
 } from "../../../actions";
 
 export default class CollapsiblePlatformPanel extends Component {
@@ -12,7 +12,12 @@ export default class CollapsiblePlatformPanel extends Component {
             open : false,
             platform : props.platform,
             informationModels : props.informationModels
-        }
+        };
+        
+        this.togglePanel = this.togglePanel.bind(this);
+        this.handleOpenDeleteModal = this.handleOpenDeleteModal.bind(this);
+        this.handleOpenUpdateModal = this.handleOpenUpdateModal.bind(this);
+        this.handleOpenConfigModal = this.handleOpenConfigModal.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -31,6 +36,10 @@ export default class CollapsiblePlatformPanel extends Component {
 
     handleOpenDeleteModal = () => {
         this.props.openModal(ACTIVATE_PLATFORM_DELETE_MODAL, this.props.platform.id);
+    };
+
+    handleOpenUpdateModal = () => {
+        this.props.openModal(ACTIVATE_PLATFORM_UPDATE_MODAL, this.props.platform.id);
     };
 
     handleOpenConfigModal = () => {
@@ -67,14 +76,20 @@ export default class CollapsiblePlatformPanel extends Component {
                 <Panel.Footer className="platform-info-footer">
                     <Button
                         bsStyle="info"
-                        onClick={this.handleOpenConfigModal.bind(this)}>
+                        onClick={this.handleOpenConfigModal}>
                         Get Configuration
                     </Button>
                     <Button
-                        className="btn-warning-delete"
+                        className="panel-footer-btn"
                         bsStyle="warning"
-                        onClick={this.handleOpenDeleteModal.bind(this)}>
+                        onClick={this.handleOpenDeleteModal}>
                         Delete
+                    </Button>
+                    <Button
+                        className="panel-footer-btn"
+                        bsStyle="info"
+                        onClick={this.handleOpenUpdateModal}>
+                        Update
                     </Button>
                 </Panel.Footer>
             </Panel>

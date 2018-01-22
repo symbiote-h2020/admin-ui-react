@@ -1,4 +1,4 @@
-import { USER_LOGOUT } from "../actions/index";
+import { USER_LOGOUT } from "../../actions/index";
 
 const INITIAL_STATE = { };
 

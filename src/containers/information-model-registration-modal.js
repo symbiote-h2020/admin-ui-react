@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Modal, Button, FormGroup, FormControl, ControlLabel, Row, Col, HelpBlock, ProgressBar } from "react-bootstrap";
-import { INFORMATION_MODEL_REGISTRATION_MODAL, USER_LOGIN_MODAL } from "../reducers/modal-reducer";
+import { INFORMATION_MODEL_REGISTRATION_MODAL, USER_LOGIN_MODAL } from "../reducers/modal/modal-reducer";
 import { getInfoModelRegistrationValidity } from "../selectors/index";
 import ProgressBarWrapper from "../helpers/ProgressBarWrapper";
 import { FieldError, AlertDismissable } from "../helpers/errors";

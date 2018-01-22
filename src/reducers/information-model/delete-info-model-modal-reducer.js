@@ -1,4 +1,4 @@
-import { ACTIVATE_INFO_MODEL_DELETE_MODAL, DEACTIVATE_INFO_MODEL_DELETE_MODAL } from "../actions";
+import { ACTIVATE_INFO_MODEL_DELETE_MODAL, DEACTIVATE_INFO_MODEL_DELETE_MODAL } from "../../actions/index";
 
 const INITIAL_STATE = { infoModelIdToDelete : "" };
 

@@ -232,9 +232,10 @@ a.clickable:hover { text-decoration:none; }
     margin-left: 0.25em;
 }
 
-.btn-warning-delete {
+.panel-footer-btn {
     float: right;
     margin-bottom: 0.25em;
+    margin-left: 0.5em;
 }
 
 .platform-info-footer, .info-model-info-footer, .federation-info-footer {

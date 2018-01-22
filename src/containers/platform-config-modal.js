@@ -14,7 +14,7 @@ import { PlatformConfigurationMessage } from "../helpers/object-definitions";
 import { AlertDismissable } from "../helpers/errors";
 import { DISMISS_PLATFORM_CONFIG_ERROR_ALERT, DEACTIVATE_PLATFORM_CONFIG_MODAL } from "../actions/index";
 import { ROOT_URL } from "../configuration";
-import { USER_LOGIN_MODAL } from "../reducers/modal-reducer";
+import { USER_LOGIN_MODAL } from "../reducers/modal/modal-reducer";
 
 class PlatformConfigModal extends Component {
 

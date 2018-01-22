@@ -12,7 +12,7 @@ import {
 import { changeModalState, dismissAlert } from "../actions";
 import { DISMISS_INFO_MODEL_DELETION_ERROR_ALERT, DISMISS_INFO_MODEL_DELETION_SUCCESS_ALERT } from "../actions";
 import { ROOT_URL } from "../configuration";
-import { USER_LOGIN_MODAL } from "../reducers/modal-reducer";
+import { USER_LOGIN_MODAL } from "../reducers/modal/modal-reducer";
 
 class InformationModelList extends Component {
 

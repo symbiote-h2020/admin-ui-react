@@ -1,4 +1,4 @@
-import { ACTIVATE_FEDERATION_DELETE_MODAL, DEACTIVATE_FEDERATION_DELETE_MODAL } from "../actions";
+import { ACTIVATE_FEDERATION_DELETE_MODAL, DEACTIVATE_FEDERATION_DELETE_MODAL } from "../../actions/index";
 
 const INITIAL_STATE = { federationIdToDelete : "" };
 

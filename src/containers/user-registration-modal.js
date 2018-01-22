@@ -5,7 +5,7 @@ import { Modal, Button, FormGroup, FormControl, InputGroup, Glyphicon, HelpBlock
 import _ from "lodash";
 import RFReactSelect from "../helpers/redux-form-react-selector-integrator";
 import { changeModalState } from "../actions/index";
-import { USER_REGISTRATION_MODAL } from "../reducers/modal-reducer";
+import { USER_REGISTRATION_MODAL } from "../reducers/modal/modal-reducer";
 import { FieldError } from "../helpers/errors";
 import { fetchUserRoles, registerUser, setSuccessfulUserRegistrationFlag } from "../actions/user-actions";
 import { getValidationState, isEmpty } from "../validation/helpers";

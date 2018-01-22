@@ -4,8 +4,8 @@ import {
     DISMISS_FEDERATION_REGISTRATION_SUCCESS_ALERT, DISMISS_FEDERATION_REGISTRATION_ERROR_ALERT,
     DISMISS_FEDERATION_DELETION_SUCCESS_ALERT, DISMISS_FEDERATION_DELETION_ERROR_ALERT,
     REMOVE_FEDERATION_REGISTRATION_ERRORS
-} from "../actions";
-import {ROOT_URL} from "../configuration";
+} from "../../actions/index";
+import {ROOT_URL} from "../../configuration/index";
 
 export default function(state = {}, action) {
     switch(action.type) {

@@ -44,7 +44,7 @@ export default class CollapsibleInformationModelPanel extends Component {
                 </Panel.Collapse>
                 <Panel.Footer className="info-model-info-footer">
                     <Button
-                        className="btn-warning-delete"
+                        className="panel-footer-btn"
                         bsStyle="warning"
                         onClick={this.handleOpenDeleteModal.bind(this)}>
                         Delete

@@ -1,4 +1,4 @@
-import { CHANGE_MODAL_STATE } from "../actions";
+import { CHANGE_MODAL_STATE } from "../../actions/index";
 
 export const USER_REGISTRATION_MODAL = "USER_REGISTRATION_MODAL";
 export const USER_LOGIN_MODAL = "USER_LOGIN_MODAL";

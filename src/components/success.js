@@ -4,7 +4,7 @@ import { Alert, FormGroup, Col, Button } from "react-bootstrap";
 import { USER_CPANEL_URL } from "../configuration";
 import { changeModalState } from "../actions";
 import { setSuccessfulUserRegistrationFlag } from "../actions/user-actions";
-import { USER_LOGIN_MODAL } from "../reducers/modal-reducer";
+import { USER_LOGIN_MODAL } from "../reducers/modal/modal-reducer";
 
 class Success extends Component {
 

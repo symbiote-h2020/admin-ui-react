@@ -47,7 +47,7 @@ export default class CollapsibleFederationPanel extends Component {
                 </Panel.Collapse>
                 <Panel.Footer className="federation-info-footer">
                     <Button
-                        className="btn-warning-delete"
+                        className="panel-footer-btn"
                         bsStyle="warning"
                         onClick={this.handleOpenDeleteModal}>
                         Delete

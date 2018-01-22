@@ -4,8 +4,8 @@ import {
     DISMISS_INFO_MODEL_DELETION_SUCCESS_ALERT, DISMISS_INFO_MODEL_REGISTRATION_ERROR_ALERT,
     DISMISS_INFO_MODEL_REGISTRATION_SUCCESS_ALERT, FETCH_ALL_INFORMATION_MODELS, FETCH_USER_INFORMATION_MODELS,
     REGISTER_INFO_MODEL, REMOVE_INFO_MODEL_REGISTRATION_ERRORS
-} from "../actions";
-import {ROOT_URL} from "../configuration";
+} from "../../actions/index";
+import {ROOT_URL} from "../../configuration/index";
 
 export default function(state = {}, action) {
     switch(action.type) {

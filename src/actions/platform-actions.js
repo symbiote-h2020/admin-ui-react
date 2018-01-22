@@ -2,7 +2,7 @@ import axios from "axios";
 import {ROOT_URL} from "../configuration";
 import {
     headers, DELETE_PLATFORM, FETCH_USER_PLATFORMS,
-    GET_PLATFORM_CONFIGURATION, REGISTER_PLATFORM
+    GET_PLATFORM_CONFIGURATION, REGISTER_PLATFORM, UPDATE_PLATFORM
 } from "./index";
 
 axios.defaults.withCredentials = true;
@@ -42,6 +42,28 @@ export function registerPlatform(platform, cb) {
 
     return {
         type: REGISTER_PLATFORM,
+        payload: request
+    };
+}
+
+export function updatePlatform(platform, cb) {
+    const url = `${ROOT_URL}/user/cpanel/update_platform`;
+
+    const config = {
+        url: url,
+        method: 'post',
+        data: platform,
+        headers: headers
+    };
+
+    const request = axios.request(config)
+        .then(res => {
+            cb(res);
+            return res;
+        });
+
+    return {
+        type: UPDATE_PLATFORM,
         payload: request
     };
 }

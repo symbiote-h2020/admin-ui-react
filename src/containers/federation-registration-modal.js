@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Modal, Button, FormGroup, FormControl, ControlLabel, Row, Col, HelpBlock } from "react-bootstrap";
-import { ADMIN_LOGIN_MODAL, FEDERATION_REGISTRATION_MODAL } from "../reducers/modal-reducer";
+import { ADMIN_LOGIN_MODAL, FEDERATION_REGISTRATION_MODAL } from "../reducers/modal/modal-reducer";
 import { getFederationRegistrationValidity } from "../selectors/index";
 import { FieldError, AlertDismissable } from "../helpers/errors";
 import { CreateFederationRequest } from "../helpers/object-definitions";

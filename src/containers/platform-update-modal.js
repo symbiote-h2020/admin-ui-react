@@ -4,17 +4,17 @@ import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { Modal, Button } from "react-bootstrap";
 import _ from "lodash";
-import { PLATFORM_REGISTRATION_MODAL, USER_LOGIN_MODAL } from "../reducers/modal/modal-reducer";
+import { USER_LOGIN_MODAL } from "../reducers/modal/modal-reducer";
 import PlatformFormBody from "../components/user-cpanel/platform-details/platform-form-body";
 import { InterworkingService, Platform } from "../helpers/object-definitions";
-import { getPlatformRegistrationValidity } from "../selectors";
+import { getPlatformUpdateValidity, getFieldsForPlatformToUpdate } from "../selectors";
 import { FieldError, AlertDismissable } from "../helpers/errors";
 import { ROOT_URL, platformTypes } from "../configuration";
 import { fetchAllInformationModels } from "../actions/info-model-actions";
-import { registerPlatform } from "../actions/platform-actions";
+import { updatePlatform, deactivatePlatformModal } from "../actions/platform-actions";
 import {
     changeModalState, removeErrors, dismissAlert,
-    DISMISS_PLATFORM_REGISTRATION_ERROR_ALERT, REMOVE_PLATFORM_ERRORS
+    DEACTIVATE_PLATFORM_UPDATE_MODAL, DISMISS_PLATFORM_UPDATE_ERROR_ALERT, REMOVE_PLATFORM_ERRORS
 } from "../actions";
 import {
     validateId, validateName, validateDescriptions,
@@ -22,7 +22,7 @@ import {
 } from "../validation/platform-request-validation";
 
 
-class PlatformRegistrationModal extends Component {
+class PlatformUpdateModal extends Component {
 
     constructor() {
         super();
@@ -30,15 +30,11 @@ class PlatformRegistrationModal extends Component {
         this.onSubmit = this.onSubmit.bind(this);
         this.close = this.close.bind(this);
         this.informationModels = this.informationModels.bind(this);
-        this.dismissPlatformRegistrationErrorAlert = this.dismissPlatformRegistrationErrorAlert.bind(this);
-    }
-
-    componentDidMount() {
-        this.props.fetchAllInformationModels();
+        this.dismissPlatformUpdateErrorAlert = this.dismissPlatformUpdateErrorAlert.bind(this);
     }
 
     close() {
-        this.props.changeModalState(PLATFORM_REGISTRATION_MODAL, false);
+        this.props.deactivatePlatformModal(DEACTIVATE_PLATFORM_UPDATE_MODAL);
         this.props.reset();
         this.props.removeErrors(REMOVE_PLATFORM_ERRORS);
     }
@@ -49,22 +45,20 @@ class PlatformRegistrationModal extends Component {
         });
     };
 
-    dismissPlatformRegistrationErrorAlert() {
-        this.props.dismissAlert(DISMISS_PLATFORM_REGISTRATION_ERROR_ALERT)
+    dismissPlatformUpdateErrorAlert() {
+        this.props.dismissAlert(DISMISS_PLATFORM_UPDATE_ERROR_ALERT)
     }
 
     onSubmit = (props) => {
-        let { id, name, descriptions, interworkingServiceUrl, informationModel, type } = props;
+        let { name, descriptions, interworkingServiceUrl, informationModel, type } = props;
+        const id = this.props.platformUpdateModal.platformIdToUpdate;
         let interworkingServices = [];
-
-        if (!id)
-            id = "";
 
         interworkingServices.push(new InterworkingService(interworkingServiceUrl, informationModel));
 
-        const newPlatform = new Platform(id, name, descriptions, interworkingServices, type);
+        const updatedPlatform = new Platform(id, name, descriptions, interworkingServices, type);
 
-        this.props.registerPlatform(newPlatform, (res) => {
+        this.props.updatePlatform(updatedPlatform, (res) => {
             const pattern = new RegExp(`${ROOT_URL}$`);
 
             // If the root url is returned, that means that the user is not authenticated (possibly the
@@ -73,7 +67,7 @@ class PlatformRegistrationModal extends Component {
                 this.props.history.push(ROOT_URL);
                 this.props.changeModalState(USER_LOGIN_MODAL, true);
             }
-            else if (res.status === 201) {
+            else if (res.status === 200) {
                 this.close();
             }
 
@@ -82,24 +76,26 @@ class PlatformRegistrationModal extends Component {
 
 
     render() {
-        const { handleSubmit, modalState, informationModels,
-            userPlatforms, platformRegistrationValidity } = this.props;
-        const opts = { disabled : !platformRegistrationValidity };
+        const { handleSubmit, informationModels, userPlatforms, platformUpdateValidity } = this.props;
+        const { platformIdToUpdate } = this.props.platformUpdateModal;
+        const opts = { disabled : !platformUpdateValidity };
+
+        const platform = userPlatforms.availablePlatforms[platformIdToUpdate];
 
         return(
-            <Modal show={modalState[PLATFORM_REGISTRATION_MODAL]} onHide={this.close}>
+            <Modal show={!!platformIdToUpdate} onHide={this.close}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Platform Registration</Modal.Title>
+                    <Modal.Title>Update Platform <strong>{platform ? platform.name : ""}</strong></Modal.Title>
                 </Modal.Header>
                 <form onSubmit={handleSubmit(this.onSubmit)}>
                     <Modal.Body>
-                        <AlertDismissable alertStyle="danger" message={userPlatforms.platformRegistrationError}
-                                          dismissHandler={this.dismissPlatformRegistrationErrorAlert}
+                        <AlertDismissable alertStyle="danger" message={userPlatforms.platformUpdateError}
+                                          dismissHandler={this.dismissPlatformUpdateErrorAlert}
                         />
                         <FieldError error={informationModels.fetching_error} />
                         <PlatformFormBody
                             userPlatforms={userPlatforms} informationModels={this.informationModels()}
-                            platformTypes={platformTypes} isActive={modalState[PLATFORM_REGISTRATION_MODAL]}
+                            platformTypes={platformTypes} isActive={!!platformIdToUpdate} idDisabled={true}
                         />
                     </Modal.Body>
                     <Modal.Footer>
@@ -135,20 +131,22 @@ function mapStateToProps(state) {
         modalState: state.modalState,
         informationModels: state.informationModels,
         userPlatforms: state.userPlatforms,
-        platformRegistrationValidity: getPlatformRegistrationValidity(state),
-        initialValues: {type: "false"},
+        platformUpdateModal: state.platformUpdateModal,
+        platformUpdateValidity: getPlatformUpdateValidity(state),
+        initialValues: getFieldsForPlatformToUpdate(state)
     };
 }
 
-PlatformRegistrationModal = reduxForm({
-    form: 'PlatformRegistrationForm',
+// if merged with connect the initialization does not work
+PlatformUpdateModal = reduxForm({
+    form: 'PlatformUpdateForm',
+    enableReinitialize: true,
     validate
-})(PlatformRegistrationModal);
+})(PlatformUpdateModal);
 
-export default PlatformRegistrationModal = connect(mapStateToProps,
-    { changeModalState, fetchAllInformationModels,
-        registerPlatform, dismissAlert, removeErrors }
-)(withRouter(PlatformRegistrationModal));
-
+export default PlatformUpdateModal = connect(mapStateToProps,
+    { changeModalState, updatePlatform, fetchAllInformationModels,
+        deactivatePlatformModal, dismissAlert, removeErrors }
+)(withRouter(PlatformUpdateModal));
 
 

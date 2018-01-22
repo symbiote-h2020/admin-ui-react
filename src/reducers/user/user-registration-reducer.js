@@ -1,4 +1,4 @@
-import { REGISTER_USER, SET_SUCCESSFUL_USER_REGISTRATION_FLAG } from "../actions";
+import { REGISTER_USER, SET_SUCCESSFUL_USER_REGISTRATION_FLAG } from "../../actions/index";
 
 const INITIAL_STATE = { validationErrors: {},  errorMessage: "", successful: false};
 

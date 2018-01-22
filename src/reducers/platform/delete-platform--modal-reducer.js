@@ -1,4 +1,4 @@
-import { ACTIVATE_PLATFORM_DELETE_MODAL, DEACTIVATE_PLATFORM_DELETE_MODAL } from "../actions";
+import { ACTIVATE_PLATFORM_DELETE_MODAL, DEACTIVATE_PLATFORM_DELETE_MODAL } from "../../actions/index";
 
 const INITIAL_STATE = { platformIdToDelete : "" };
 

@@ -1,17 +1,18 @@
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
-import UserRolesReducer from "./user-roles-reducer";
-import UserRegistrationReducer from "./user-registration-reducer";
-import UserLoginReducer from "./user-login-reducer";
-import UserLogoutReducer from "./user-logout-reducer";
-import ModalReducer from "./modal-reducer";
-import PlatformDeleteModalReducer from "./delete-platform--modal-reducer";
-import PlatformConfigModalReducer from "./config-platform--modal-reducer";
-import InfoModelDeleteModalReducer from "./delete-info-model-modal-reducer";
-import InformationModelReducer from "./information-models-reducer";
-import UserPlatformsReducer from "./user-platforms-reducer";
-import FederationsReducer from "./federations-reducer";
-import FederationDeleteModalReducer from "./delete-federation-modal-reducer";
+import UserRolesReducer from "./user/user-roles-reducer";
+import UserRegistrationReducer from "./user/user-registration-reducer";
+import UserLoginReducer from "./user/user-login-reducer";
+import UserLogoutReducer from "./user/user-logout-reducer";
+import ModalReducer from "./modal/modal-reducer";
+import PlatformDeleteModalReducer from "./platform/delete-platform--modal-reducer";
+import PlatformUpdateModalReducer from "./platform/update-platform--modal-reducer";
+import PlatformConfigModalReducer from "./platform/config-platform--modal-reducer";
+import InfoModelDeleteModalReducer from "./information-model/delete-info-model-modal-reducer";
+import InformationModelReducer from "./information-model/information-models-reducer";
+import UserPlatformsReducer from "./platform/user-platforms-reducer";
+import FederationsReducer from "./federation/federations-reducer";
+import FederationDeleteModalReducer from "./federation/delete-federation-modal-reducer";
 
 const rootReducer = combineReducers({
     userRoles: UserRolesReducer,
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
     userLogoutState: UserLogoutReducer,
     modalState: ModalReducer,
     platformDeleteModal: PlatformDeleteModalReducer,
+    platformUpdateModal: PlatformUpdateModalReducer,
     platformConfigModal: PlatformConfigModalReducer,
     infoModelDeleteModal: InfoModelDeleteModalReducer,
     informationModels: InformationModelReducer,

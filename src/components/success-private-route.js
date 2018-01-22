@@ -7,7 +7,6 @@ class SuccessPrivateRoute extends Component {
 
     render() {
         const { component: Component, successful, ...rest } = this.props;
-        console.log(successful)
         return(
             <Route
                 {...rest}

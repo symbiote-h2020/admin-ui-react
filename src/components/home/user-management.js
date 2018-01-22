@@ -2,7 +2,7 @@ import React from "react";
 import SignInModal from "../../containers/sign-in-modal";
 import UserRegisterModal from "../../containers/user-registration-modal";
 import {USER_CPANEL_URL} from "../../configuration";
-import {USER_LOGIN_MODAL} from "../../reducers/modal-reducer";
+import {USER_LOGIN_MODAL} from "../../reducers/modal/modal-reducer";
 import suitcase from "../../images/suitcase.png";
 
 const UserManagement = (props) => {
