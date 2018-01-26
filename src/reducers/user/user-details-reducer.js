@@ -1,6 +1,7 @@
 import {
-    FETCH_USER_INFORMATION, CHANGE_EMAIL,
-    DISMISS_EMAIL_CHANGE_SUCCESS_ALERT, DISMISS_EMAIL_CHANGE_ERROR_ALERT
+    FETCH_USER_INFORMATION, CHANGE_EMAIL, CHANGE_PASSWORD,
+    DISMISS_EMAIL_CHANGE_SUCCESS_ALERT, DISMISS_EMAIL_CHANGE_ERROR_ALERT,
+    DISMISS_PASSWORD_CHANGE_SUCCESS_ALERT, DISMISS_PASSWORD_CHANGE_ERROR_ALERT
 } from "../../actions/index";
 import _ from "lodash";
 
@@ -26,32 +27,74 @@ export default function(state = INITIAL_STATE, action) {
                         errors.error_newEmailRetyped = message["error_newEmailRetyped"];
 
                     errors.changeEmailError = message["changeEmailError"];
-                    return { ...removeErrors(_.omit(state, "successfulEmailChange")), ...errors };
+                    return { ...removeChangeEmailErrors(_.omit(state, "successfulEmailChange")), ...errors };
                 }
-                return { ...removeErrors(_.omit(state, "successfulEmailChange")), changeEmailError: "Could not contact the server" };
+                return { ...removeChangeEmailErrors(_.omit(state, "successfulEmailChange")), changeEmailError: "Could not contact the server" };
 
             }
 
             const response = JSON.parse(action.payload.config.data);
             const { newEmail } = response;
             return {
-                ...removeErrors(state),
+                ...removeChangeEmailErrors(state),
                 email: newEmail,
                 successfulEmailChange: "Your email was updated successfully"
             };
 
+        case CHANGE_PASSWORD:
+            if (action.error) {
+                if (action.payload.response) {
+                    const message = action.payload.response.data;
+                    let errors = {};
+
+                    if (message["error_newPassword"])
+                        errors.error_newPassword = message["error_newPassword"];
+
+                    if (message["error_newPasswordRetyped"])
+                        errors.error_newPasswordRetyped = message["error_newPasswordRetyped"];
+
+                    errors.changePasswordError = message["changePasswordError"];
+                    return { ...removeChangePasswordErrors(_.omit(state, "successfulPasswordChange")), ...errors };
+                }
+                return {
+                    ...removeChangePasswordErrors(_.omit(state, "successfulPasswordChange")),
+                    changePasswordError: "Could not contact the server"
+                };
+
+            }
+
+            return {
+                ...removeChangePasswordErrors(state),
+                successfulPasswordChange: "Your password was updated successfully"
+            };
         default:
             return state;
         case DISMISS_EMAIL_CHANGE_SUCCESS_ALERT:
             return _.omit(state, "successfulEmailChange");
         case DISMISS_EMAIL_CHANGE_ERROR_ALERT:
             return _.omit(state, "changeEmailError");
+        case DISMISS_PASSWORD_CHANGE_SUCCESS_ALERT:
+            return _.omit(state, "successfulPasswordChange");
+        case DISMISS_PASSWORD_CHANGE_ERROR_ALERT:
+            return _.omit(state, "changePasswordError");
     }
 }
 
-const removeErrors = (state) => {
+const removeChangeEmailErrors = (state) => {
     const errors = [
-        "fetchUserInformationError", "error_newEmail", "error_newEmailRetyped", "changeEmailError"
+        "error_newEmail", "error_newEmailRetyped", "changeEmailError"
+    ];
+
+    let newState = {...state};
+    for (let i = 0; i < errors.length; i++)
+        newState =  _.omit(newState, errors[i]);
+
+    return newState;
+};
+
+const removeChangePasswordErrors = (state) => {
+    const errors = [
+        "error_newPassword", "error_newPasswordRetyped", "changePasswordError"
     ];
 
     let newState = {...state};

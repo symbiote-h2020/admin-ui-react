@@ -8,6 +8,7 @@ const getPlatformConfigurationForm = (state) => state.form.PlatformConfiguration
 const getFederationRegistrationForm = (state) => state.form.FederationRegistrationForm;
 const getRegisterUserForm = (state) => state.form.RegisterUserForm;
 const getChangeEmailForm = (state) => state.form.ChangeEmailForm;
+const getChangePasswordForm = (state) => state.form.ChangePasswordForm;
 const getUserPlatforms = (state) => state.userPlatforms.availablePlatforms;
 const getPlatformIdToUpdate = (state) => state.platformUpdateModal.platformIdToUpdate;
 
@@ -60,6 +61,11 @@ export const getRegisterUserFormValidity = createSelector(
 export const getChangeEmailFormValidity = createSelector(
     [ getChangeEmailForm ], checkForm
 );
+
+export const getChangePasswordFormValidity = createSelector(
+    [ getChangePasswordForm ], checkForm
+);
+
 
 export const getFieldsForPlatformToUpdate = createSelector(
     [ getUserPlatforms, getPlatformIdToUpdate ],

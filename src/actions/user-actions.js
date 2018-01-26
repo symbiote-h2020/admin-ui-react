@@ -1,8 +1,8 @@
 import axios from "axios";
 import { USER_CPANEL_URL, ROOT_URL, ADMIN_CPANEL_URL } from "../configuration";
 import {
-    FETCH_USER_ROLES, headers, REGISTER_USER, USER_LOGIN, USER_LOGOUT,
-    FETCH_USER_INFORMATION, SET_SUCCESSFUL_USER_REGISTRATION_FLAG, CHANGE_EMAIL
+    FETCH_USER_ROLES, headers, REGISTER_USER, USER_LOGIN, USER_LOGOUT, FETCH_USER_INFORMATION,
+    SET_SUCCESSFUL_USER_REGISTRATION_FLAG, CHANGE_EMAIL, CHANGE_PASSWORD
 } from "./index";
 
 
@@ -119,6 +119,28 @@ export function changeEmail(props, cb) {
 
     return {
         type: CHANGE_EMAIL,
+        payload: request
+    };
+}
+
+export function changePassword(props, cb) {
+    const url = `${ROOT_URL}/user/change_password`;
+
+    const config = {
+        url: url,
+        method: 'post',
+        headers: headers,
+        data: props
+    };
+
+    const request = axios.request(config)
+        .then(res => {
+            cb(res);
+            return res;
+        });
+
+    return {
+        type: CHANGE_PASSWORD,
         payload: request
     };
 }
