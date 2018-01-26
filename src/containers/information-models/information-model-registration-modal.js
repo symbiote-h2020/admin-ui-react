@@ -3,21 +3,21 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Modal, Button, FormGroup, FormControl, ControlLabel, Row, Col, HelpBlock, ProgressBar } from "react-bootstrap";
-import { INFORMATION_MODEL_REGISTRATION_MODAL, USER_LOGIN_MODAL } from "../reducers/modal/modal-reducer";
-import { getInfoModelRegistrationValidity } from "../selectors/index";
-import ProgressBarWrapper from "../helpers/ProgressBarWrapper";
-import { FieldError, AlertDismissable } from "../helpers/errors";
-import { getValidationState } from "../validation/helpers";
+import { INFORMATION_MODEL_REGISTRATION_MODAL, USER_LOGIN_MODAL } from "../../reducers/modal/modal-reducer";
+import { getInfoModelRegistrationValidity } from "../../selectors/index";
+import ProgressBarWrapper from "../../helpers/ProgressBarWrapper";
+import { FieldError, AlertDismissable } from "../../helpers/errors";
+import { getValidationState } from "../../validation/helpers";
 import {
     validateName, validateUri, validateRdfExtension
-} from "../validation/information-model-registration-validation";
+} from "../../validation/information-model-registration-validation";
 import {
     changeModalState, DISMISS_INFO_MODEL_REGISTRATION_ERROR_ALERT, DISMISS_INFO_MODEL_REGISTRATION_SUCCESS_ALERT
-} from "../actions/index";
+} from "../../actions/index";
 import {
-    dismissAlert, removeErrors, REMOVE_INFO_MODEL_REGISTRATION_ERRORS } from "../actions";
-import { registerInfoModel, uploadingInfoModelProgress } from "../actions/info-model-actions";
-import { ROOT_URL } from "../configuration";
+    dismissAlert, removeErrors, REMOVE_INFO_MODEL_REGISTRATION_ERRORS } from "../../actions/index";
+import { registerInfoModel, uploadingInfoModelProgress } from "../../actions/info-model-actions";
+import { ROOT_URL } from "../../configuration/index";
 
 class InformationModelRegistrationModal extends Component {
 

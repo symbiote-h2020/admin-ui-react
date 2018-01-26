@@ -1,8 +1,18 @@
 import React from "react";
+import { Row, Col } from "react-bootstrap";
+import ChangeEmail from "../../../containers/users/change-email";
+import UserInformation from "../../../containers/users/user-information";
 
 const UserDetails = () => {
     return(
-        <h3>User Details</h3>
+        <Row>
+            <Col xs={12} sm={12} md={6} lg={6}>
+                <UserInformation/>
+            </Col>
+            <Col xs={12} sm={12} md={6} lg={6}>
+                <ChangeEmail/>
+            </Col>
+        </Row>
     );
 };
 

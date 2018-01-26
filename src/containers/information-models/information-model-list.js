@@ -2,17 +2,17 @@ import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import _ from "lodash";
-import CollapsibleInformationModelPanel from "../components/user-cpanel/information-models/collapsible-information-model-panel";
-import InfoModelDeleteModal from "../components/user-cpanel/information-models/info-model-delete-modal";
-import { AlertDismissable } from "../helpers/errors";
+import CollapsibleInformationModelPanel from "../../components/user-cpanel/information-models/collapsible-information-model-panel";
+import InfoModelDeleteModal from "../../components/user-cpanel/information-models/info-model-delete-modal";
+import { AlertDismissable } from "../../helpers/errors";
 import {
     fetchUserInformationModels, deleteInfoModel,
     activateInfoModelDeleteModal, deactivateInfoModelDeleteModal
-} from "../actions/info-model-actions";
-import { changeModalState, dismissAlert } from "../actions";
-import { DISMISS_INFO_MODEL_DELETION_ERROR_ALERT, DISMISS_INFO_MODEL_DELETION_SUCCESS_ALERT } from "../actions";
-import { ROOT_URL } from "../configuration";
-import { USER_LOGIN_MODAL } from "../reducers/modal/modal-reducer";
+} from "../../actions/info-model-actions";
+import { changeModalState, dismissAlert } from "../../actions/index";
+import { DISMISS_INFO_MODEL_DELETION_ERROR_ALERT, DISMISS_INFO_MODEL_DELETION_SUCCESS_ALERT } from "../../actions/index";
+import { ROOT_URL } from "../../configuration/index";
+import { USER_LOGIN_MODAL } from "../../reducers/modal/modal-reducer";
 
 class InformationModelList extends Component {
 

@@ -2,9 +2,9 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Modal, Button, FormControl, InputGroup, Glyphicon } from "react-bootstrap";
-import { changeModalState } from "../actions/index";
-import { FieldError } from "../helpers/errors";
-import { userLogin } from "../actions/user-actions";
+import { changeModalState } from "../../actions/index";
+import { FieldError } from "../../helpers/errors";
+import { userLogin } from "../../actions/user-actions";
 
 class SignInModal extends Component {
 

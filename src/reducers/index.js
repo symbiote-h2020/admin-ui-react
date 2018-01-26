@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import UserRolesReducer from "./user/user-roles-reducer";
+import UserDetailsReducer from "./user/user-details-reducer";
 import UserRegistrationReducer from "./user/user-registration-reducer";
 import UserLoginReducer from "./user/user-login-reducer";
 import UserLogoutReducer from "./user/user-logout-reducer";
@@ -16,6 +17,7 @@ import FederationDeleteModalReducer from "./federation/delete-federation-modal-r
 
 const rootReducer = combineReducers({
     userRoles: UserRolesReducer,
+    userDetails: UserDetailsReducer,
     userRegistrationState: UserRegistrationReducer,
     userLoginState: UserLoginReducer,
     userLogoutState: UserLogoutReducer,

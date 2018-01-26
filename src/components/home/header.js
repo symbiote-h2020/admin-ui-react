@@ -1,6 +1,6 @@
 import React from "react";
 import { ADMIN_CPANEL_URL } from "../../configuration";
-import SignInModal from "../../containers/sign-in-modal";
+import SignInModal from "../../containers/users/sign-in-modal";
 import {ADMIN_LOGIN_MODAL} from "../../reducers/modal/modal-reducer";
 import logo from "../../images/logo-1.1.png";
 

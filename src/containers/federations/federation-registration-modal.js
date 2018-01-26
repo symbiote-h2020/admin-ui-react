@@ -3,21 +3,21 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Modal, Button, FormGroup, FormControl, ControlLabel, Row, Col, HelpBlock } from "react-bootstrap";
-import { ADMIN_LOGIN_MODAL, FEDERATION_REGISTRATION_MODAL } from "../reducers/modal/modal-reducer";
-import { getFederationRegistrationValidity } from "../selectors/index";
-import { FieldError, AlertDismissable } from "../helpers/errors";
-import { CreateFederationRequest } from "../helpers/object-definitions";
-import { getValidationState } from "../validation/helpers";
-import { registerFederation } from "../actions/federation-actions";
+import { ADMIN_LOGIN_MODAL, FEDERATION_REGISTRATION_MODAL } from "../../reducers/modal/modal-reducer";
+import { getFederationRegistrationValidity } from "../../selectors/index";
+import { FieldError, AlertDismissable } from "../../helpers/errors";
+import { CreateFederationRequest } from "../../helpers/object-definitions";
+import { getValidationState } from "../../validation/helpers";
+import { registerFederation } from "../../actions/federation-actions";
 import {
     validateId
-} from "../validation/federation-registration-validation";
+} from "../../validation/federation-registration-validation";
 import {
     changeModalState, dismissAlert, removeErrors,
     DISMISS_FEDERATION_REGISTRATION_ERROR_ALERT, DISMISS_FEDERATION_REGISTRATION_SUCCESS_ALERT,
     REMOVE_FEDERATION_REGISTRATION_ERRORS
-} from "../actions/index";
-import {ROOT_URL} from "../configuration";
+} from "../../actions/index";
+import {ROOT_URL} from "../../configuration/index";
 
 class FederationRegistrationModal extends Component {
 

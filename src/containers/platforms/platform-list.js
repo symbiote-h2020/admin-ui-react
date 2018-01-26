@@ -3,19 +3,19 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Button } from "react-bootstrap";
 import _ from "lodash";
-import CollapsiblePlatformPanel from "../components/user-cpanel/platform-details/collapsible-platform-panel";
-import PlatformDeleteModal from "../components/user-cpanel/platform-details/platform-delete-modal";
+import CollapsiblePlatformPanel from "../../components/user-cpanel/platform-details/collapsible-platform-panel";
+import PlatformDeleteModal from "../../components/user-cpanel/platform-details/platform-delete-modal";
 import PlatformConfigModal from "./platform-config-modal";
-import { AlertDismissable } from "../helpers/errors";
+import { AlertDismissable } from "../../helpers/errors";
 import {
     fetchUserPlatforms, deletePlatform, activatePlatformModal, deactivatePlatformModal
-} from "../actions/platform-actions";
+} from "../../actions/platform-actions";
 import {
     changeModalState, dismissAlert, DISMISS_PLATFORM_DELETION_ERROR_ALERT, DISMISS_PLATFORM_REGISTRATION_SUCCESS_ALERT,
     DISMISS_PLATFORM_UPDATE_SUCCESS_ALERT, DISMISS_PLATFORM_DELETION_SUCCESS_ALERT, DEACTIVATE_PLATFORM_DELETE_MODAL
-} from "../actions";
-import { ROOT_URL } from "../configuration";
-import { PLATFORM_REGISTRATION_MODAL, USER_LOGIN_MODAL } from "../reducers/modal/modal-reducer";
+} from "../../actions/index";
+import { ROOT_URL } from "../../configuration/index";
+import { PLATFORM_REGISTRATION_MODAL, USER_LOGIN_MODAL } from "../../reducers/modal/modal-reducer";
 
 class PlatformList extends Component {
 

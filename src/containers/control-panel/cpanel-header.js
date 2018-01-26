@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 import { ButtonGroup, DropdownButton, MenuItem } from "react-bootstrap";
-import { userLogout } from "../actions/user-actions";
+import { userLogout } from "../../actions/user-actions";
 import { connect } from "react-redux";
-import logo from "../images/logo-1.1.png";
+import logo from "../../images/logo-1.1.png";
+import { fetchUserInformation } from "../../actions/user-actions";
 
 class CpanelHeader extends Component {
+
+    componentDidMount() {
+        this.props.fetchUserInformation();
+    }
 
     onClick() {
         userLogout(() => {
@@ -13,8 +18,9 @@ class CpanelHeader extends Component {
     }
 
     render() {
-        if (this.props.userLogoutState.error)
-            alert(this.props.userLogoutState.error);
+        const { userDetails, userLogoutState } = this.props;
+        if (userLogoutState.error)
+            alert(userLogoutState.error);
 
         return(
             <div className="header shadow cpanel">
@@ -23,7 +29,7 @@ class CpanelHeader extends Component {
                     <span className="title">User Dashboard</span>
 
                     <ButtonGroup className="logout">
-                        <DropdownButton title="Username" id="user-dropdown-list">
+                        <DropdownButton title={userDetails.username} id="user-dropdown-list">
                             <MenuItem eventKey="1" disabled>Account Details</MenuItem>
                             <MenuItem divider />
                             <MenuItem eventKey="2" onClick={this.onClick.bind(this)}>Sign Out</MenuItem>
@@ -37,8 +43,9 @@ class CpanelHeader extends Component {
 
 function mapStateToProps(state) {
     return {
+        userDetails: state.userDetails,
         userLogoutState: state.userLogoutState,
     };
 }
 
-export default connect(mapStateToProps, { userLogout })(CpanelHeader);
+export default connect(mapStateToProps, { fetchUserInformation, userLogout })(CpanelHeader);

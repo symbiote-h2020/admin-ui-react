@@ -1,7 +1,8 @@
 import axios from "axios";
 import { USER_CPANEL_URL, ROOT_URL, ADMIN_CPANEL_URL } from "../configuration";
 import {
-    FETCH_USER_ROLES, headers, REGISTER_USER, USER_LOGIN, USER_LOGOUT, SET_SUCCESSFUL_USER_REGISTRATION_FLAG
+    FETCH_USER_ROLES, headers, REGISTER_USER, USER_LOGIN, USER_LOGOUT,
+    FETCH_USER_INFORMATION, SET_SUCCESSFUL_USER_REGISTRATION_FLAG, CHANGE_EMAIL
 } from "./index";
 
 
@@ -84,9 +85,40 @@ export function userLogout(cb) {
     };
 }
 
+export function fetchUserInformation() {
+    const request = axios.get(`${ROOT_URL}/user/information`);
+
+    return {
+        type: FETCH_USER_INFORMATION,
+        payload: request
+    };
+}
+
 export function setSuccessfulUserRegistrationFlag(value) {
     return {
         type: SET_SUCCESSFUL_USER_REGISTRATION_FLAG,
         payload: value
+    };
+}
+
+export function changeEmail(props, cb) {
+    const url = `${ROOT_URL}/user/change_email`;
+
+    const config = {
+        url: url,
+        method: 'post',
+        headers: headers,
+        data: props
+    };
+
+    const request = axios.request(config)
+        .then(res => {
+            cb(res);
+            return res;
+        });
+
+    return {
+        type: CHANGE_EMAIL,
+        payload: request
     };
 }

@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
-import PlatformRegistrationModal from "../../../containers/platform-registration-modal";
-import PlatformUpdateModal from "../../../containers/platform-update-modal";
-import PlatformList from "../../../containers/platform-list";
+import PlatformRegistrationModal from "../../../containers/platforms/platform-registration-modal";
+import PlatformUpdateModal from "../../../containers/platforms/platform-update-modal";
+import PlatformList from "../../../containers/platforms/platform-list";
 
 const PlatformDetails = () => {
     return(

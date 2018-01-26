@@ -3,14 +3,14 @@ import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Modal, Button, FormGroup, FormControl, InputGroup, Glyphicon, HelpBlock } from "react-bootstrap";
 import _ from "lodash";
-import RFReactSelect from "../helpers/redux-form-react-selector-integrator";
-import { changeModalState } from "../actions/index";
-import { USER_REGISTRATION_MODAL } from "../reducers/modal/modal-reducer";
-import { FieldError } from "../helpers/errors";
-import { fetchUserRoles, registerUser, setSuccessfulUserRegistrationFlag } from "../actions/user-actions";
-import { getValidationState, isEmpty } from "../validation/helpers";
-import { getRegisterUserFormValidity } from "../selectors";
-import { validateId, validatePassword, validateEmail } from "../validation/user-registration-validation";
+import RFReactSelect from "../../helpers/redux-form-react-selector-integrator";
+import { changeModalState } from "../../actions/index";
+import { USER_REGISTRATION_MODAL } from "../../reducers/modal/modal-reducer";
+import { FieldError } from "../../helpers/errors";
+import { fetchUserRoles, registerUser, setSuccessfulUserRegistrationFlag } from "../../actions/user-actions";
+import { getValidationState, isEmpty } from "../../validation/helpers";
+import { getRegisterUserFormValidity } from "../../selectors/index";
+import { validateId, validatePassword, validateEmail } from "../../validation/user-registration-validation";
 
 class UserRegistrationModal extends Component {
 

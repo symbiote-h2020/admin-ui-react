@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import Header from "../../containers/cpanel-header";
+import Header from "../../containers/control-panel/cpanel-header";
 import Main from "./main";
 import "../../style/cpanel.css";
 

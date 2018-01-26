@@ -2,19 +2,19 @@ import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import _ from "lodash";
-import CollapsibleFederationPanel from "../components/admin-cpanel/federation-list/collapsible-federation-panel";
-import FederationDeleteModal from "../components/admin-cpanel/federation-list/federation-delete-modal";
-import { AlertDismissable } from "../helpers/errors";
+import CollapsibleFederationPanel from "../../components/admin-cpanel/federation-list/collapsible-federation-panel";
+import FederationDeleteModal from "../../components/admin-cpanel/federation-list/federation-delete-modal";
+import { AlertDismissable } from "../../helpers/errors";
 import {
     fetchFederations, deleteFederation,
     activateFederationDeleteModal, deactivateFederationDeleteModal
-} from "../actions/federation-actions";
+} from "../../actions/federation-actions";
 import {
     changeModalState, dismissAlert, DISMISS_FEDERATION_DELETION_ERROR_ALERT,
     DISMISS_FEDERATION_DELETION_SUCCESS_ALERT, DEACTIVATE_FEDERATION_DELETE_MODAL
-} from "../actions/index";
-import {ROOT_URL} from "../configuration";
-import { ADMIN_LOGIN_MODAL } from "../reducers/modal/modal-reducer";
+} from "../../actions/index";
+import {ROOT_URL} from "../../configuration/index";
+import { ADMIN_LOGIN_MODAL } from "../../reducers/modal/modal-reducer";
 
 class FederationList extends Component {
 
