@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { withRouter } from "react-router-dom";
-import { FormGroup, FormControl, ControlLabel, HelpBlock, Button } from "react-bootstrap";
+import { FormGroup, FormControl, ControlLabel, HelpBlock, Button, InputGroup, Glyphicon } from "react-bootstrap";
 import { FieldError, AlertDismissable } from "../../helpers/errors";
 import { getValidationState } from "../../validation/helpers";
 import { validateEmail } from "../../validation/user-registration-validation";
@@ -54,11 +54,16 @@ class ChangeEmail extends Component {
         return (
             <FormGroup controlId={input.name} validationState={validationState}>
                 {label ? <ControlLabel>{label}</ControlLabel> : ""}
-                <FormControl
-                    { ...input } componentClass={componentClass} rows={rows}
-                    type={type} placeholder={placeholder} maxLength={maxLength}
-                    disabled={disabled}
-                />
+                <InputGroup>
+                    <InputGroup.Addon>
+                        <Glyphicon glyph="envelope"/>
+                    </InputGroup.Addon>
+                    <FormControl
+                        { ...input } componentClass={componentClass} rows={rows}
+                        type={type} placeholder={placeholder} maxLength={maxLength}
+                        disabled={disabled}
+                    />
+                </InputGroup>
 
                 <FormControl.Feedback className={subElement ? "sub-element" : ""}/>
                 <HelpBlock>{validationState === "error" ? error : helpMessage}</HelpBlock>
@@ -77,9 +82,18 @@ class ChangeEmail extends Component {
                                   dismissHandler={this.dismissChangeEmailSuccessAlert} />
                 <AlertDismissable alertStyle="danger" message={userDetails.changeEmailError}
                                   dismissHandler={this.dismissChangeEmailErrorAlert} />
+                <FieldError error={userDetails.fetchUserInformationError}/>
+
+                <ControlLabel>Change your email</ControlLabel>
+                <InputGroup>
+                    <InputGroup.Addon>
+                        <Glyphicon glyph="envelope"/>
+                    </InputGroup.Addon>
+                    <FormControl value={userDetails.email} disabled={true} />
+                </InputGroup>
                 <Field
                     name="newEmail" type="text"
-                    label="Change your email" placeholder="Type your new email"
+                    placeholder="Type your new email"
                     errorField={userDetails["error_newEmail"]}
                     component={this.renderInputField}
                 />
