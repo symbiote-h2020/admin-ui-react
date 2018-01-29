@@ -47,6 +47,9 @@ export default function(state = INITIAL_STATE, action) {
                     const message = action.payload.response.data;
                     let errors = {};
 
+                    if (message["error_oldPassword"])
+                        errors.error_oldPassword = message["error_oldPassword"];
+
                     if (message["error_newPassword"])
                         errors.error_newPassword = message["error_newPassword"];
 
@@ -94,7 +97,7 @@ const removeChangeEmailErrors = (state) => {
 
 const removeChangePasswordErrors = (state) => {
     const errors = [
-        "error_newPassword", "error_newPasswordRetyped", "changePasswordError"
+        "error_oldPassword", "error_newPassword", "error_newPasswordRetyped", "changePasswordError"
     ];
 
     let newState = {...state};

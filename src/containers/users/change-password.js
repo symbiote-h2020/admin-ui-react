@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { withRouter } from "react-router-dom";
-import { FormGroup, FormControl, ControlLabel, HelpBlock, Button } from "react-bootstrap";
+import { FormGroup, FormControl, ControlLabel, HelpBlock, Button, InputGroup, Glyphicon } from "react-bootstrap";
 import { FieldError, AlertDismissable } from "../../helpers/errors";
-import { getValidationState } from "../../validation/helpers";
+import { getValidationState, isEmpty } from "../../validation/helpers";
 import { validatePassword } from "../../validation/user-registration-validation";
 import { getChangePasswordFormValidity } from "../../selectors";
 import { changePassword } from "../../actions/user-actions";
@@ -48,18 +48,22 @@ class ChangePassword extends Component {
     };
 
     renderInputField = ({ input, type, placeholder, componentClass, rows, subElement, errorField, disabled,
-                                  label, helpMessage, maxLength, meta : { touched, invalid, error } }) => {
+                            label, helpMessage, maxLength, meta : { touched, invalid, error } }) => {
         const validationState = getValidationState(input.value, touched, invalid);
 
         return (
             <FormGroup controlId={input.name} validationState={validationState}>
                 {label ? <ControlLabel>{label}</ControlLabel> : ""}
-                <FormControl
-                    { ...input } componentClass={componentClass} rows={rows}
-                    type={type} placeholder={placeholder} maxLength={maxLength}
-                    disabled={disabled}
-                />
-
+                <InputGroup>
+                    <InputGroup.Addon>
+                        <Glyphicon glyph="lock"/>
+                    </InputGroup.Addon>
+                    <FormControl
+                        { ...input } componentClass={componentClass} rows={rows}
+                        type={type} placeholder={placeholder} maxLength={maxLength}
+                        disabled={disabled}
+                    />
+                </InputGroup>
                 <FormControl.Feedback className={subElement ? "sub-element" : ""}/>
                 <HelpBlock>{validationState === "error" ? error : helpMessage}</HelpBlock>
                 <FieldError error={errorField} />
@@ -73,14 +77,24 @@ class ChangePassword extends Component {
 
         return (
             <form onSubmit={handleSubmit(this.onSubmit)}>
+                <ControlLabel>Change your password</ControlLabel>
                 <AlertDismissable alertStyle="success" message={userDetails.successfulPasswordChange}
                                   dismissHandler={this.dismissChangePasswordSuccessAlert} />
                 <AlertDismissable alertStyle="danger" message={userDetails.changePasswordError}
                                   dismissHandler={this.dismissChangePasswordErrorAlert} />
+
+                <Field
+                    name="oldPassword" type="password"
+                    placeholder="Type your old password"
+                    errorField={userDetails["error_oldPassword"]}
+                    subElement={true}
+                    component={this.renderInputField}
+                />
                 <Field
                     name="newPassword" type="password"
-                    label="Change your password" placeholder="Type your new password"
+                    placeholder="Type your new password"
                     errorField={userDetails["error_newPassword"]}
+                    subElement={true}
                     component={this.renderInputField}
                 />
                 <Field
@@ -100,6 +114,7 @@ class ChangePassword extends Component {
 function validate(values) {
     const errors = {};
     const validationFunctions = {
+        "oldPassword" : isEmpty,
         "newPassword" : validatePassword,
         "newPasswordRetyped" : validatePassword
     };

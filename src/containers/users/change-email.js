@@ -63,9 +63,9 @@ class ChangeEmail extends Component {
                         type={type} placeholder={placeholder} maxLength={maxLength}
                         disabled={disabled}
                     />
+                    <FormControl.Feedback className={subElement ? "sub-element" : ""}/>
                 </InputGroup>
 
-                <FormControl.Feedback className={subElement ? "sub-element" : ""}/>
                 <HelpBlock>{validationState === "error" ? error : helpMessage}</HelpBlock>
                 <FieldError error={errorField} />
             </FormGroup>
@@ -78,13 +78,14 @@ class ChangeEmail extends Component {
 
         return (
             <form onSubmit={handleSubmit(this.onSubmit)}>
+                <FieldError error={userDetails.fetchUserInformationError}/>
+                <ControlLabel>Change your email</ControlLabel>
                 <AlertDismissable alertStyle="success" message={userDetails.successfulEmailChange}
                                   dismissHandler={this.dismissChangeEmailSuccessAlert} />
                 <AlertDismissable alertStyle="danger" message={userDetails.changeEmailError}
                                   dismissHandler={this.dismissChangeEmailErrorAlert} />
-                <FieldError error={userDetails.fetchUserInformationError}/>
 
-                <ControlLabel>Change your email</ControlLabel>
+
                 <InputGroup>
                     <InputGroup.Addon>
                         <Glyphicon glyph="envelope"/>
@@ -95,6 +96,7 @@ class ChangeEmail extends Component {
                     name="newEmail" type="text"
                     placeholder="Type your new email"
                     errorField={userDetails["error_newEmail"]}
+                    subElement={true}
                     component={this.renderInputField}
                 />
                 <Field
