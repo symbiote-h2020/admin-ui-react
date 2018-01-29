@@ -2,8 +2,8 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Modal, Button, FormControl, InputGroup, Glyphicon } from "react-bootstrap";
-import { changeModalState } from "../../actions/index";
-import { FieldError } from "../../helpers/errors";
+import { dismissAlert, changeModalState, DISMISS_WRONG_CREDENTIALS_ALERT } from "../../actions/index";
+import { AlertDismissable } from "../../helpers/errors";
 import { userLogin } from "../../actions/user-actions";
 
 class SignInModal extends Component {
@@ -14,7 +14,9 @@ class SignInModal extends Component {
         this.open = this.open.bind(this);
         this.close = this.close.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.modalName = this.props.modalName
+        this.modalName = this.props.modalName;
+
+        this.dismissWrongCredentialsAlert = this.dismissWrongCredentialsAlert.bind(this);
     }
 
     open() {
@@ -22,7 +24,13 @@ class SignInModal extends Component {
     }
 
     close() {
-        this.props.changeModalState(this.modalName, false)
+        this.props.changeModalState(this.modalName, false);
+        this.props.reset();
+        this.dismissWrongCredentialsAlert();
+    }
+
+    dismissWrongCredentialsAlert() {
+        this.props.dismissAlert(DISMISS_WRONG_CREDENTIALS_ALERT);
     }
 
     onSubmit(props) {
@@ -80,7 +88,8 @@ class SignInModal extends Component {
                                 icon="lock" placeholder="Password"
                                 name="password" component={this.renderInputField}
                             />
-                            <FieldError error={userLoginState.error} />
+                            <AlertDismissable alertStyle="danger" message={userLoginState.error}
+                                              dismissHandler={this.dismissWrongCredentialsAlert} />
                         </Modal.Body>
                         <Modal.Footer>
                             <Button type="submit" bsStyle="primary">Login</Button>
@@ -103,5 +112,5 @@ function mapStateToProps(state) {
 export default reduxForm({
     form: 'LoginForm'
 })(
-    connect(mapStateToProps, { userLogin, changeModalState })(SignInModal)
+    connect(mapStateToProps, { userLogin, dismissAlert, changeModalState })(SignInModal)
 );
