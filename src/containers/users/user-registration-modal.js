@@ -4,15 +4,22 @@ import { Field, reduxForm } from "redux-form";
 import { Modal, Button, FormGroup, FormControl, InputGroup, Glyphicon, HelpBlock } from "react-bootstrap";
 import _ from "lodash";
 import RFReactSelect from "../../helpers/redux-form-react-selector-integrator";
-import { changeModalState } from "../../actions/index";
+import { removeErrors, changeModalState, REMOVE_USER_REGISTRATION_ERRORS } from "../../actions";
 import { USER_REGISTRATION_MODAL } from "../../reducers/modal/modal-reducer";
 import { FieldError } from "../../helpers/errors";
 import { fetchUserRoles, registerUser, setSuccessfulUserRegistrationFlag } from "../../actions/user-actions";
 import { getValidationState, isEmpty } from "../../validation/helpers";
-import { getRegisterUserFormValidity } from "../../selectors/index";
+import { getRegisterUserFormValidity } from "../../selectors";
 import { validateId, validatePassword, validateEmail } from "../../validation/user-registration-validation";
 
 class UserRegistrationModal extends Component {
+
+    constructor() {
+        super();
+        this.open = this.open.bind(this);
+        this.close = this.close.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+    }
 
     componentWillMount() {
         this.props.fetchUserRoles();
@@ -23,7 +30,9 @@ class UserRegistrationModal extends Component {
     }
 
     close() {
-        this.props.changeModalState(USER_REGISTRATION_MODAL, false)
+        this.props.changeModalState(USER_REGISTRATION_MODAL, false);
+        this.props.reset();
+        this.props.removeErrors(REMOVE_USER_REGISTRATION_ERRORS);
     }
 
     onSubmit(props) {
@@ -73,14 +82,14 @@ class UserRegistrationModal extends Component {
                 <Button
                     className="register button"
                     bsStyle="primary"
-                    onClick={this.open.bind(this)}>
+                    onClick={this.open}>
                     Register
                 </Button>
-                <Modal show={modalState[USER_REGISTRATION_MODAL]} onHide={this.close.bind(this)}>
+                <Modal show={modalState[USER_REGISTRATION_MODAL]} onHide={this.close}>
                     <Modal.Header closeButton>
                         <Modal.Title>Registration</Modal.Title>
                     </Modal.Header>
-                    <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                    <form onSubmit={handleSubmit(this.onSubmit)}>
                         <Modal.Body>
                             <FieldError error={errorMessage} />
 
@@ -155,6 +164,6 @@ export default reduxForm({
     validate
 })(
     connect(mapStateToProps, {
-        fetchUserRoles, registerUser, changeModalState, setSuccessfulUserRegistrationFlag
+        fetchUserRoles, registerUser, removeErrors, changeModalState, setSuccessfulUserRegistrationFlag
     })(UserRegistrationModal)
 );

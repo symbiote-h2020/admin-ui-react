@@ -17,8 +17,23 @@ export function fetchUserRoles() {
     };
 }
 
-export function registerUser(props, cb) {
-    const request = axios.post(`${ROOT_URL}/register`, props)
+export function registerUser(userInfo, cb) {
+    const url = `${ROOT_URL}/register`;
+    const formData = new FormData();
+
+    formData.append("validUsername", userInfo.validUsername);
+    formData.append("validPassword", userInfo.validUsername);
+    formData.append("recoveryMail", userInfo.recoveryMail);
+    formData.append("role", userInfo.role);
+
+    const config = {
+        url: url,
+        method: 'post',
+        data: formData,
+        headers: headers
+    };
+
+    const request = axios.request(config)
         .then(res => {
             cb();
             return res;
