@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { withRouter } from "react-router-dom";
 import { FormGroup, FormControl, ControlLabel, HelpBlock, Button, InputGroup, Glyphicon } from "react-bootstrap";
+import axios from "axios";
 import { FieldError, AlertDismissable } from "../../helpers/errors";
 import { getValidationState, isEmpty } from "../../validation/helpers";
 import { validatePassword } from "../../validation/user-registration-validation";
@@ -11,8 +12,8 @@ import { changePassword } from "../../actions/user-actions";
 import { USER_LOGIN_MODAL } from "../../reducers/modal/modal-reducer";
 import { ROOT_URL }  from "../../configuration";
 import {
-    changeModalState, dismissAlert,
-    DISMISS_PASSWORD_CHANGE_SUCCESS_ALERT, DISMISS_PASSWORD_CHANGE_ERROR_ALERT
+    changeModalState, dismissAlert, DISMISS_PASSWORD_CHANGE_SUCCESS_ALERT,
+    DISMISS_PASSWORD_CHANGE_ERROR_ALERT, headers
 } from "../../actions";
 
 class ChangePassword extends Component {
@@ -41,6 +42,25 @@ class ChangePassword extends Component {
             if (pattern.test(res.request.responseURL)) {
                 this.props.history.push(ROOT_URL);
                 this.props.changeModalState(USER_LOGIN_MODAL, true);
+            } else {
+                // Renew the token
+                axios.defaults.withCredentials = true;
+                const url = `${ROOT_URL}/user/login`;
+                let formData = new FormData();
+                // eslint-disable-next-line
+                const customHeaders = { ...headers, ['Content-Type']: 'application/x-www-form-urlencoded; charset=UTF-8' };
+
+                formData.append("username", this.props.userDetails.username);
+                formData.append("password", props.newPassword);
+
+                const config = {
+                    url: url,
+                    method: 'post',
+                    data: formData,
+                    headers: customHeaders
+                };
+
+                axios.request(config);
             }
 
             this.props.reset();
