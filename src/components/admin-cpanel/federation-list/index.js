@@ -6,7 +6,7 @@ const federationDetails = () => {
     return(
         <Fragment>
             <FederationRegistrationModal />
-            <FederationList />
+            <FederationList isAdmin={true}/>
         </Fragment>
     );
 };

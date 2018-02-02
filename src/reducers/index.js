@@ -14,6 +14,7 @@ import InformationModelReducer from "./information-model/information-models-redu
 import UserPlatformsReducer from "./platform/user-platforms-reducer";
 import FederationsReducer from "./federation/federations-reducer";
 import FederationDeleteModalReducer from "./federation/delete-federation-modal-reducer";
+import FederationLeaveModalReducer from "./federation/leave-federation-modal-reducer";
 
 const rootReducer = combineReducers({
     userRoles: UserRolesReducer,
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
     userPlatforms: UserPlatformsReducer,
     federations: FederationsReducer,
     federationDeleteModal: FederationDeleteModalReducer,
+    federationLeaveModal: FederationLeaveModalReducer,
     form: formReducer
 });
 

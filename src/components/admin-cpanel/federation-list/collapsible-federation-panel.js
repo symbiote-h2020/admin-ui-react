@@ -34,6 +34,7 @@ export default class CollapsibleFederationPanel extends Component {
 
     render() {
         const { federation, userPlatforms } = this.state;
+        const { isAdmin } = this.props;
 
         return(
             <Panel id="id" bsStyle="primary" className="federation-panel-entry"
@@ -45,16 +46,22 @@ export default class CollapsibleFederationPanel extends Component {
                     <Glyphicon glyph={this.state.open ? "minus" : "plus"} className="pull-right" />
                 </Panel.Heading>
                 <Panel.Collapse>
-                    <FederationPanelBody federation={federation} userPlatforms={userPlatforms} />
+                    <FederationPanelBody
+                        federation={federation}
+                        userPlatforms={userPlatforms}
+                        isAdmin={isAdmin}
+                        onOpenLeaveModal={this.props.openLeaveModal}
+                    />
                 </Panel.Collapse>
                 <Panel.Footer className="federation-info-footer">
-                    <Button
-                        className="panel-footer-btn"
-                        bsStyle="warning"
-                        onClick={this.handleOpenDeleteModal}>
-                        Delete
-                    </Button>
-
+                    {!isAdmin ? "" :
+                        <Button
+                            className="panel-footer-btn"
+                            bsStyle="warning"
+                            onClick={this.handleOpenDeleteModal}>
+                            Delete
+                        </Button>
+                    }
                 </Panel.Footer>
             </Panel>
         );

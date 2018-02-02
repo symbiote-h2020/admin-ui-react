@@ -1,12 +1,12 @@
 import React, { Fragment } from "react";
 import FederationRegistrationModal from "../../../containers/federations/federation-registration-modal";
-import UserFederationList from "../../../containers/federations/user-federation-list";
+import FederationList from "../../../containers/federations/federation-list";
 
 const federationDetails = () => {
     return(
         <Fragment>
             <FederationRegistrationModal />
-            <UserFederationList />
+            <FederationList isAdmin={false}/>
         </Fragment>
     );
 };

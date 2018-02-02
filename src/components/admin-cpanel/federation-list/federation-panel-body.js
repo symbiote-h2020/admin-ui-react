@@ -2,10 +2,27 @@ import React from "react";
 import { Panel, Row, Col, FormGroup, FormControl, ControlLabel, Button, Glyphicon } from "react-bootstrap";
 import _ from "lodash";
 
-const FederationPanelBody = ({ federation, userPlatforms }) => {
+const FederationPanelBody = ({ federation, userPlatforms, onOpenLeaveModal, isAdmin }) => {
+
+    const leaveButton = (ownsPlatform, platformId, width) => {
+        return(
+            ownsPlatform || isAdmin ?
+                <Col lg={12 - width} md={12 - width} sm={12 - width} xs={12 - width}
+                     style={{paddingTop: "6px"}}>
+                    <Button bsStyle="danger" bsSize="xsmall"
+                            onClick={() => {
+                                onOpenLeaveModal(federation.federationId, platformId)
+                            }}
+                    >
+                        <Glyphicon glyph="minus" />
+                    </Button>
+                </Col>
+                : ""
+        )
+    };
 
     const RenderInputField = (props) => {
-        const { value, label, type, ownsPlatform, isFederatedPlatformId } = props;
+        const { value, label, type, ownsPlatform, isFederatedPlatformId, isPlatformIdField } = props;
         const width = isFederatedPlatformId ? 10 : 12;
 
         return (
@@ -18,16 +35,7 @@ const FederationPanelBody = ({ federation, userPlatforms }) => {
                             value={value}
                             disabled={true} />
                     </Col>
-                    {
-                        ownsPlatform ?
-                            <Col lg={12 - width} md={12 - width} sm={12 - width} xs={12 - width}
-                                 style={{paddingTop: "6px"}}>
-                                <Button bsStyle="danger" bsSize="xsmall">
-                                    <Glyphicon glyph="minus" />
-                                </Button>
-                            </Col>
-                            : ""
-                    }
+                    {isPlatformIdField ? leaveButton(ownsPlatform, value, width) : ""}
                 </Row>
             </FormGroup>
         );
@@ -58,6 +66,7 @@ const FederationPanelBody = ({ federation, userPlatforms }) => {
                             value={platformId}
                             key={platformId}
                             type="text"
+                            isPlatformIdField={true}
                             isFederatedPlatformId={true}
                             ownsPlatform={ownsPlatform(platformId, userPlatforms)}
                         />

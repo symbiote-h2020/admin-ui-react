@@ -98,9 +98,9 @@ export const getFieldsForPlatformToUpdate = createSelector(
 export const getUserFederations = createSelector(
     [ getUserPlatforms, getFederations ],
     (userPlatforms, federations) => {
-        return _.filter(federations,
+        return _.mapKeys(_.filter(federations,
             federation => {
                 return _.intersection(_.keysIn(userPlatforms), federation.platformIds).length > 0;
-            });
+            }), "federationId");
     }
 );

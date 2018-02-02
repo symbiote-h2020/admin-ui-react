@@ -1,7 +1,8 @@
 import _ from "lodash";
 import {
-    FETCH_FEDERATIONS, REGISTER_FEDERATION, DELETE_FEDERATION,
+    FETCH_FEDERATIONS, REGISTER_FEDERATION, DELETE_FEDERATION, LEAVE_FEDERATION,
     DISMISS_FEDERATION_REGISTRATION_SUCCESS_ALERT, DISMISS_FEDERATION_REGISTRATION_ERROR_ALERT,
+    DISMISS_FEDERATION_LEAVE_SUCCESS_ALERT, DISMISS_FEDERATION_LEAVE_ERROR_ALERT,
     DISMISS_FEDERATION_DELETION_SUCCESS_ALERT, DISMISS_FEDERATION_DELETION_ERROR_ALERT,
     REMOVE_FEDERATION_REGISTRATION_ERRORS
 } from "../../actions";
@@ -65,6 +66,42 @@ export default function(state = {}, action) {
                     };
                 }
             }
+        case LEAVE_FEDERATION:
+            if (action.error) {
+                let newState = _.omit(state, "successfulFederationLeave");
+
+                if (action.payload.response) {
+                    const { data } = action.payload.response;
+                    const message = data.error ? data.error : data;
+                    return {  ...removeErrors(newState), federationLeaveError : message };
+                } else {
+                    return { ...removeErrors(newState), federationLeaveError: "Network Error: Could not contact server"};
+                }
+            }
+            else {
+                const pattern = new RegExp(`${ROOT_URL}$`);
+
+                if (pattern.test(action.payload.request.responseURL))
+                    return state;
+                else {
+                    const federationId = action.payload.config.data.get("federationId");
+                    const platformId = action.payload.config.data.get("platformId");
+                    const successfulFederationLeave = `The platform with id "${platformId}" left the federation "${federationId}" successfully!`;
+
+                    let newState = _.omit(state, "federationLeaveError");
+
+                    const newAvailableFederation = {
+                        ...state.availableFederations,
+                        [federationId]: action.payload.data.federationRule
+                    };
+
+                    return {
+                        ...removeErrors(newState),
+                        availableFederations : newAvailableFederation,
+                        successfulFederationLeave
+                    };
+                }
+            }
         case DELETE_FEDERATION:
             if (action.error) {
                 let newState = _.omit(state, "successfulFederationDeletion");
@@ -88,7 +125,7 @@ export default function(state = {}, action) {
                     let newState = _.omit(state, "federationDeletionError");
 
                     return {
-                        ...newState,
+                        ...removeErrors(newState),
                         availableFederations : _.omit(state.availableFederations, federationId),
                         successfulFederationDeletion
                     };
@@ -98,6 +135,10 @@ export default function(state = {}, action) {
             return _.omit(state, "successfulFederationRegistration");
         case DISMISS_FEDERATION_REGISTRATION_ERROR_ALERT:
             return _.omit(state, "federationRegistrationError");
+        case DISMISS_FEDERATION_LEAVE_SUCCESS_ALERT:
+            return _.omit(state, "successfulFederationLeave");
+        case DISMISS_FEDERATION_LEAVE_ERROR_ALERT:
+            return _.omit(state, "federationLeaveError");
         case DISMISS_FEDERATION_DELETION_SUCCESS_ALERT:
             return _.omit(state, "successfulFederationDeletion");
         case DISMISS_FEDERATION_DELETION_ERROR_ALERT:
@@ -111,7 +152,8 @@ export default function(state = {}, action) {
 
 const removeErrors = (state) => {
     const errors = [
-        "id_error", "error_platforms_id", "federationRegistrationError"
+        "id_error", "error_platforms_id", "federationRegistrationError",
+        "federationLeaveError", "federationDeletionError"
     ];
 
     let newState = {...state};
