@@ -14,6 +14,7 @@ import Denied from "./components/denied";
 import UserPrivateRoute from "./components/user-private-route";
 import AdminPrivateRoute from "./components/admin-private-route";
 import SuccessPrivateRoute from "./components/success-private-route";
+import 'react-select/dist/react-select.css';
 
 export const store = createStore(reducers, composeWithDevTools(
     applyMiddleware(promise),

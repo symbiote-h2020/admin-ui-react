@@ -4,8 +4,8 @@ import {
     DISMISS_FEDERATION_REGISTRATION_SUCCESS_ALERT, DISMISS_FEDERATION_REGISTRATION_ERROR_ALERT,
     DISMISS_FEDERATION_DELETION_SUCCESS_ALERT, DISMISS_FEDERATION_DELETION_ERROR_ALERT,
     REMOVE_FEDERATION_REGISTRATION_ERRORS
-} from "../../actions/index";
-import {ROOT_URL} from "../../configuration/index";
+} from "../../actions";
+import { ROOT_URL } from "../../configuration";
 
 export default function(state = {}, action) {
     switch(action.type) {
@@ -23,14 +23,15 @@ export default function(state = {}, action) {
                     let newState = {};
 
 
-                    if (message.federation_reg_error_id)
-                        newState.id_error = message.federation_reg_error_id;
+                    if (message["error_id"])
+                        newState.id_error = message["error_id"];
 
-                    if (message.federation_reg_error_platform1Id)
-                        newState.platform_id_1_error = message.federation_reg_error_platform1Id;
+                    if (message["error_platforms_id"]) {
+                        newState.platforms_error = [];
+                        for (let i of message["error_platforms_id"])
+                            newState.platforms_error.push(i);
 
-                    if (message.federation_reg_error_platform2Id)
-                        newState.platform_id_2_error = message.federation_reg_error_platform2Id;
+                    }
 
                     newState.federationRegistrationError = message.error;
                     return { ...removeErrors(state), ...newState};
@@ -110,7 +111,7 @@ export default function(state = {}, action) {
 
 const removeErrors = (state) => {
     const errors = [
-        "id_error", "platform_id_1_error", "platform_id_2_error", "federationRegistrationError"
+        "id_error", "error_platforms_id", "federationRegistrationError"
     ];
 
     let newState = {...state};

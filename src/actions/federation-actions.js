@@ -1,5 +1,5 @@
 import axios from "axios";
-import {ROOT_URL} from "../configuration";
+import { ROOT_URL } from "../configuration";
 import {
     headers, FETCH_FEDERATIONS, REGISTER_FEDERATION, DELETE_FEDERATION,
     ACTIVATE_FEDERATION_DELETE_MODAL, DEACTIVATE_FEDERATION_DELETE_MODAL
@@ -8,7 +8,7 @@ import {
 axios.defaults.withCredentials = true;
 
 export function fetchFederations() {
-    const url = `${ROOT_URL}/admin/cpanel/list_federations`;
+    const url = `${ROOT_URL}/user/cpanel/list_federations`;
 
     const config = {
         url: url,
@@ -25,7 +25,7 @@ export function fetchFederations() {
 }
 
 export function registerFederation(props, cb) {
-    const url = `${ROOT_URL}/admin/cpanel/create_federation`;
+    const url = `${ROOT_URL}/user/cpanel/create_federation`;
 
     const config = {
         url: url,

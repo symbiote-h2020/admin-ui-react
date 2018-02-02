@@ -1,7 +1,7 @@
 import {lengthValidation} from "./helpers";
 
 export function validateId(value) {
-    const pattern = new RegExp('^[\\w-][\\w-][\\w-][\\w-]+$');
+    const pattern = new RegExp('^[\\w-]{4,}$');
 
     if(!value)
         return "This field is required";

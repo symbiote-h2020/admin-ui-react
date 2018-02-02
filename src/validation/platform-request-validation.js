@@ -1,7 +1,7 @@
 import { lengthValidation } from "./helpers";
 
 export function validateId(value) {
-    const pattern = new RegExp('^[\\w-][\\w-][\\w-][\\w-]+$');
+    const pattern = new RegExp('^[\\w-]{4,}$');
 
     if (value && !pattern.test(value)) {
         return "From 4 to 30 characters. " +

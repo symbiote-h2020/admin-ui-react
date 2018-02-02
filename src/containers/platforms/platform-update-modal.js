@@ -79,7 +79,6 @@ class PlatformUpdateModal extends Component {
         const { handleSubmit, informationModels, userPlatforms, platformUpdateValidity } = this.props;
         const { platformIdToUpdate } = this.props.platformUpdateModal;
         const opts = { disabled : !platformUpdateValidity };
-
         const platform = userPlatforms.availablePlatforms[platformIdToUpdate];
 
         return(

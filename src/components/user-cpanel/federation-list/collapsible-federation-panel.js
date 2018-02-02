@@ -6,9 +6,8 @@ export default class CollapsibleFederationPanel extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            open: false,
-            federation: props.federation,
-            userPlatforms: props.userPlatforms
+            open : false,
+            federation : props.federation,
         };
 
         this.togglePanel = this.togglePanel.bind(this);
@@ -16,11 +15,10 @@ export default class CollapsibleFederationPanel extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.federation !== this.state.federation || nextProps.userPlatforms !== this.state.userPlatforms)
+        if (nextProps.federation !== this.state.federation)
             this.setState({
                     ...this.state,
-                federation : nextProps.federation,
-                userPlatforms : nextProps.userPlatforms
+                infoModel : nextProps.infoModel
             });
     }
 
@@ -33,7 +31,7 @@ export default class CollapsibleFederationPanel extends Component {
     };
 
     render() {
-        const { federation, userPlatforms } = this.state;
+        const { federation } = this.state;
 
         return(
             <Panel id="id" bsStyle="primary" className="federation-panel-entry"
@@ -45,7 +43,7 @@ export default class CollapsibleFederationPanel extends Component {
                     <Glyphicon glyph={this.state.open ? "minus" : "plus"} className="pull-right" />
                 </Panel.Heading>
                 <Panel.Collapse>
-                    <FederationPanelBody federation={federation} userPlatforms={userPlatforms} />
+                    <FederationPanelBody federation={federation} />
                 </Panel.Collapse>
                 <Panel.Footer className="federation-info-footer">
                     <Button

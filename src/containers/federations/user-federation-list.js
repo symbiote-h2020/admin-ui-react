@@ -12,9 +12,10 @@ import {
 import {
     changeModalState, dismissAlert, DISMISS_FEDERATION_DELETION_ERROR_ALERT,
     DISMISS_FEDERATION_DELETION_SUCCESS_ALERT, DEACTIVATE_FEDERATION_DELETE_MODAL
-} from "../../actions/index";
-import { ROOT_URL } from "../../configuration/index";
+} from "../../actions";
+import { ROOT_URL } from "../../configuration";
 import { ADMIN_LOGIN_MODAL } from "../../reducers/modal/modal-reducer";
+import { getUserFederations } from "../../selectors";
 
 class FederationList extends Component {
 
@@ -66,8 +67,9 @@ class FederationList extends Component {
     }
 
     render() {
-        const { availableFederations, successfulFederationDeletion, federationDeletionError } = this.props.federations;
+        const { successfulFederationDeletion, federationDeletionError } = this.props.federations;
         const { federationIdToDelete } = this.props.federationDeleteModal;
+        const availableUserFederations = this.props.userFederations;
 
         return(
             <Fragment>
@@ -75,18 +77,18 @@ class FederationList extends Component {
                                   dismissHandler={this.dismissFederationDeletionErrorAlert} />
                 <AlertDismissable alertStyle="success" message={successfulFederationDeletion}
                                   dismissHandler={this.dismissFederationDeletionSuccessAlert} />
-                {_.map(availableFederations, (federation) => {
+                {_.map(availableUserFederations, (federation) => {
                     return (
                         <CollapsibleFederationPanel
                             key={federation.federationId}
-                            userPlatforms={null}
                             federation={federation}
+                            userPlatforms={this.props.userPlatforms}
                             openDeleteModal={this.props.activateFederationDeleteModal} />
                     )
                 })}
 
                 {
-                    this.showFederationDeleteModal(federationIdToDelete, availableFederations,
+                    this.showFederationDeleteModal(federationIdToDelete, availableUserFederations,
                         this.props.deactivateFederationDeleteModal, this.handleDeleteFederation)
                 }
 
@@ -98,7 +100,9 @@ class FederationList extends Component {
 
 function mapStateToProps(state) {
     return {
+        userPlatforms: state.userPlatforms.availablePlatforms,
         federations: state.federations,
+        userFederations: getUserFederations(state),
         federationDeleteModal: state.federationDeleteModal,
     };
 }

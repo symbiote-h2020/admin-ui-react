@@ -1,5 +1,5 @@
 export function validateId(value) {
-    const pattern = new RegExp('^[\\w-][\\w-][\\w-][\\w-]+$');
+    const pattern = new RegExp('^[\\w-]{4,}$');
 
     if(!value)
         return "This field is required";
@@ -15,4 +15,19 @@ export function validateId(value) {
         return "From 4 to 30 characters. Include only letters, digits, '-' and '_'";
     } else
         return null;
+}
+
+export function validatePlatformIds(values) {
+    const errors = [];
+
+    if (values) {
+        values.forEach((platformObject, platformIndex) => {
+            const { id } = platformObject;
+            const platformIdError = {};
+            platformIdError.id = validateId(id);
+            errors[platformIndex] = platformIdError;
+        });
+        return errors;
+    }
+    return null;
 }

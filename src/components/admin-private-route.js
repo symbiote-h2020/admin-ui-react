@@ -1,14 +1,15 @@
 import React, {Component} from "react";
 import axios from "axios";
-import { Route, Redirect } from 'react-router-dom'
-import {ROOT_URL} from "../configuration";
+import { Redirect, Route } from 'react-router-dom'
+import { ROOT_URL } from "../configuration";
+import { ADMIN, USER } from "../configuration/roles";
 
 axios.defaults.withCredentials = true;
 const NOT_AUTHENTICATED = "NOT_AUTHENTICATED";
 const AUTHENTICATED = "AUTHENTICATED";
 const AUTHENTICATION_PENDING = "AUTHENTICATION_PENDING";
-const ADMIN = "ADMIN";
-const USER = "USER";
+
+
 
 export default class AdminPrivateRoute extends Component {
     constructor() {

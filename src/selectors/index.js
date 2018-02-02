@@ -10,6 +10,7 @@ const getRegisterUserForm = (state) => state.form.RegisterUserForm;
 const getChangeEmailForm = (state) => state.form.ChangeEmailForm;
 const getChangePasswordForm = (state) => state.form.ChangePasswordForm;
 const getUserPlatforms = (state) => state.userPlatforms.availablePlatforms;
+const getFederations = (state) => state.federations.availableFederations;
 const getPlatformIdToUpdate = (state) => state.platformUpdateModal.platformIdToUpdate;
 
 const checkForm =  (form) => {
@@ -17,12 +18,14 @@ const checkForm =  (form) => {
         return {};
 
     const { syncErrors, anyTouched, active } = form;
+
+    // Filtering the nulls
     const noErrors = _.filter(syncErrors, (error) => {
-        // Filtering the nulls
 
         // For FieldArrays
         if (error instanceof Array && error.length > 0) {
-            const arrayErrors = _.filter(error, (err) => err && err.description);
+            // Check if error != null and if it is then check if it has a not null field
+            const arrayErrors = _.filter(error, (err) => err && _.find(err, x => x !== null));
 
             return arrayErrors.length ? arrayErrors : null;
         }
@@ -89,5 +92,15 @@ export const getFieldsForPlatformToUpdate = createSelector(
                 type : platformToBeUpdated.isEnabler ? "true" : "false"
             }
         }
+    }
+);
+
+export const getUserFederations = createSelector(
+    [ getUserPlatforms, getFederations ],
+    (userPlatforms, federations) => {
+        return _.filter(federations,
+            federation => {
+                return _.intersection(_.keysIn(userPlatforms), federation.platformIds).length > 0;
+            });
     }
 );

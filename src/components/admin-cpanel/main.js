@@ -7,10 +7,10 @@ import FederationList from "./federation-list";
 import NavItemDropdown from "./nav-item-dropdown";
 
 export default class Main extends Component {
-
     constructor() {
         super();
         this.state = { hasNavItemDropdownActiveChild: false }
+        this.activateChild = this.activateChild.bind(this);
     }
 
     handleSelect = () => {
@@ -37,7 +37,7 @@ export default class Main extends Component {
                                     </NavItem>
                                     <NavItemDropdown
                                         hasActiveChild={this.state.hasNavItemDropdownActiveChild}
-                                        activateChild={this.activateChild.bind(this)}
+                                        activateChild={this.activateChild}
                                     />
                                 </Nav>
                             </Col>

@@ -1,16 +1,15 @@
 import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
-import { Modal, Button, FormGroup, FormControl, ControlLabel, Row, Col, HelpBlock } from "react-bootstrap";
+import { Field, FieldArray, reduxForm } from "redux-form";
+import { Modal, Button, FormGroup, FormControl, ControlLabel, Row, Col, HelpBlock, InputGroup, Glyphicon } from "react-bootstrap";
 import { ADMIN_LOGIN_MODAL, FEDERATION_REGISTRATION_MODAL } from "../../reducers/modal/modal-reducer";
 import { getFederationRegistrationValidity } from "../../selectors/index";
 import { FieldError, AlertDismissable } from "../../helpers/errors";
-import { CreateFederationRequest } from "../../helpers/object-definitions";
 import { getValidationState } from "../../validation/helpers";
 import { registerFederation } from "../../actions/federation-actions";
 import {
-    validateId
+    validateId, validatePlatformIds
 } from "../../validation/federation-registration-validation";
 import {
     changeModalState, dismissAlert, removeErrors,
@@ -43,10 +42,8 @@ class FederationRegistrationModal extends Component {
 
 
     onSubmit = (props) => {
-        const federationRequest = new CreateFederationRequest(props.id, props.platform_id_1, props.platform_id_2);
-
         this.props.registerFederation(
-            federationRequest,
+            props,
             (res) => {
                 const pattern = new RegExp(`${ROOT_URL}$`);
 
@@ -90,6 +87,84 @@ class FederationRegistrationModal extends Component {
         );
     };
 
+    renderPlatformIdField = ({ input, type, placeholder, componentClass, rows,
+                                 subElement, errorField, label, helpMessage, maxLength,
+                                 onAdd, onDelete, meta : { touched, invalid, error } }) => {
+        const validationState = getValidationState(input.value, touched, invalid);
+
+        return (
+            <FormGroup controlId={input.name} validationState={validationState}>
+                {label ? <ControlLabel>{label}</ControlLabel> : ""}
+                <InputGroup>
+                    <FormControl
+                        { ...input }  rows={rows} componentClass={componentClass}
+                        type={type} placeholder={placeholder} maxLength={maxLength} />
+                    <InputGroup.Button className="description-input-group">
+                        <Button
+                            bsStyle="primary"
+                            className="description-btn"
+                            type="button"
+                            onClick={onAdd}
+                        >
+                            <Glyphicon glyph="plus"/>
+                        </Button>
+                    </InputGroup.Button>
+                    <InputGroup.Button className="description-input-group">
+                        <Button
+                            bsStyle="danger"
+                            className="description-btn"
+                            style={{marginLeft: "0.25em", borderRadius: "4px"}}
+                            type="button"
+                            onClick={onDelete}
+                        >
+                            <Glyphicon glyph="minus"/>
+                        </Button>
+                    </InputGroup.Button>
+                </InputGroup>
+                <FormControl.Feedback className={subElement ? "sub-element-description" : ""}/>
+                <HelpBlock>{validationState === "error" ? error : helpMessage}</HelpBlock>
+                <FieldError error={errorField} />
+            </FormGroup>
+
+        );
+    };
+
+    renderPlatforms = ({ fields, componentClass, maxLength, label, placeholder, helpMessage, errorField, isActive }) => {
+
+        if (fields.length === 0 && isActive)
+            fields.push({});
+
+        return(
+            <FormGroup>
+                <ControlLabel>{label}</ControlLabel>
+                <ul style={{listStyle: "none", paddingLeft: 0}}>
+                    {fields.map((member, index) => (
+                        <li key={index} style={{overflow: "hidden"}}>
+                            <Field
+                                name={`${member}.id`}
+                                componentClass={componentClass}
+                                maxLength={maxLength}
+                                placeholder={placeholder}
+                                helpMessage={helpMessage}
+                                errorField={errorField ? errorField[index] : ""}
+                                onDelete={
+                                    () => {
+                                        if (fields.length > 1)
+                                            fields.remove(index)
+                                    }
+                                }
+                                onAdd={() => fields.push({})}
+                                subElement={true}
+                                component={this.renderPlatformIdField}
+                            />
+                        </li>
+                    ))}
+                </ul>
+            </FormGroup>
+
+        )
+    };
+
     render() {
         const { handleSubmit, modalState, federations, federationsRegistrationValidity } = this.props;
         const opts = { disabled : !federationsRegistrationValidity };
@@ -103,7 +178,7 @@ class FederationRegistrationModal extends Component {
                     Register New Federation
                 </Button>
 
-                <AlertDismissable alertStyle="success" message={federations.successfulInfoModelRegistration}
+                <AlertDismissable alertStyle="success" message={federations.successfulFederationRegistration}
                                   dismissHandler={this.dismissFederationRegistrationSuccessAlert} />
 
                 <Modal show={modalState[FEDERATION_REGISTRATION_MODAL]} onHide={this.close}>
@@ -113,7 +188,7 @@ class FederationRegistrationModal extends Component {
                     <form onSubmit={handleSubmit(this.onSubmit)}>
                         <Modal.Body>
                             <AlertDismissable alertStyle="danger" message={federations.federationRegistrationError}
-                                              dismissHandler={this.dismissInfoModelRegistrationErrorAlert} />
+                                              dismissHandler={this.dismissFederationRegistrationErrorAlert} />
 
                             <Row>
                                 <Col lg={12} md={12} sm={12} xs={12}>
@@ -129,27 +204,14 @@ class FederationRegistrationModal extends Component {
 
                             <Row>
                                 <Col lg={12} md={12} sm={12} xs={12}>
-                                    <Field
-                                        name="platform_id_1" type="text" maxLength={30}
-                                        label="Federated Platform Id 1"
-                                        placeholder="Enter the id of the platform you want to add to the federation"
+                                    <FieldArray
+                                        name="platforms" maxLength={30} label="Federation Members"
+                                        placeholder="Enter the platform id"
                                         helpMessage={"From 4 to 30 characters. Include only letters, digits, '-' and '_'"}
-                                        errorField={federations.platform_id_1_error}
-                                        component={this.renderInputField}
+                                        errorField={federations.platforms_error} isActive={!!modalState[FEDERATION_REGISTRATION_MODAL]}
+                                        component={this.renderPlatforms}
                                     />
-                                </Col>
-                            </Row>
 
-                            <Row>
-                                <Col lg={12} md={12} sm={12} xs={12}>
-                                    <Field
-                                        name="platform_id_2" type="text" maxLength={30}
-                                        label="Federated Platform Id 2"
-                                        placeholder="Enter the id of the platform you want to add to the federation"
-                                        helpMessage={"From 4 to 30 characters. Include only letters, digits, '-' and '_'"}
-                                        errorField={federations.platform_id_2_error}
-                                        component={this.renderInputField}
-                                    />
                                 </Col>
                             </Row>
 
@@ -170,8 +232,7 @@ function validate(values) {
     const errors = {};
     const validationFunctions = {
         "id" : validateId,
-        "platform_id_1" : validateId,
-        "platform_id_2" : validateId
+        "platforms" : validatePlatformIds
     };
 
     Object.keys(validationFunctions).forEach(function (key) {
@@ -183,6 +244,7 @@ function validate(values) {
 function mapStateToProps(state) {
     return {
         modalState: state.modalState,
+        userPlatforms: state.userPlatforms,
         federations: state.federations,
         federationsRegistrationValidity: getFederationRegistrationValidity(state)
     };

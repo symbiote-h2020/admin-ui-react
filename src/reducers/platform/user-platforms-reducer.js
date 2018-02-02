@@ -25,34 +25,34 @@ export default function(state = INITIAL_STATE, action) {
                 if (action.payload.response) {
                     const message = action.payload.response.data;
 
-                    if (message["pl_reg_error_id"])
-                        newState.id_error = message["pl_reg_error_id"];
+                    if (message["error_id"])
+                        newState.id_error = message["error_id"];
 
-                    if (message["pl_reg_error_name"])
-                        newState.name_error = message["pl_reg_error_name"];
+                    if (message["error_name"])
+                        newState.name_error = message["error_name"];
 
-                    if (message["pl_reg_error_description_description"]) {
+                    if (message["error_description_description"]) {
                         newState["descriptions_error"] = [];
-                        for (let i of message["pl_reg_error_description_description"])
+                        for (let i of message["error_description_description"])
                             newState.descriptions_error.push(i);
                     }
 
-                    if (message["pl_reg_error_interworkingServices_url"]) {
-                        for(let i = 0; i < message["pl_reg_error_interworkingServices_url"].length; i++)
-                            if(message["pl_reg_error_interworkingServices_url"][i])
-                                newState.interworkingServiceUrl_error = message["pl_reg_error_interworkingServices_url"][i];
+                    if (message["error_interworkingServices_url"]) {
+                        for(let i = 0; i < message["error_interworkingServices_url"].length; i++)
+                            if(message["error_interworkingServices_url"][i])
+                                newState.interworkingServiceUrl_error = message["error_interworkingServices_url"][i];
                     }
 
-                    if (message["pl_reg_error_interworkingServices_informationModelId"]) {
-                        for(let i = 0; i < message["pl_reg_error_interworkingServices_url"].length; i++)
-                            if(message["pl_reg_error_interworkingServices_informationModelId"][i] != null)
-                                newState.informationModel_error = message["pl_reg_error_interworkingServices_informationModelId"][i];
+                    if (message["error_interworkingServices_informationModelId"]) {
+                        for(let i = 0; i < message["error_interworkingServices_url"].length; i++)
+                            if(message["error_interworkingServices_informationModelId"][i] != null)
+                                newState.informationModel_error = message["error_interworkingServices_informationModelId"][i];
                     }
 
-                    if (message["pl_reg_error_isEnabler"])
-                        newState["type_error"] = message["pl_reg_error_isEnabler"];
+                    if (message["error_isEnabler"])
+                        newState["type_error"] = message["error_isEnabler"];
 
-                    newState["platformRegistrationError"] = message.platformRegistrationError;
+                    newState["platformRegistrationError"] = message.error;
                     return { ...removeErrors(state), ...newState };
                 } else {
                     return { ...removeErrors(state), platformRegistrationError: "Network Error: Could not contact server" };
@@ -83,35 +83,35 @@ export default function(state = INITIAL_STATE, action) {
                 if (action.payload.response) {
                     const message = action.payload.response.data;
 
-                    if (message["pl_update_error_id"])
-                        newState.id_error = message["pl_update_error_id"];
+                    if (message["error_id"])
+                        newState.id_error = message["error_id"];
 
-                    if (message["pl_update_error_name"])
-                        newState.name_error = message["pl_update_error_name"];
+                    if (message["error_name"])
+                        newState.name_error = message["error_name"];
 
-                    if (message["pl_update_error_description_description"]) {
+                    if (message["error_description_description"]) {
                         newState.descriptions_error = [];
-                        for (let i of message["pl_update_error_description_description"])
+                        for (let i of message["error_description_description"])
                             newState.descriptions_error.push(i);
 
                     }
 
-                    if (message["pl_update_error_interworkingServices_url"]) {
-                        for(let i = 0; i < message["pl_update_error_interworkingServices_url"].length; i++)
-                            if(message["pl_update_error_interworkingServices_url"][i])
-                                newState.interworkingServiceUrl_error = message["pl_update_error_interworkingServices_url"][i];
+                    if (message["error_interworkingServices_url"]) {
+                        for(let i = 0; i < message["error_interworkingServices_url"].length; i++)
+                            if(message["error_interworkingServices_url"][i])
+                                newState.interworkingServiceUrl_error = message["error_interworkingServices_url"][i];
                     }
 
-                    if (message["pl_update_error_interworkingServices_informationModelId"]) {
-                        for(let i = 0; i < message["pl_update_error_interworkingServices_informationModelId"].length; i++)
-                            if(message["pl_update_error_interworkingServices_informationModelId"][i] != null)
-                                newState.informationModel_error = message["pl_update_error_interworkingServices_informationModelId"][i];
+                    if (message["error_interworkingServices_informationModelId"]) {
+                        for(let i = 0; i < message["error_interworkingServices_informationModelId"].length; i++)
+                            if(message["error_interworkingServices_informationModelId"][i] != null)
+                                newState.informationModel_error = message["error_interworkingServices_informationModelId"][i];
                     }
 
-                    if (message["pl_update_error_isEnabler"])
-                        newState.type_error = message["pl_update_error_isEnabler"];
+                    if (message["error_isEnabler"])
+                        newState.type_error = message["error_isEnabler"];
 
-                    newState.platformUpdateError = message.platformUpdateError;
+                    newState.platformUpdateError = message.error;
                     return { ...removeErrors(state), ...newState };
                 } else {
                     return { ...removeErrors(state), platformUpdateError: "Network Error: Could not contact server" };
