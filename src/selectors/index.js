@@ -25,14 +25,12 @@ const checkForm =  (form) => {
         // For FieldArrays
         if (error instanceof Array) {
             if (error.length > 0) {
-                console.log(error);
 
                 // Check if error != null and if it is then check if it has a not null field
                 const arrayErrors = _.filter(error, (err) => err && _.find(err, x => x !== null));
 
                 return arrayErrors.length > 0 ? arrayErrors : null;
             }
-            console.log("length == 0")
             return null;
         }
 

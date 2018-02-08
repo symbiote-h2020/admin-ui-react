@@ -1,6 +1,8 @@
 import React from "react";
 import { Panel, Row, Col, FormGroup, FormControl, ControlLabel, Button, Glyphicon } from "react-bootstrap";
 import _ from "lodash";
+import Select from "react-select";
+import { comparator, qosMetrics} from "../../../configuration";
 
 const FederationPanelBody = ({ federation, userPlatforms, onOpenLeaveModal, isAdmin }) => {
 
@@ -49,6 +51,90 @@ const FederationPanelBody = ({ federation, userPlatforms, onOpenLeaveModal, isAd
         return _.keysIn(userPlatforms).indexOf(platformId) > -1
     };
 
+    const RenderQoSConstraint = (qosConstraintObject) => {
+        const { qosConstraint } = qosConstraintObject;
+
+        return (
+            <div className="qos-constraint">
+                <Row>
+                    <Col xs={10} sm={10} md={10} lg={10}>
+                        <Row>
+                            <Col xs={12} sm={6} md={4} lg={4}>
+                                <ControlLabel>Metric</ControlLabel>
+                                <FormGroup controlId="metric">
+                                    <Select
+                                        options={qosMetrics}
+                                        value={qosConstraint.metric}
+                                        disabled={true}
+                                    />
+                                </FormGroup>
+                            </Col>
+
+                            <Col xs={12} sm={6} md={4} lg={4}>
+                                <ControlLabel>Comparator</ControlLabel>
+                                <FormGroup controlId="comparator">
+                                    <Select
+                                        options={comparator}
+                                        value={qosConstraint.comparator}
+                                        disabled={true}
+                                    />
+                                </FormGroup>
+                            </Col>
+
+                            <Col xs={12} sm={12} md={4} lg={4}>
+                                <ControlLabel>Threshold</ControlLabel>
+                                <FormControl
+                                    value={qosConstraint.threshold}
+                                    disabled={true}
+                                />
+                            </Col>
+
+                        </Row>
+                        <Row>
+                            { qosConstraint.duration ?
+                                <Col xs={12} sm={6} md={6} lg={6}>
+                                    <ControlLabel>Duration</ControlLabel>
+                                    <FormControl
+                                        value={qosConstraint.duration}
+                                        disabled={true}
+                                    />
+                                </Col> :
+                                ""}
+
+                            { qosConstraint.resourceType ?
+                                <Col xs={12} sm={6} md={6} lg={6}>
+                                    <ControlLabel>Resource Type</ControlLabel>
+                                    <FormControl
+                                        value={qosConstraint.resourceType}
+                                        disabled={true}
+                                    />
+                                </Col> :
+                                ""}
+                        </Row>
+                    </Col>
+                </Row>
+            </div>
+        );
+    };
+
+    const displayQoSConstraints = (qosConstraints) => {
+        if (qosConstraints)
+            return (
+                <Col lg={12} md={12} sm={12} xs={12}>
+                    <ControlLabel>QoS Constraints</ControlLabel>
+
+                    {
+                        qosConstraints.map((qosConstraint, index) => {
+                            return (
+                                <RenderQoSConstraint
+                                    qosConstraint={qosConstraint}
+                                    key={index}
+                                />);
+                        })
+                    }
+                </Col>);
+    };
+
     return(
         <Panel.Body>
             <Row>
@@ -72,6 +158,9 @@ const FederationPanelBody = ({ federation, userPlatforms, onOpenLeaveModal, isAd
                         />
                     )}
                 </Col>
+
+                {displayQoSConstraints (federation.qosConstraints)}
+
             </Row>
         </Panel.Body>
     );

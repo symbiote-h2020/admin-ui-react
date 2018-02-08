@@ -78,13 +78,13 @@ export default function(state = {}, action) {
                     return state;
                 else {
                     const response = JSON.parse(action.payload.request.response);
-                    const { federationRule } = response;
-                    const { federationId } =  federationRule;
+                    const { federation } = response;
+                    const { federationId } =  federation;
                     const successfulFederationRegistration = `Registration of federation "${federationId}" was successful!`;
 
                     let newFederations = {
                         ...state.availableFederations,
-                        [federationId] : federationRule
+                        [federationId] : federation
                     };
 
                     return {
