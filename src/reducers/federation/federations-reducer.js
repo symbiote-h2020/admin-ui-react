@@ -34,6 +34,34 @@ export default function(state = {}, action) {
 
                     }
 
+                    if (message["error_qosConstraints_metric"]) {
+                        newState.qosConstraints_metric_error = [];
+                        for (let i of message["error_qosConstraints_metric"])
+                            newState.qosConstraints_metric_error.push(i);
+
+                    }
+
+                    if (message["error_qosConstraints_comparator"]) {
+                        newState.qosConstraints_comparator_error = [];
+                        for (let i of message["error_qosConstraints_comparator"])
+                            newState.qosConstraints_comparator_error.push(i);
+
+                    }
+
+                    if (message["error_qosConstraints_threshold"]) {
+                        newState.qosConstraints_threshold_error = [];
+                        for (let i of message["error_qosConstraints_threshold"])
+                            newState.qosConstraints_threshold_error.push(i);
+
+                    }
+
+                    if (message["error_qosConstraints_duration"]) {
+                        newState.qosConstraints_duration_error = [];
+                        for (let i of message["error_qosConstraints_duration"])
+                            newState.qosConstraints_duration_error.push(i);
+
+                    }
+
                     newState.federationRegistrationError = message.error;
                     return { ...removeErrors(state), ...newState};
                 } else {
@@ -152,7 +180,9 @@ export default function(state = {}, action) {
 
 const removeErrors = (state) => {
     const errors = [
-        "id_error", "error_platforms_id", "federationRegistrationError",
+        "id_error", "error_platforms_id", "qosConstraints_metric_error",
+        "qosConstraints_comparator_error", "qosConstraints_threshold_error",
+        "qosConstraints_duration_error", "federationRegistrationError",
         "federationLeaveError", "federationDeletionError"
     ];
 

@@ -3,20 +3,21 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Field, FieldArray, reduxForm } from "redux-form";
 import { Modal, Button, FormGroup, FormControl, ControlLabel, Row, Col, HelpBlock, InputGroup, Glyphicon } from "react-bootstrap";
+import QoSConstraint from "../../components/user-cpanel/federation-list/qos-constraint";
 import { ADMIN_LOGIN_MODAL, FEDERATION_REGISTRATION_MODAL } from "../../reducers/modal/modal-reducer";
-import { getFederationRegistrationValidity } from "../../selectors/index";
+import { getFederationRegistrationValidity } from "../../selectors";
 import { FieldError, AlertDismissable } from "../../helpers/errors";
 import { getValidationState } from "../../validation/helpers";
 import { registerFederation } from "../../actions/federation-actions";
 import {
-    validateId, validatePlatformIds
+    validateId, validatePlatformIds, validateQoSConstraints
 } from "../../validation/federation-registration-validation";
 import {
     changeModalState, dismissAlert, removeErrors,
     DISMISS_FEDERATION_REGISTRATION_ERROR_ALERT, DISMISS_FEDERATION_REGISTRATION_SUCCESS_ALERT,
     REMOVE_FEDERATION_REGISTRATION_ERRORS
 } from "../../actions/index";
-import {ROOT_URL} from "../../configuration/index";
+import { ROOT_URL } from "../../configuration";
 
 class FederationRegistrationModal extends Component {
 
@@ -56,7 +57,6 @@ class FederationRegistrationModal extends Component {
                 else if (res.status === 201) {
                     this.close();
                 }
-
             }
         );
     };
@@ -99,20 +99,20 @@ class FederationRegistrationModal extends Component {
                     <FormControl
                         { ...input }  rows={rows} componentClass={componentClass}
                         type={type} placeholder={placeholder} maxLength={maxLength} />
-                    <InputGroup.Button className="description-input-group">
+                    <InputGroup.Button className="dynamic-input-group">
                         <Button
                             bsStyle="primary"
-                            className="description-btn"
+                            className="dynamic-input-group-btn"
                             type="button"
                             onClick={onAdd}
                         >
                             <Glyphicon glyph="plus"/>
                         </Button>
                     </InputGroup.Button>
-                    <InputGroup.Button className="description-input-group">
+                    <InputGroup.Button className="dynamic-input-group">
                         <Button
                             bsStyle="danger"
-                            className="description-btn"
+                            className="dynamic-input-group-btn"
                             style={{marginLeft: "0.25em", borderRadius: "4px"}}
                             type="button"
                             onClick={onDelete}
@@ -165,6 +165,42 @@ class FederationRegistrationModal extends Component {
         )
     };
 
+    renderQoSConstraints = ({ fields, maxLength, label, errorField, federations, isActive }) => {
+
+        return(
+            <FormGroup id="qos-constraint-group">
+
+                <ControlLabel id="qos-constraint-label">{label}</ControlLabel>
+                <InputGroup.Button id="qos-constraint-add-btn" className="dynamic-input-group">
+                    <Button
+                        bsStyle="primary"
+                        bsSize="xsmall"
+                        className="dynamic-input-group-btn"
+                        type="button"
+                        onClick={() => fields.push({})}
+                    >
+                        <Glyphicon glyph="plus"/>
+                    </Button>
+                </InputGroup.Button>
+
+                <ul style={{listStyle: "none", paddingLeft: 0}}>
+                    {fields.map((member, index) => (
+                        <li key={index}>
+                            <QoSConstraint
+                                member={member}
+                                index={index}
+                                federations={federations}
+                                errorField={errorField}
+                                onDelete={ () => {fields.remove(index)} }
+                            />
+                        </li>
+                    ))}
+                </ul>
+            </FormGroup>
+
+        )
+    };
+
     render() {
         const { handleSubmit, modalState, federations, federationsRegistrationValidity } = this.props;
         const opts = { disabled : !federationsRegistrationValidity };
@@ -208,10 +244,21 @@ class FederationRegistrationModal extends Component {
                                         name="platforms" maxLength={30} label="Federation Members"
                                         placeholder="Enter the platform id"
                                         helpMessage={"From 4 to 30 characters. Include only letters, digits, '-' and '_'"}
-                                        errorField={federations.platforms_error} isActive={!!modalState[FEDERATION_REGISTRATION_MODAL]}
+                                        errorField={federations.platforms_error}
+                                        isActive={!!modalState[FEDERATION_REGISTRATION_MODAL]}
                                         component={this.renderPlatforms}
                                     />
+                                </Col>
+                            </Row>
 
+                            <Row>
+                                <Col lg={12} md={12} sm={12} xs={12}>
+                                    <FieldArray
+                                        name="qosConstraints" maxLength={30} label="QoS Constraints"
+                                        federations={federations}
+                                        isActive={!!modalState[FEDERATION_REGISTRATION_MODAL]}
+                                        component={this.renderQoSConstraints}
+                                    />
                                 </Col>
                             </Row>
 
@@ -232,7 +279,8 @@ function validate(values) {
     const errors = {};
     const validationFunctions = {
         "id" : validateId,
-        "platforms" : validatePlatformIds
+        "platforms" : validatePlatformIds,
+        "qosConstraints" : validateQoSConstraints
     };
 
     Object.keys(validationFunctions).forEach(function (key) {

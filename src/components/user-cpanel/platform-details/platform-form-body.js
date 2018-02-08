@@ -112,20 +112,20 @@ const renderDescriptionField = ({ input, type, placeholder, componentClass, rows
                 <FormControl
                     { ...input } componentClass={componentClass} rows={rows}
                     type={type} placeholder={placeholder} maxLength={maxLength} />
-                <InputGroup.Button className="description-input-group">
+                <InputGroup.Button className="dynamic-input-group">
                     <Button
                         bsStyle="primary"
-                        className="description-btn"
+                        className="dynamic-input-group-btn"
                         type="button"
                         onClick={onAdd}
                     >
                         <Glyphicon glyph="plus"/>
                     </Button>
                 </InputGroup.Button>
-                <InputGroup.Button className="description-input-group">
+                <InputGroup.Button className="dynamic-input-group">
                     <Button
                         bsStyle="danger"
-                        className="description-btn"
+                        className="dynamic-input-group-btn"
                         style={{marginLeft: "0.25em", borderRadius: "4px"}}
                         type="button"
                         onClick={onDelete}

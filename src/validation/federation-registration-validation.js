@@ -1,3 +1,5 @@
+import { isEmpty } from "./helpers";
+
 export function validateId(value) {
     const pattern = new RegExp('^[\\w-]{4,}$');
 
@@ -26,6 +28,48 @@ export function validatePlatformIds(values) {
             const platformIdError = {};
             platformIdError.id = validateId(id);
             errors[platformIndex] = platformIdError;
+        });
+        return errors;
+    }
+    return null;
+}
+
+export function validateThreshold(value) {
+    const isEmptyResult = isEmpty(value);
+
+    if (isEmptyResult)
+        return isEmptyResult;
+
+    if (isNaN(value))
+        return "This is not a valid number";
+
+    return null;
+}
+
+export function validateDuration(value) {
+    if (!value)
+        return null;
+
+    if (isNaN(value))
+        return "This is not a valid number";
+
+    return null;
+}
+
+export function validateQoSConstraints(values) {
+    const errors = [];
+
+    if (values) {
+        values.forEach((qosConstraint, index) => {
+            const { metric, comparator, threshold, duration } = qosConstraint;
+            const qosConstraintError = {};
+
+            qosConstraintError.metric = isEmpty(metric);
+            qosConstraintError.comparator = isEmpty(comparator);
+            qosConstraintError.threshold = validateThreshold(threshold);
+            qosConstraintError.duration = validateDuration(duration);
+
+            errors[index] = qosConstraintError;
         });
         return errors;
     }

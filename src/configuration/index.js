@@ -12,3 +12,37 @@ export const platformTypes = [
         value : "true"
     }
 ];
+
+export const qosMetrics = [
+    {
+        label : "Availability",
+        value : "availability"
+    },
+    {
+        label : "Load",
+        value : "load"
+    }
+];
+
+export const comparator = [
+    {
+        label : ">",
+        value : "greaterThan"
+    },
+    {
+        label : ">=",
+        value : "greaterThanOrEqual"
+    },
+    {
+        label : "=",
+        value : "equal"
+    },
+    {
+        label : "<",
+        value : "lessThan"
+    },
+    {
+        label : "<=",
+        value : "lessThanOrEqual"
+    },
+];

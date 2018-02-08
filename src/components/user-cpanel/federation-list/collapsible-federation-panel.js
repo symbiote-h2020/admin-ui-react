@@ -6,8 +6,9 @@ export default class CollapsibleFederationPanel extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            open : false,
-            federation : props.federation,
+            open: false,
+            federation: props.federation,
+            userPlatforms: props.userPlatforms
         };
 
         this.togglePanel = this.togglePanel.bind(this);
@@ -15,10 +16,11 @@ export default class CollapsibleFederationPanel extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.federation !== this.state.federation)
+        if (nextProps.federation !== this.state.federation || nextProps.userPlatforms !== this.state.userPlatforms)
             this.setState({
                     ...this.state,
-                infoModel : nextProps.infoModel
+                federation : nextProps.federation,
+                userPlatforms : nextProps.userPlatforms
             });
     }
 
@@ -31,7 +33,8 @@ export default class CollapsibleFederationPanel extends Component {
     };
 
     render() {
-        const { federation } = this.state;
+        const { federation, userPlatforms } = this.state;
+        const { isAdmin } = this.props;
 
         return(
             <Panel id="id" bsStyle="primary" className="federation-panel-entry"
@@ -43,16 +46,22 @@ export default class CollapsibleFederationPanel extends Component {
                     <Glyphicon glyph={this.state.open ? "minus" : "plus"} className="pull-right" />
                 </Panel.Heading>
                 <Panel.Collapse>
-                    <FederationPanelBody federation={federation} />
+                    <FederationPanelBody
+                        federation={federation}
+                        userPlatforms={userPlatforms}
+                        isAdmin={isAdmin}
+                        onOpenLeaveModal={this.props.openLeaveModal}
+                    />
                 </Panel.Collapse>
                 <Panel.Footer className="federation-info-footer">
-                    <Button
-                        className="panel-footer-btn"
-                        bsStyle="warning"
-                        onClick={this.handleOpenDeleteModal}>
-                        Delete
-                    </Button>
-
+                    {!isAdmin ? "" :
+                        <Button
+                            className="panel-footer-btn"
+                            bsStyle="warning"
+                            onClick={this.handleOpenDeleteModal}>
+                            Delete
+                        </Button>
+                    }
                 </Panel.Footer>
             </Panel>
         );
