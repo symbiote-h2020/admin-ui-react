@@ -2,7 +2,7 @@ export const ROOT_URL = "/administration";
 export const USER_CPANEL_URL = "/administration/user/cpanel";
 export const ADMIN_CPANEL_URL = "/administration/admin/cpanel";
 
-export const platformTypes = [
+export const PLATFORM_TYPES = [
     {
         label : "Platform",
         value : "false"
@@ -13,7 +13,18 @@ export const platformTypes = [
     }
 ];
 
-export const qosMetrics = [
+export const FEDERATION_VISIBILITY_TYPES = [
+    {
+        label : "Yes",
+        value : "true"
+    },
+    {
+        label : "No",
+        value : "false"
+    }
+];
+
+export const QOS_METRICS = [
     {
         label : "Availability",
         value : "availability"
@@ -24,7 +35,7 @@ export const qosMetrics = [
     }
 ];
 
-export const comparator = [
+export const COMPARATOR = [
     {
         label : ">",
         value : "greaterThan"

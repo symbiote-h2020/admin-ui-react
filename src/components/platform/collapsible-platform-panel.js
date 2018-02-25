@@ -3,7 +3,7 @@ import { Panel, Glyphicon, Button } from "react-bootstrap";
 import PlatformPanelBody from "./platform-panel-body";
 import {
     ACTIVATE_PLATFORM_DELETE_MODAL, ACTIVATE_PLATFORM_CONFIG_MODAL, ACTIVATE_PLATFORM_UPDATE_MODAL
-} from "../../../actions";
+} from "../../actions/index";
 
 export default class CollapsiblePlatformPanel extends Component {
     constructor(props) {

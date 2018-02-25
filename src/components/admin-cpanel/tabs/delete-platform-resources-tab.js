@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, HelpBlock, Col, Button } from "react-bootstrap";
 import axios from "axios";
-import { ROOT_URL } from "../../../configuration";
-import { headers} from "../../../actions";
+import { ROOT_URL } from "../../../configuration/index";
+import { headers} from "../../../actions/index";
 import { AlertDismissable } from "../../../helpers/errors";
 
 export default class DeletePlatformResources extends Component {

@@ -2,9 +2,9 @@ import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import _ from "lodash";
-import CollapsibleFederationPanel from "../../components/user-cpanel/federation-list/collapsible-federation-panel";
-import FederationLeaveModal from "../../components/user-cpanel/federation-list/federation-leave-modal";
-import FederationDeleteModal from "../../components/user-cpanel/federation-list/federation-delete-modal";
+import CollapsibleFederationPanel from "../../components/federation/collapsible-federation-panel";
+import FederationLeaveModal from "../../components/federation/federation-leave-modal";
+import FederationDeleteModal from "../../components/federation/federation-delete-modal";
 import { AlertDismissable } from "../../helpers/errors";
 import {
     fetchFederations, deleteFederation, leaveFederation,

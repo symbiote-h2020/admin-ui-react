@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Row, Col, Tab, Nav, NavItem } from "react-bootstrap";
-import UserDetails from "./user-details";
-import ClientDetails from "./client-details";
-import PlatformDetails from "./platform-details";
-import InformationModels from "./information-models";
+import UserDetails from "./tabs/user-details-tab";
+import ClientDetails from "./tabs/client-details-tab";
+import PlatformDetails from "./tabs/platforms-tab";
+import InformationModels from "./tabs/information-models-tab";
 import NavItemDropdown from "../admin-cpanel/nav-item-dropdown";
-import FederationListPanel from "../user-cpanel/federation-list";
+import FederationListPanel from "./tabs/federations-tab";
 
 export default class Main extends Component {
     constructor() {

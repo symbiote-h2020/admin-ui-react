@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { Button, Modal } from "react-bootstrap";
-import { DEACTIVATE_PLATFORM_DELETE_MODAL } from "../../../actions";
+import { DEACTIVATE_PLATFORM_DELETE_MODAL } from "../../actions/index";
 
 const PlatformDeleteModal = ({ platform, deleteModalOpen, closeModal, handleDeletePlatform }) => {
 

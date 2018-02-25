@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
 import { Field, FieldArray } from "redux-form";
 import { Button, FormGroup, InputGroup, FormControl, ControlLabel, Row, Col, HelpBlock, Glyphicon } from "react-bootstrap";
-import RFReactSelect from "../../../helpers/redux-form-react-selector-integrator";
-import { FieldError } from "../../../helpers/errors";
-import { getValidationState } from "../../../validation/helpers";
+import RFReactSelect from "../../helpers/redux-form-react-selector-integrator";
+import { FieldError } from "../../helpers/errors";
+import { getValidationState } from "../../validation/helpers";
 
 
 const PlatformFormBody = ({ userPlatforms, informationModels, platformTypes, idDisabled, isActive }) => {

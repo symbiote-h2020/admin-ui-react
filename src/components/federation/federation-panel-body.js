@@ -2,7 +2,7 @@ import React from "react";
 import { Panel, Row, Col, FormGroup, FormControl, ControlLabel, Button, Glyphicon } from "react-bootstrap";
 import _ from "lodash";
 import Select from "react-select";
-import { comparator, qosMetrics} from "../../../configuration";
+import { COMPARATOR, QOS_METRICS} from "../../configuration/index";
 
 const FederationPanelBody = ({ federation, userPlatforms, onOpenLeaveModal, isAdmin }) => {
 
@@ -63,7 +63,7 @@ const FederationPanelBody = ({ federation, userPlatforms, onOpenLeaveModal, isAd
                                 <ControlLabel>Metric</ControlLabel>
                                 <FormGroup controlId="metric">
                                     <Select
-                                        options={qosMetrics}
+                                        options={QOS_METRICS}
                                         value={qosConstraint.metric}
                                         disabled={true}
                                     />
@@ -74,7 +74,7 @@ const FederationPanelBody = ({ federation, userPlatforms, onOpenLeaveModal, isAd
                                 <ControlLabel>Comparator</ControlLabel>
                                 <FormGroup controlId="comparator">
                                     <Select
-                                        options={comparator}
+                                        options={COMPARATOR}
                                         value={qosConstraint.comparator}
                                         disabled={true}
                                     />

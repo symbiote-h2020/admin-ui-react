@@ -3,8 +3,8 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Button } from "react-bootstrap";
 import _ from "lodash";
-import CollapsiblePlatformPanel from "../../components/user-cpanel/platform-details/collapsible-platform-panel";
-import PlatformDeleteModal from "../../components/user-cpanel/platform-details/platform-delete-modal";
+import CollapsiblePlatformPanel from "../../components/platform/collapsible-platform-panel";
+import PlatformDeleteModal from "../../components/platform/platform-delete-modal";
 import PlatformConfigModal from "./platform-config-modal";
 import { AlertDismissable } from "../../helpers/errors";
 import {

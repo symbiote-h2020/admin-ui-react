@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Row, Col, Tab, Nav, NavItem } from "react-bootstrap";
-import DeletePlatformResources from "./delete-platform-resources";
-import DeleteInformationModel from "./delete-information-model";
-import FederationRequests from "./federation-requests";
-import FederationList from "./federation-list";
+import DeletePlatformResources from "./tabs/delete-platform-resources-tab";
+import DeleteInformationModel from "./tabs/delete-information-model-tab";
+import FederationRequests from "./tabs/federation-requests-tab";
+import FederationList from "./tabs/federations-tab";
 import NavItemDropdown from "./nav-item-dropdown";
 
 export default class Main extends Component {

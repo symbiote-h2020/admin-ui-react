@@ -3,7 +3,8 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Field, FieldArray, reduxForm } from "redux-form";
 import { Modal, Button, FormGroup, FormControl, ControlLabel, Row, Col, HelpBlock, InputGroup, Glyphicon } from "react-bootstrap";
-import QoSConstraint from "../../components/user-cpanel/federation-list/qos-constraint";
+import _ from "lodash";
+import QoSConstraint from "../../components/federation/qos-constraint";
 import { ADMIN_LOGIN_MODAL, FEDERATION_REGISTRATION_MODAL } from "../../reducers/modal/modal-reducer";
 import { getFederationRegistrationValidity } from "../../selectors";
 import { FieldError, AlertDismissable } from "../../helpers/errors";
@@ -17,7 +18,8 @@ import {
     DISMISS_FEDERATION_REGISTRATION_ERROR_ALERT, DISMISS_FEDERATION_REGISTRATION_SUCCESS_ALERT,
     REMOVE_FEDERATION_REGISTRATION_ERRORS
 } from "../../actions/index";
-import { ROOT_URL } from "../../configuration";
+import { ROOT_URL, FEDERATION_VISIBILITY_TYPES } from "../../configuration";
+import RFReactSelect from "../../helpers/redux-form-react-selector-integrator";
 
 class FederationRegistrationModal extends Component {
 
@@ -68,6 +70,12 @@ class FederationRegistrationModal extends Component {
     dismissFederationRegistrationErrorAlert() {
         this.props.dismissAlert(DISMISS_FEDERATION_REGISTRATION_ERROR_ALERT)
     }
+
+    informationModels = () => {
+        return _.map(this.props.informationModels.availableInfoModels, (model) => {
+            return({ value: model.id, label: model.name});
+        });
+    };
 
     renderInputField = (field) => {
         const { input, type, placeholder, componentClass, rows, subElement, errorField,
@@ -165,7 +173,7 @@ class FederationRegistrationModal extends Component {
         )
     };
 
-    renderQoSConstraints = ({ fields, maxLength, label, errorField, federations, isActive }) => {
+    renderQoSConstraints = ({ fields, label, errorField, federations }) => {
 
         return(
             <FormGroup id="qos-constraint-group">
@@ -239,6 +247,34 @@ class FederationRegistrationModal extends Component {
                             </Row>
 
                             <Row>
+                                <Col lg={6} md={6} sm={6} xs={6}>
+                                    <FormGroup controlId="informationModel">
+                                        <ControlLabel>Public</ControlLabel>
+                                        <Field
+                                            name="informationModel" options={this.informationModels()}
+                                            placeholder="Information Model" subElement={true}
+                                            component={RFReactSelect}
+                                        />
+                                        <FieldError error={federations.informationModel_error} />
+                                    </FormGroup>
+                                </Col>
+
+                                <Col lg={6} md={6} sm={6} xs={6}>
+                                    <FormGroup controlId="public">
+                                        <ControlLabel>Public</ControlLabel>
+                                        <Field
+                                            name="type" options={FEDERATION_VISIBILITY_TYPES}
+                                            clearable={false} searchable={false}
+                                            component={RFReactSelect}
+                                        />
+                                        <FormControl.Feedback />
+                                        <HelpBlock>Has the federation public visibility</HelpBlock>
+                                        <FieldError error={federations.public_error} />
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+
+                            <Row>
                                 <Col lg={12} md={12} sm={12} xs={12}>
                                     <FieldArray
                                         name="platforms" maxLength={30} label="Federation Members"
@@ -293,6 +329,7 @@ function mapStateToProps(state) {
     return {
         modalState: state.modalState,
         userPlatforms: state.userPlatforms,
+        informationModels: state.informationModels,
         federations: state.federations,
         federationsRegistrationValidity: getFederationRegistrationValidity(state)
     };

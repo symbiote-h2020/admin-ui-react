@@ -1,10 +1,10 @@
 import React from "react";
 import { Field } from "redux-form";
 import { InputGroup, Button, Glyphicon, Row, Col, FormGroup, FormControl, HelpBlock } from "react-bootstrap";
-import { FieldError } from "../../../helpers/errors";
-import { getValidationState } from "../../../validation/helpers";
-import { qosMetrics, comparator } from "../../../configuration";
-import RFReactSelect from "../../../helpers/redux-form-react-selector-integrator";
+import { FieldError } from "../../helpers/errors";
+import { getValidationState } from "../../validation/helpers";
+import { QOS_METRICS, COMPARATOR } from "../../configuration/index";
+import RFReactSelect from "../../helpers/redux-form-react-selector-integrator";
 
 const QoSConstraint = ({ member, index, federations, onDelete }) => {
 
@@ -22,7 +22,7 @@ const QoSConstraint = ({ member, index, federations, onDelete }) => {
                                 <Field
                                     name={`${member}.metric`}
                                     placeholder="Metric Type"
-                                    options={qosMetrics}
+                                    options={QOS_METRICS}
                                     component={RFReactSelect}
                                 />
                                 <HelpBlock>Mandatory</HelpBlock>
@@ -35,7 +35,7 @@ const QoSConstraint = ({ member, index, federations, onDelete }) => {
                                 <Field
                                     name={`${member}.comparator`}
                                     placeholder="Comparator"
-                                    options={comparator}
+                                    options={COMPARATOR}
                                     component={RFReactSelect}
                                 />
                                 <HelpBlock>Mandatory</HelpBlock>

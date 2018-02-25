@@ -2,8 +2,8 @@ import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import _ from "lodash";
-import CollapsibleInformationModelPanel from "../../components/user-cpanel/information-models/collapsible-information-model-panel";
-import InfoModelDeleteModal from "../../components/user-cpanel/information-models/info-model-delete-modal";
+import CollapsibleInformationModelPanel from "../../components/information-model/collapsible-information-model-panel";
+import InfoModelDeleteModal from "../../components/information-model/info-model-delete-modal";
 import { AlertDismissable } from "../../helpers/errors";
 import {
     fetchUserInformationModels, deleteInfoModel,
