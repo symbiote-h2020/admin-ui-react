@@ -22,7 +22,7 @@ export function registerUser(userInfo, cb) {
     const formData = new FormData();
 
     formData.append("validUsername", userInfo.validUsername);
-    formData.append("validPassword", userInfo.validUsername);
+    formData.append("validPassword", userInfo.validPassword);
     formData.append("recoveryMail", userInfo.recoveryMail);
     formData.append("role", userInfo.role);
 
