@@ -1,22 +1,7 @@
-import { isEmpty } from "./helpers";
+import { isEmpty, lengthValidation } from "./helpers";
 
-export function validateId(value) {
-    const pattern = new RegExp('^[\\w-]{4,}$');
-
-    if(!value)
-        return "This field is required";
-    if (value && value.length < 4) {
-        return `Please lengthen the id to 4 characters or more (you are currently using
-         ${value.length} characters).`;
-    }
-    if (value && value.length > 30) {
-        return `Please lengthen the id to 30 characters or less (you are currently using
-         ${value.length} characters).`;
-    }
-    else if (!pattern.test(value)) {
-        return "From 4 to 30 characters. Include only letters, digits, '-' and '_'";
-    } else
-        return null;
+export function validateName(value) {
+    return lengthValidation("name", value ? value.length : 0, 3, 30);
 }
 
 export function validatePlatformIds(values) {
@@ -24,13 +9,32 @@ export function validatePlatformIds(values) {
 
     if (values) {
         values.forEach((platformObject, platformIndex) => {
-            const { id } = platformObject;
+            const { platformId } = platformObject;
             const platformIdError = {};
-            platformIdError.id = validateId(id);
+            platformIdError.platformId = validatePlatformId(platformId);
             errors[platformIndex] = platformIdError;
         });
         return errors;
     }
+    return null;
+}
+
+function validatePlatformId(value) {
+    const pattern = new RegExp('^[\\w-]{4,}$');
+
+    if (!value)
+        return "Please, enter a valid platform id";
+
+    if (value && !pattern.test(value)) {
+        return "From 4 to 30 characters. " +
+            "Include only letters, digits, '-' and '_'. You can leave it empty for autogeneration";
+    }
+
+    if (value && value.length > 30) {
+        return `Please lengthen the name to 30 characters or less (you are currently using
+         ${value.length} characters).`;
+    }
+
     return null;
 }
 

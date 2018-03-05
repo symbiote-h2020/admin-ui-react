@@ -14,7 +14,7 @@ export default function(state = {}, action) {
             if (action.error)
                 return { fetching_error : `${action.payload.message}: Could not fetch the federation list`};
             else {
-                return {...state, availableFederations :  _.mapKeys(action.payload.data, "federationId")};
+                return {...state, availableFederations :  _.mapKeys(action.payload.data, "id")};
             }
         case REGISTER_FEDERATION:
             if (action.error) {
@@ -27,38 +27,53 @@ export default function(state = {}, action) {
                     if (message["error_id"])
                         newState.id_error = message["error_id"];
 
-                    if (message["error_platforms_id"]) {
-                        newState.platforms_error = [];
-                        for (let i of message["error_platforms_id"])
-                            newState.platforms_error.push(i);
+                    if (message["error_name"])
+                        newState.name_error = message["error_name"];
+
+                    if (message["error_informationModel_id"])
+                        newState.informationModel_id_error = message["error_informationModel_id"];
+
+                    if (message["error_public"])
+                        newState.public_error = message["error_public"];
+
+                    if (message["error_public"])
+                        newState.public_error = message["error_public"];
+
+                    if (message["error_members"])
+                        newState.members_error = message["error_members"];
+
+                    if (message["error_members_platformId"]) {
+                        newState.members_id_error = [];
+                        for (let i of message["error_members_platformId"])
+                            newState.members_id_error.push(i);
 
                     }
 
-                    if (message["error_qosConstraints_metric"]) {
-                        newState.qosConstraints_metric_error = [];
-                        for (let i of message["error_qosConstraints_metric"])
-                            newState.qosConstraints_metric_error.push(i);
+                    if (message["error_slaConstraints_metric"]) {
+                        newState.slaConstraints_metric_error = [];
+                        for (let i of message["error_slaConstraints_metric"])
+                            newState.slaConstraints_metric_error.push(i);
 
                     }
 
-                    if (message["error_qosConstraints_comparator"]) {
-                        newState.qosConstraints_comparator_error = [];
-                        for (let i of message["error_qosConstraints_comparator"])
-                            newState.qosConstraints_comparator_error.push(i);
+                    if (message["error_slaConstraints_comparator"]) {
+                        newState.slaConstraints_comparator_error = [];
+                        for (let i of message["error_slaConstraints_comparator"])
+                            newState.slaConstraints_comparator_error.push(i);
 
                     }
 
-                    if (message["error_qosConstraints_threshold"]) {
-                        newState.qosConstraints_threshold_error = [];
-                        for (let i of message["error_qosConstraints_threshold"])
-                            newState.qosConstraints_threshold_error.push(i);
+                    if (message["error_slaConstraints_threshold"]) {
+                        newState.slaConstraints_threshold_error = [];
+                        for (let i of message["error_slaConstraints_threshold"])
+                            newState.slaConstraints_threshold_error.push(i);
 
                     }
 
-                    if (message["error_qosConstraints_duration"]) {
-                        newState.qosConstraints_duration_error = [];
-                        for (let i of message["error_qosConstraints_duration"])
-                            newState.qosConstraints_duration_error.push(i);
+                    if (message["error_slaConstraints_duration"]) {
+                        newState.slaConstraints_duration_error = [];
+                        for (let i of message["error_slaConstraints_duration"])
+                            newState.slaConstraints_duration_error.push(i);
 
                     }
 
@@ -79,12 +94,12 @@ export default function(state = {}, action) {
                 else {
                     const response = JSON.parse(action.payload.request.response);
                     const { federation } = response;
-                    const { federationId } =  federation;
-                    const successfulFederationRegistration = `Registration of federation "${federationId}" was successful!`;
+                    const { id } =  federation;
+                    const successfulFederationRegistration = `Registration of federation "${id}" was successful!`;
 
                     let newFederations = {
                         ...state.availableFederations,
-                        [federationId] : federation
+                        [id] : federation
                     };
 
                     return {
@@ -120,7 +135,7 @@ export default function(state = {}, action) {
 
                     const newAvailableFederation = {
                         ...state.availableFederations,
-                        [federationId]: action.payload.data.federationRule
+                        [federationId]: action.payload.data[federationId]
                     };
 
                     return {

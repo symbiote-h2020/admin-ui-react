@@ -6,7 +6,7 @@ import CollapsibleInformationModelPanel from "../../components/information-model
 import InfoModelDeleteModal from "../../components/information-model/info-model-delete-modal";
 import { AlertDismissable } from "../../helpers/errors";
 import {
-    fetchUserInformationModels, deleteInfoModel,
+    fetchUserInformationModels, fetchAllInformationModels, deleteInfoModel,
     activateInfoModelDeleteModal, deactivateInfoModelDeleteModal
 } from "../../actions/info-model-actions";
 import { changeModalState, dismissAlert } from "../../actions/index";
@@ -18,6 +18,7 @@ class InformationModelList extends Component {
 
     componentDidMount() {
         this.props.fetchUserInformationModels();
+        this.props.fetchAllInformationModels();
     }
 
     handleDeleteInfoModel= () => {
@@ -91,6 +92,7 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
     fetchUserInformationModels,
+    fetchAllInformationModels,
     changeModalState,
     deleteInfoModel,
     dismissAlert,

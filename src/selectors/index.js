@@ -104,7 +104,8 @@ export const getUserFederations = createSelector(
     (userPlatforms, federations) => {
         return _.mapKeys(_.filter(federations,
             federation => {
-                return _.intersection(_.keysIn(userPlatforms), federation.platformIds).length > 0;
-            }), "federationId");
+                const platformIds = federation.members.map(member => member.platformId);
+                return _.intersection(_.keysIn(userPlatforms), platformIds).length > 0;
+            }), "id");
     }
 );

@@ -1,25 +1,26 @@
 import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { Field, FieldArray, reduxForm } from "redux-form";
-import { Modal, Button, FormGroup, FormControl, ControlLabel, Row, Col, HelpBlock, InputGroup, Glyphicon } from "react-bootstrap";
+import { reduxForm } from "redux-form";
+import { Modal, Button } from "react-bootstrap";
 import _ from "lodash";
-import QoSConstraint from "../../components/federation/qos-constraint";
 import { ADMIN_LOGIN_MODAL, FEDERATION_REGISTRATION_MODAL } from "../../reducers/modal/modal-reducer";
 import { getFederationRegistrationValidity } from "../../selectors";
-import { FieldError, AlertDismissable } from "../../helpers/errors";
-import { getValidationState } from "../../validation/helpers";
+import { AlertDismissable } from "../../helpers/errors";
+import FederationFormBody from "../../components/federation/federation-form-body";
 import { registerFederation } from "../../actions/federation-actions";
 import {
-    validateId, validatePlatformIds, validateQoSConstraints
+    validateName, validatePlatformIds, validateQoSConstraints
 } from "../../validation/federation-registration-validation";
+import { validateInformationModel } from "../../validation/platform-registration-validation";
+import { isEmpty, validateId } from "../../validation/helpers";
 import {
     changeModalState, dismissAlert, removeErrors,
     DISMISS_FEDERATION_REGISTRATION_ERROR_ALERT, DISMISS_FEDERATION_REGISTRATION_SUCCESS_ALERT,
     REMOVE_FEDERATION_REGISTRATION_ERRORS
 } from "../../actions/index";
-import { ROOT_URL, FEDERATION_VISIBILITY_TYPES } from "../../configuration";
-import RFReactSelect from "../../helpers/redux-form-react-selector-integrator";
+import { ROOT_URL } from "../../configuration";
+import { Federation, FederationMember, InformationModel } from "../../helpers/object-definitions";
 
 class FederationRegistrationModal extends Component {
 
@@ -45,8 +46,17 @@ class FederationRegistrationModal extends Component {
 
 
     onSubmit = (props) => {
+        const { id, name, informationModel, members, slaConstraints} = props;
+        const isPublic = props.public;
+        const infoModel = new InformationModel(informationModel, null, null, null, null, null);
+        const federationMembers = members.map(
+            // If there is no platformId in member and just put empty string
+            member => new FederationMember(member.platformId ? member.platformId : "", null)
+        );
+        const federation = new Federation(id, name, isPublic, infoModel, slaConstraints, federationMembers);
+
         this.props.registerFederation(
-            props,
+            federation,
             (res) => {
                 const pattern = new RegExp(`${ROOT_URL}$`);
 
@@ -77,138 +87,6 @@ class FederationRegistrationModal extends Component {
         });
     };
 
-    renderInputField = (field) => {
-        const { input, type, placeholder, componentClass, rows, subElement, errorField,
-            label, helpMessage, maxLength, meta : { touched, invalid, error } } = field;
-        const validationState = getValidationState(input.value, touched, invalid);
-
-        return (
-            <FormGroup controlId={input.name} validationState={validationState}>
-                {label ? <ControlLabel>{label}</ControlLabel> : ""}
-                <FormControl
-                    { ...input } componentClass={componentClass} rows={rows}
-                    type={type} placeholder={placeholder} maxLength={maxLength} />
-                <FormControl.Feedback className={subElement ? "sub-element" : ""}/>
-                <HelpBlock>{validationState === "error" ? error : helpMessage}</HelpBlock>
-                <FieldError error={errorField} />
-            </FormGroup>
-        );
-    };
-
-    renderPlatformIdField = ({ input, type, placeholder, componentClass, rows,
-                                 subElement, errorField, label, helpMessage, maxLength,
-                                 onAdd, onDelete, meta : { touched, invalid, error } }) => {
-        const validationState = getValidationState(input.value, touched, invalid);
-
-        return (
-            <FormGroup controlId={input.name} validationState={validationState}>
-                {label ? <ControlLabel>{label}</ControlLabel> : ""}
-                <InputGroup>
-                    <FormControl
-                        { ...input }  rows={rows} componentClass={componentClass}
-                        type={type} placeholder={placeholder} maxLength={maxLength} />
-                    <InputGroup.Button className="dynamic-input-group">
-                        <Button
-                            bsStyle="primary"
-                            className="dynamic-input-group-btn"
-                            type="button"
-                            onClick={onAdd}
-                        >
-                            <Glyphicon glyph="plus"/>
-                        </Button>
-                    </InputGroup.Button>
-                    <InputGroup.Button className="dynamic-input-group">
-                        <Button
-                            bsStyle="danger"
-                            className="dynamic-input-group-btn"
-                            style={{marginLeft: "0.25em", borderRadius: "4px"}}
-                            type="button"
-                            onClick={onDelete}
-                        >
-                            <Glyphicon glyph="minus"/>
-                        </Button>
-                    </InputGroup.Button>
-                </InputGroup>
-                <FormControl.Feedback className={subElement ? "sub-element-description" : ""}/>
-                <HelpBlock>{validationState === "error" ? error : helpMessage}</HelpBlock>
-                <FieldError error={errorField} />
-            </FormGroup>
-
-        );
-    };
-
-    renderPlatforms = ({ fields, componentClass, maxLength, label, placeholder, helpMessage, errorField, isActive }) => {
-
-        if (fields.length === 0 && isActive)
-            fields.push({});
-
-        return(
-            <FormGroup>
-                <ControlLabel>{label}</ControlLabel>
-                <ul style={{listStyle: "none", paddingLeft: 0}}>
-                    {fields.map((member, index) => (
-                        <li key={index} style={{overflow: "hidden"}}>
-                            <Field
-                                name={`${member}.id`}
-                                componentClass={componentClass}
-                                maxLength={maxLength}
-                                placeholder={placeholder}
-                                helpMessage={helpMessage}
-                                errorField={errorField ? errorField[index] : ""}
-                                onDelete={
-                                    () => {
-                                        if (fields.length > 1)
-                                            fields.remove(index)
-                                    }
-                                }
-                                onAdd={() => fields.push({})}
-                                subElement={true}
-                                component={this.renderPlatformIdField}
-                            />
-                        </li>
-                    ))}
-                </ul>
-            </FormGroup>
-
-        )
-    };
-
-    renderQoSConstraints = ({ fields, label, errorField, federations }) => {
-
-        return(
-            <FormGroup id="qos-constraint-group">
-
-                <ControlLabel id="qos-constraint-label">{label}</ControlLabel>
-                <InputGroup.Button id="qos-constraint-add-btn" className="dynamic-input-group">
-                    <Button
-                        bsStyle="primary"
-                        bsSize="xsmall"
-                        className="dynamic-input-group-btn"
-                        type="button"
-                        onClick={() => fields.push({})}
-                    >
-                        <Glyphicon glyph="plus"/>
-                    </Button>
-                </InputGroup.Button>
-
-                <ul style={{listStyle: "none", paddingLeft: 0}}>
-                    {fields.map((member, index) => (
-                        <li key={index}>
-                            <QoSConstraint
-                                member={member}
-                                index={index}
-                                federations={federations}
-                                errorField={errorField}
-                                onDelete={ () => {fields.remove(index)} }
-                            />
-                        </li>
-                    ))}
-                </ul>
-            </FormGroup>
-
-        )
-    };
-
     render() {
         const { handleSubmit, modalState, federations, federationsRegistrationValidity } = this.props;
         const opts = { disabled : !federationsRegistrationValidity };
@@ -234,69 +112,11 @@ class FederationRegistrationModal extends Component {
                             <AlertDismissable alertStyle="danger" message={federations.federationRegistrationError}
                                               dismissHandler={this.dismissFederationRegistrationErrorAlert} />
 
-                            <Row>
-                                <Col lg={12} md={12} sm={12} xs={12}>
-                                    <Field
-                                        name="id" type="text" maxLength={30}
-                                        label="Federation Id" placeholder="Enter the federation id"
-                                        helpMessage={"From 4 to 30 characters. Include only letters, digits, '-' and '_'"}
-                                        errorField={federations.id_error}
-                                        component={this.renderInputField}
-                                    />
-                                </Col>
-                            </Row>
-
-                            <Row>
-                                <Col lg={6} md={6} sm={6} xs={6}>
-                                    <FormGroup controlId="informationModel">
-                                        <ControlLabel>Public</ControlLabel>
-                                        <Field
-                                            name="informationModel" options={this.informationModels()}
-                                            placeholder="Information Model" subElement={true}
-                                            component={RFReactSelect}
-                                        />
-                                        <FieldError error={federations.informationModel_error} />
-                                    </FormGroup>
-                                </Col>
-
-                                <Col lg={6} md={6} sm={6} xs={6}>
-                                    <FormGroup controlId="public">
-                                        <ControlLabel>Public</ControlLabel>
-                                        <Field
-                                            name="type" options={FEDERATION_VISIBILITY_TYPES}
-                                            clearable={false} searchable={false}
-                                            component={RFReactSelect}
-                                        />
-                                        <FormControl.Feedback />
-                                        <HelpBlock>Has the federation public visibility</HelpBlock>
-                                        <FieldError error={federations.public_error} />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-
-                            <Row>
-                                <Col lg={12} md={12} sm={12} xs={12}>
-                                    <FieldArray
-                                        name="platforms" maxLength={30} label="Federation Members"
-                                        placeholder="Enter the platform id"
-                                        helpMessage={"From 4 to 30 characters. Include only letters, digits, '-' and '_'"}
-                                        errorField={federations.platforms_error}
-                                        isActive={!!modalState[FEDERATION_REGISTRATION_MODAL]}
-                                        component={this.renderPlatforms}
-                                    />
-                                </Col>
-                            </Row>
-
-                            <Row>
-                                <Col lg={12} md={12} sm={12} xs={12}>
-                                    <FieldArray
-                                        name="qosConstraints" maxLength={30} label="QoS Constraints"
-                                        federations={federations}
-                                        isActive={!!modalState[FEDERATION_REGISTRATION_MODAL]}
-                                        component={this.renderQoSConstraints}
-                                    />
-                                </Col>
-                            </Row>
+                           <FederationFormBody
+                               federations={federations}
+                               informationModels={this.informationModels()}
+                               isActive={!!modalState[FEDERATION_REGISTRATION_MODAL]}
+                           />
 
                         </Modal.Body>
                         <Modal.Footer>
@@ -315,8 +135,11 @@ function validate(values) {
     const errors = {};
     const validationFunctions = {
         "id" : validateId,
-        "platforms" : validatePlatformIds,
-        "qosConstraints" : validateQoSConstraints
+        "name" : validateName,
+        "informationModel" : validateInformationModel,
+        "public" : isEmpty,
+        "members" : validatePlatformIds,
+        "slaConstraints" : validateQoSConstraints
     };
 
     Object.keys(validationFunctions).forEach(function (key) {
@@ -331,16 +154,19 @@ function mapStateToProps(state) {
         userPlatforms: state.userPlatforms,
         informationModels: state.informationModels,
         federations: state.federations,
-        federationsRegistrationValidity: getFederationRegistrationValidity(state)
+        federationsRegistrationValidity: getFederationRegistrationValidity(state),
+        initialValues: { public : "true" },
     };
 }
 
-export default reduxForm({
+FederationRegistrationModal = reduxForm({
     form: 'FederationRegistrationForm',
     validate
-})(
-    connect(mapStateToProps, {
-        changeModalState, registerFederation,
-        dismissAlert, removeErrors
-    })(withRouter(FederationRegistrationModal))
-);
+})(FederationRegistrationModal);
+
+export default FederationRegistrationModal = connect(mapStateToProps, {
+    changeModalState,
+    registerFederation,
+    dismissAlert,
+    removeErrors
+})(withRouter(FederationRegistrationModal));

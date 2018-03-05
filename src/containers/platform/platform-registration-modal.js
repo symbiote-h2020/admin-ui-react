@@ -7,20 +7,19 @@ import _ from "lodash";
 import { PLATFORM_REGISTRATION_MODAL, USER_LOGIN_MODAL } from "../../reducers/modal/modal-reducer";
 import PlatformFormBody from "../../components/platform/platform-form-body";
 import { InterworkingService, Platform } from "../../helpers/object-definitions";
-import { getPlatformRegistrationValidity } from "../../selectors/index";
+import { getPlatformRegistrationValidity } from "../../selectors";
 import { FieldError, AlertDismissable } from "../../helpers/errors";
-import { ROOT_URL, PLATFORM_TYPES } from "../../configuration/index";
-import { fetchAllInformationModels } from "../../actions/info-model-actions";
+import { ROOT_URL, PLATFORM_TYPES } from "../../configuration";
 import { registerPlatform } from "../../actions/platform-actions";
 import {
     changeModalState, removeErrors, dismissAlert,
     DISMISS_PLATFORM_REGISTRATION_ERROR_ALERT, REMOVE_PLATFORM_ERRORS
 } from "../../actions/index";
 import {
-    validateId, validateName, validateDescriptions,
+    validateName, validateDescriptions,
     validateInterworkingInterfaceUrl, validateInformationModel
-} from "../../validation/platform-request-validation";
-
+} from "../../validation/platform-registration-validation";
+import { validateId } from "../../validation/helpers";
 
 class PlatformRegistrationModal extends Component {
 
@@ -31,10 +30,6 @@ class PlatformRegistrationModal extends Component {
         this.close = this.close.bind(this);
         this.informationModels = this.informationModels.bind(this);
         this.dismissPlatformRegistrationErrorAlert = this.dismissPlatformRegistrationErrorAlert.bind(this);
-    }
-
-    componentDidMount() {
-        this.props.fetchAllInformationModels();
     }
 
     close() {
@@ -136,7 +131,7 @@ function mapStateToProps(state) {
         informationModels: state.informationModels,
         userPlatforms: state.userPlatforms,
         platformRegistrationValidity: getPlatformRegistrationValidity(state),
-        initialValues: {type: "false"},
+        initialValues: { type: "false" },
     };
 }
 
@@ -145,10 +140,12 @@ PlatformRegistrationModal = reduxForm({
     validate
 })(PlatformRegistrationModal);
 
-export default PlatformRegistrationModal = connect(mapStateToProps,
-    { changeModalState, fetchAllInformationModels,
-        registerPlatform, dismissAlert, removeErrors }
-)(withRouter(PlatformRegistrationModal));
+export default PlatformRegistrationModal = connect(mapStateToProps, {
+    changeModalState,
+    registerPlatform,
+    dismissAlert,
+    removeErrors
+})(withRouter(PlatformRegistrationModal));
 
 
 

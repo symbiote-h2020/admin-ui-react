@@ -29,7 +29,7 @@ export default class CollapsibleFederationPanel extends Component {
     };
 
     handleOpenDeleteModal = () => {
-        this.props.openDeleteModal(this.props.federation.federationId);
+        this.props.openDeleteModal(this.props.federation.id);
     };
 
     render() {
@@ -41,7 +41,7 @@ export default class CollapsibleFederationPanel extends Component {
                    expanded={this.state.open} onToggle={() => {}}>
                 <Panel.Heading onClick={this.togglePanel}>
                     <Panel.Title componentClass="h3">
-                        {federation.federationId}
+                        {federation.name}
                     </Panel.Title>
                     <Glyphicon glyph={this.state.open ? "minus" : "plus"} className="pull-right" />
                 </Panel.Heading>
@@ -49,6 +49,7 @@ export default class CollapsibleFederationPanel extends Component {
                     <FederationPanelBody
                         federation={federation}
                         userPlatforms={userPlatforms}
+                        availableInfoModels={this.props.informationModels.availableInfoModels}
                         isAdmin={isAdmin}
                         onOpenLeaveModal={this.props.openLeaveModal}
                     />

@@ -135,9 +135,10 @@ class FederationList extends Component {
                 {_.map(federations, (federation) => {
                     return (
                         <CollapsibleFederationPanel
-                            key={federation.federationId}
+                            key={federation.id}
                             userPlatforms={this.props.userPlatforms}
                             federation={federation}
+                            informationModels={this.props.informationModels}
                             openLeaveModal={this.props.activateFederationLeaveModal}
                             openDeleteModal={this.props.activateFederationDeleteModal}
                             isAdmin={isAdmin} />
@@ -164,6 +165,7 @@ function mapStateToProps(state) {
     return {
         userPlatforms: state.userPlatforms.availablePlatforms,
         federations: state.federations,
+        informationModels: state.informationModels,
         userFederations: getUserFederations(state),
         federationDeleteModal: state.federationDeleteModal,
         federationLeaveModal: state.federationLeaveModal

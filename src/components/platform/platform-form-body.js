@@ -7,6 +7,7 @@ import { getValidationState } from "../../validation/helpers";
 
 
 const PlatformFormBody = ({ userPlatforms, informationModels, platformTypes, idDisabled, isActive }) => {
+
     return(
         <Fragment>
             <Row>

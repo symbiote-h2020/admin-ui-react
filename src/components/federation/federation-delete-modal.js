@@ -10,7 +10,7 @@ const FederationDeleteModal = ({ federation, deleteModalOpen, closeModal, handle
                 <Fragment>
                     <Modal.Header closeButton>
                         <Modal.Title>Are you sure you want to delete the federation with id
-                            <strong> {federation.federationId}</strong>?</Modal.Title>
+                            <strong> {federation.id}</strong>?</Modal.Title>
                     </Modal.Header>
                     <Modal.Footer>
                         <Button type="button" bsStyle="danger"

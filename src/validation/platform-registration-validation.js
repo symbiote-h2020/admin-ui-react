@@ -1,17 +1,5 @@
 import { lengthValidation } from "./helpers";
 
-export function validateId(value) {
-    const pattern = new RegExp('^[\\w-]{4,}$');
-
-    if (value && !pattern.test(value)) {
-        return "From 4 to 30 characters. " +
-            "Include only letters, digits, '-' and '_'. You can leave it empty for autogeneration";
-    } else if (value && value.length > 30) {
-        return `Please lengthen the name to 30 characters or less (you are currently using
-         ${value.length} characters).`;
-    } else
-        return null;
-}
 
 export function validateName(value) {
     return lengthValidation("name", value ? value.length : 0, 3, 30);

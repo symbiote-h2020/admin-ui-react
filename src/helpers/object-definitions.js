@@ -38,8 +38,16 @@ export function InformationModel(id, uri, name, owner, rdf, rdfFormat) {
     this.rdfFormat = rdfFormat;
 }
 
-export function CreateFederationRequest(id, platform1Id, platform2Id) {
+export function Federation(id, name, isPublic, informationModel, slaConstraints, members) {
     this.id = id;
-    this.platform1Id = platform1Id;
-    this.platform2Id = platform2Id;
+    this.name = name;
+    this.public = isPublic;
+    this.informationModel = informationModel;
+    this.slaConstraints = slaConstraints;
+    this.members = members;
+}
+
+export function FederationMember(platformId, interworkingServiceURL) {
+    this.platformId = platformId;
+    this.interworkingServiceUrl = interworkingServiceURL;
 }

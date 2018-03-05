@@ -2,9 +2,15 @@ import React from "react";
 import { Panel, Row, Col, FormGroup, FormControl, ControlLabel, Button, Glyphicon } from "react-bootstrap";
 import _ from "lodash";
 import Select from "react-select";
-import { COMPARATOR, QOS_METRICS} from "../../configuration/index";
+import { COMPARATOR, QOS_METRICS, FEDERATION_VISIBILITY_TYPES} from "../../configuration";
 
-const FederationPanelBody = ({ federation, userPlatforms, onOpenLeaveModal, isAdmin }) => {
+const FederationPanelBody = ({ federation, userPlatforms, availableInfoModels, onOpenLeaveModal, isAdmin }) => {
+
+    const informationModelId = federation.informationModel.id;
+    const informationModelOptions = [{
+        label : availableInfoModels[informationModelId].name,
+        value : informationModelId
+    }];
 
     const leaveButton = (ownsPlatform, platformId, width) => {
         return(
@@ -13,7 +19,7 @@ const FederationPanelBody = ({ federation, userPlatforms, onOpenLeaveModal, isAd
                      style={{paddingTop: "6px"}}>
                     <Button bsStyle="danger" bsSize="xsmall"
                             onClick={() => {
-                                onOpenLeaveModal(federation.federationId, platformId)
+                                onOpenLeaveModal(federation.id, platformId)
                             }}
                     >
                         <Glyphicon glyph="minus" />
@@ -138,29 +144,62 @@ const FederationPanelBody = ({ federation, userPlatforms, onOpenLeaveModal, isAd
     return(
         <Panel.Body>
             <Row>
-                <Col lg={6} md={6} sm={12} xs={12}>
+                <Col lg={6} md={6} sm={6} xs={6}>
                     <RenderInputField
-                        value={federation.federationId}
-                        label="Id"
+                        value={federation.id}
+                        label="Federation Id"
                         type="text"
                     />
                 </Col>
-                <Col lg={6} md={6} sm={12} xs={12}>
-                    <ControlLabel>Federated Platforms</ControlLabel>
-                    {federation.platformIds.map(platformId =>
+                <Col lg={6} md={6} sm={6} xs={6}>
+                    <RenderInputField
+                        value={federation.name}
+                        label="Federation Name"
+                        type="text"
+                    />
+                </Col>
+            </Row>
+
+            <Row>
+                <Col lg={6} md={6} sm={6} xs={6}>
+                    <FormGroup controlId="informationModel">
+                        <ControlLabel>Information Model</ControlLabel>
+                        <Select
+                            options={informationModelOptions}
+                            value={informationModelOptions[0].value}
+                            disabled={true} />
+                    </FormGroup>
+                </Col>
+
+                <Col lg={6} md={6} sm={6} xs={6}>
+                    <FormGroup controlId="public">
+                        <ControlLabel>Public</ControlLabel>
+                        <Select
+                            options={FEDERATION_VISIBILITY_TYPES}
+                            value={federation.public}
+                            disabled={true} />
+                    </FormGroup>
+                </Col>
+            </Row>
+
+            <Row>
+                <Col lg={12} md={12} sm={12} xs={12}>
+                    <ControlLabel>Federation Members</ControlLabel>
+                    {federation.members.map(member =>
                         <RenderInputField
-                            value={platformId}
-                            key={platformId}
+                            value={member.platformId}
+                            key={member.platformId}
                             type="text"
                             isPlatformIdField={true}
                             isFederatedPlatformId={true}
-                            ownsPlatform={ownsPlatform(platformId, userPlatforms)}
+                            ownsPlatform={ownsPlatform(member.platformId, userPlatforms)}
                         />
                     )}
                 </Col>
+            </Row>
 
-                {displayQoSConstraints (federation.qosConstraints)}
-
+            <Row>
+                {displayQoSConstraints (federation.slaConstraints)}
             </Row>
         </Panel.Body>
     );

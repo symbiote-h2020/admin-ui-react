@@ -8,8 +8,8 @@ import RFReactSelect from "../../helpers/redux-form-react-selector-integrator";
 
 const QoSConstraint = ({ member, index, federations, onDelete }) => {
 
-    const { qosConstraints_metric_error, qosConstraints_comparator_error,
-        qosConstraints_threshold_error, qosConstraints_duration_error } = federations;
+    const { slaConstraints_metric_error, slaConstraints_comparator_error,
+        slaConstraints_threshold_error, slaConstraints_duration_error } = federations;
 
     return(
         <div className="qos-constraint">
@@ -26,7 +26,7 @@ const QoSConstraint = ({ member, index, federations, onDelete }) => {
                                     component={RFReactSelect}
                                 />
                                 <HelpBlock>Mandatory</HelpBlock>
-                                <FieldError error={qosConstraints_metric_error ? qosConstraints_metric_error[index] : ""} />
+                                <FieldError error={slaConstraints_metric_error ? slaConstraints_metric_error[index] : ""} />
                             </FormGroup>
                         </Col>
 
@@ -39,7 +39,7 @@ const QoSConstraint = ({ member, index, federations, onDelete }) => {
                                     component={RFReactSelect}
                                 />
                                 <HelpBlock>Mandatory</HelpBlock>
-                                <FieldError error={qosConstraints_comparator_error ? qosConstraints_comparator_error[index] : ""} />
+                                <FieldError error={slaConstraints_comparator_error ? slaConstraints_comparator_error[index] : ""} />
                             </FormGroup>
                         </Col>
 
@@ -49,7 +49,7 @@ const QoSConstraint = ({ member, index, federations, onDelete }) => {
                                 placeholder="Threshold"
                                 helpMessage="Mandatory"
                                 subElement={true}
-                                errorField={qosConstraints_threshold_error ? qosConstraints_threshold_error[index] : ""}
+                                errorField={slaConstraints_threshold_error ? slaConstraints_threshold_error[index] : ""}
                                 component={renderInputField}
                             />
                         </Col>
@@ -62,7 +62,7 @@ const QoSConstraint = ({ member, index, federations, onDelete }) => {
                                 placeholder="Duration"
                                 helpMessage="Optional"
                                 subElement={true}
-                                errorField={qosConstraints_duration_error ? qosConstraints_duration_error[index] : ""}
+                                errorField={slaConstraints_duration_error ? slaConstraints_duration_error[index] : ""}
                                 component={renderInputField}
                             />
                         </Col>

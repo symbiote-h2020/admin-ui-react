@@ -15,12 +15,12 @@ import { updatePlatform, deactivatePlatformModal } from "../../actions/platform-
 import {
     changeModalState, removeErrors, dismissAlert,
     DEACTIVATE_PLATFORM_UPDATE_MODAL, DISMISS_PLATFORM_UPDATE_ERROR_ALERT, REMOVE_PLATFORM_ERRORS
-} from "../../actions/index";
+} from "../../actions";
 import {
-    validateId, validateName, validateDescriptions,
+    validateName, validateDescriptions,
     validateInterworkingInterfaceUrl, validateInformationModel
-} from "../../validation/platform-request-validation";
-
+} from "../../validation/platform-registration-validation";
+import { validateId } from "../../validation/helpers";
 
 class PlatformUpdateModal extends Component {
 
