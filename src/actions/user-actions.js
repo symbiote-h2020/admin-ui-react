@@ -45,7 +45,7 @@ export function registerUser(userInfo, cb) {
     };
 }
 
-export function userLogin(props, redirect_on_success, cb) {
+export function userLogin(props, redirect_on_success, previous_cookie, cb) {
     let url = "";
     // eslint-disable-next-line
     const customHeaders = {...headers, ['Content-Type']: 'application/x-www-form-urlencoded; charset=UTF-8'};
@@ -73,7 +73,8 @@ export function userLogin(props, redirect_on_success, cb) {
 
     return {
         type: USER_LOGIN,
-        payload: request
+        payload: request,
+        meta: { previous_cookie }
     };
 }
 

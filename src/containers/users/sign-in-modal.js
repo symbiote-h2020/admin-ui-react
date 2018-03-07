@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
+import Cookies from 'universal-cookie';
 import { Modal, Button, FormControl, InputGroup, Glyphicon } from "react-bootstrap";
 import { dismissAlert, changeModalState, DISMISS_WRONG_CREDENTIALS_ALERT } from "../../actions/index";
 import { AlertDismissable } from "../../helpers/errors";
@@ -34,10 +35,13 @@ class SignInModal extends Component {
     }
 
     onSubmit(props) {
-        this.props.userLogin(props, this.props.redirect_on_success, (res) => {
-            const pattern = new RegExp('error');
+        const cookies = new Cookies();
+        const previous_cookie = cookies.get('XSRF-TOKEN');
 
-            if (!pattern.test(res.request.responseURL)) {
+        this.props.userLogin(props, this.props.redirect_on_success,previous_cookie, (res) => {
+            const new_cookie = cookies.get('XSRF-TOKEN');
+
+            if (previous_cookie !== new_cookie) {
                 this.props.changeModalState(this.modalName, false);
                 this.props.history.push(this.props.redirect_on_success);
             }
