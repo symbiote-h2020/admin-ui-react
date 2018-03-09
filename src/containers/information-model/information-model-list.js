@@ -1,18 +1,24 @@
 import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import { Button } from "react-bootstrap";
 import _ from "lodash";
 import CollapsibleInformationModelPanel from "../../components/information-model/collapsible-information-model-panel";
 import InfoModelDeleteModal from "../../components/information-model/info-model-delete-modal";
-import { AlertDismissable } from "../../helpers/errors";
+import { FieldError, AlertDismissable } from "../../helpers/errors";
 import {
     fetchUserInformationModels, fetchAllInformationModels, deleteInfoModel,
     activateInfoModelDeleteModal, deactivateInfoModelDeleteModal
 } from "../../actions/info-model-actions";
-import { changeModalState, dismissAlert } from "../../actions/index";
-import { DISMISS_INFO_MODEL_DELETION_ERROR_ALERT, DISMISS_INFO_MODEL_DELETION_SUCCESS_ALERT } from "../../actions/index";
-import { ROOT_URL } from "../../configuration/index";
-import { USER_LOGIN_MODAL } from "../../reducers/modal/modal-reducer";
+import {
+    changeModalState,
+    dismissAlert,
+    DISMISS_INFO_MODEL_DELETION_ERROR_ALERT,
+    DISMISS_INFO_MODEL_DELETION_SUCCESS_ALERT,
+    DISMISS_INFO_MODEL_REGISTRATION_SUCCESS_ALERT
+} from "../../actions";
+import { ROOT_URL } from "../../configuration";
+import { INFORMATION_MODEL_REGISTRATION_MODAL, USER_LOGIN_MODAL } from "../../reducers/modal/modal-reducer";
 
 class InformationModelList extends Component {
 
@@ -20,6 +26,11 @@ class InformationModelList extends Component {
         this.props.fetchUserInformationModels();
         this.props.fetchAllInformationModels();
     }
+
+    openRegistrationModal = () => {
+        this.props.changeModalState(INFORMATION_MODEL_REGISTRATION_MODAL, true);
+
+    };
 
     handleDeleteInfoModel= () => {
         this.props.deleteInfoModel(this.props.infoModelDeleteModal.infoModelIdToDelete, (res) => {
@@ -48,6 +59,10 @@ class InformationModelList extends Component {
         );
     };
 
+    dismissInfoModelRegistrationSuccessAlert() {
+        this.props.dismissAlert(DISMISS_INFO_MODEL_REGISTRATION_SUCCESS_ALERT)
+    }
+
     dismissInfoModelDeletionSuccessAlert() {
         this.props.dismissAlert(DISMISS_INFO_MODEL_DELETION_SUCCESS_ALERT)
     }
@@ -57,15 +72,27 @@ class InformationModelList extends Component {
     }
 
     render() {
-        const { availableUserInfoModels, successfulInfoModelDeletion, infoModelDeletionError } = this.props.informationModels;
+        const { availableUserInfoModels, successfulInfoModelDeletion, successfulInfoModelRegistration,
+            infoModelDeletionError, fetching_error } = this.props.informationModels;
         const { infoModelIdToDelete } = this.props.infoModelDeleteModal;
 
         return(
             <Fragment>
+                <FieldError error={fetching_error}/>
+                <AlertDismissable alertStyle="success" message={successfulInfoModelRegistration}
+                                  dismissHandler={this.dismissInfoModelRegistrationSuccessAlert.bind(this)} />
                 <AlertDismissable alertStyle="danger" message={infoModelDeletionError}
                                   dismissHandler={this.dismissInfoModelDeletionErrorAlert.bind(this)} />
                 <AlertDismissable alertStyle="success" message={successfulInfoModelDeletion}
                                   dismissHandler={this.dismissInfoModelDeletionSuccessAlert.bind(this)} />
+
+                <Button
+                    className="registration-btn"
+                    bsStyle="info"
+                    onClick={this.openRegistrationModal}>
+                    Register New Information Model
+                </Button>
+
                 {_.map(availableUserInfoModels, (infoModel) => {
                     return <CollapsibleInformationModelPanel
                         key={infoModel.id}

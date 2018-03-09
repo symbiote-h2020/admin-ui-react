@@ -5,7 +5,7 @@ import _ from "lodash";
 import CollapsibleFederationPanel from "../../components/federation/collapsible-federation-panel";
 import FederationLeaveModal from "../../components/federation/federation-leave-modal";
 import FederationDeleteModal from "../../components/federation/federation-delete-modal";
-import { AlertDismissable } from "../../helpers/errors";
+import { FieldError, AlertDismissable } from "../../helpers/errors";
 import {
     fetchFederations, deleteFederation, leaveFederation,
     activateFederationDeleteModal, deactivateFederationDeleteModal,
@@ -113,7 +113,7 @@ class FederationList extends Component {
 
     render() {
         const { availableFederations, successfulFederationLeave, successfulFederationDeletion,
-            federationLeaveError, federationDeletionError } = this.props.federations;
+            federationLeaveError, federationDeletionError, fetching_error } = this.props.federations;
         const { federationIdToDelete } = this.props.federationDeleteModal;
         const federationIdToLeave = this.props.federationLeaveModal.federationId;
         const platformIdToLeave = this.props.federationLeaveModal.platformId;
@@ -123,6 +123,7 @@ class FederationList extends Component {
 
         return(
             <Fragment>
+                <FieldError error={fetching_error}/>
                 <AlertDismissable alertStyle="danger" message={federationDeletionError}
                                   dismissHandler={this.dismissFederationDeletionErrorAlert} />
                 <AlertDismissable alertStyle="success" message={successfulFederationDeletion}

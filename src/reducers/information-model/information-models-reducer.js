@@ -7,13 +7,14 @@ import {
 } from "../../actions/index";
 import {ROOT_URL} from "../../configuration/index";
 
+const INITIAL_STATE = { availableInfoModels : {} };
 export default function(state = {}, action) {
     switch(action.type) {
         case FETCH_ALL_INFORMATION_MODELS:
             if (action.error)
-                return { fetching_error : `${action.payload.message}: Could not fetch the information models`};
+                return { ...INITIAL_STATE, fetching_error : `${action.payload.message}: Could not fetch the information models`};
             else {
-                return {...state, availableInfoModels :  _.mapKeys(action.payload.data, "id")};
+                return { ...state, availableInfoModels :  _.mapKeys(action.payload.data, "id")};
             }
         case FETCH_USER_INFORMATION_MODELS:
             if (action.error)

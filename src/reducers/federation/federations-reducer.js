@@ -8,11 +8,12 @@ import {
 } from "../../actions";
 import { ROOT_URL } from "../../configuration";
 
+const INITIAL_STATE = { availableFederations: {} };
 export default function(state = {}, action) {
     switch(action.type) {
         case FETCH_FEDERATIONS:
             if (action.error)
-                return { fetching_error : `${action.payload.message}: Could not fetch the federation list`};
+                return { ...INITIAL_STATE, fetching_error : `${action.payload.message}: Could not fetch the federation list`};
             else {
                 return {...state, availableFederations :  _.mapKeys(action.payload.data, "id")};
             }

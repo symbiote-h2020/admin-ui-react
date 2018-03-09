@@ -6,7 +6,7 @@ import _ from "lodash";
 import CollapsiblePlatformPanel from "../../components/platform/collapsible-platform-panel";
 import PlatformDeleteModal from "../../components/platform/platform-delete-modal";
 import PlatformConfigModal from "./platform-config-modal";
-import { AlertDismissable } from "../../helpers/errors";
+import { FieldError, AlertDismissable } from "../../helpers/errors";
 import {
     fetchUserPlatforms, deletePlatform, activatePlatformModal, deactivatePlatformModal
 } from "../../actions/platform-actions";
@@ -95,12 +95,13 @@ class PlatformList extends Component {
 
     render() {
         const { availablePlatforms, successfulPlatformRegistration, successfulPlatformUpdate,
-            successfulPlatformDeletion, platformDeletionError } = this.props.userPlatforms;
+            successfulPlatformDeletion, platformDeletionError, fetchUserPlatformError } = this.props.userPlatforms;
         const { platformIdToDelete } = this.props.platformDeleteModal;
         const { platformId } = this.props.platformConfigModal;
 
         return(
             <Fragment>
+                <FieldError error={fetchUserPlatformError}/>
                 <AlertDismissable alertStyle="success" message={successfulPlatformRegistration}
                                   dismissHandler={this.dismissPlatformRegistrationSuccessAlert} />
                 <AlertDismissable alertStyle="success" message={successfulPlatformUpdate}

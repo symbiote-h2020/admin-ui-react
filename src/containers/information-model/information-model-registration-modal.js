@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Modal, Button, FormGroup, FormControl, ControlLabel, Row, Col, HelpBlock, ProgressBar } from "react-bootstrap";
 import { INFORMATION_MODEL_REGISTRATION_MODAL, USER_LOGIN_MODAL } from "../../reducers/modal/modal-reducer";
-import { getInfoModelRegistrationValidity } from "../../selectors/index";
+import { getInfoModelRegistrationValidity } from "../../selectors";
 import ProgressBarWrapper from "../../helpers/ProgressBarWrapper";
 import { FieldError, AlertDismissable } from "../../helpers/errors";
 import { getValidationState } from "../../validation/helpers";
@@ -12,18 +12,14 @@ import {
     validateName, validateUri, validateRdfExtension
 } from "../../validation/information-model-registration-validation";
 import {
-    changeModalState, DISMISS_INFO_MODEL_REGISTRATION_ERROR_ALERT, DISMISS_INFO_MODEL_REGISTRATION_SUCCESS_ALERT
-} from "../../actions/index";
-import {
-    dismissAlert, removeErrors, REMOVE_INFO_MODEL_REGISTRATION_ERRORS } from "../../actions/index";
+    changeModalState, dismissAlert, removeErrors,
+    REMOVE_INFO_MODEL_REGISTRATION_ERRORS,
+    DISMISS_INFO_MODEL_REGISTRATION_ERROR_ALERT
+} from "../../actions";
 import { registerInfoModel, uploadingInfoModelProgress } from "../../actions/info-model-actions";
 import { ROOT_URL } from "../../configuration/index";
 
 class InformationModelRegistrationModal extends Component {
-
-    open() {
-        this.props.changeModalState(INFORMATION_MODEL_REGISTRATION_MODAL, true);
-    }
 
     close() {
         this.props.changeModalState(INFORMATION_MODEL_REGISTRATION_MODAL, false);
@@ -52,10 +48,6 @@ class InformationModelRegistrationModal extends Component {
             },
             this.props.uploadingInfoModelProgress
         );
-    }
-
-    dismissInfoModelRegistrationSuccessAlert() {
-        this.props.dismissAlert(DISMISS_INFO_MODEL_REGISTRATION_SUCCESS_ALERT)
     }
 
     dismissInfoModelRegistrationErrorAlert() {
@@ -120,15 +112,7 @@ class InformationModelRegistrationModal extends Component {
 
         return(
             <Fragment>
-                <Button
-                    className="registration-btn"
-                    bsStyle="info"
-                    onClick={this.open.bind(this)}>
-                    Register New Information Model
-                </Button>
 
-                <AlertDismissable alertStyle="success" message={informationModels.successfulInfoModelRegistration}
-                                  dismissHandler={this.dismissInfoModelRegistrationSuccessAlert.bind(this)} />
 
                 <Modal show={modalState[INFORMATION_MODEL_REGISTRATION_MODAL]} onHide={this.close.bind(this)}>
                     <Modal.Header closeButton>

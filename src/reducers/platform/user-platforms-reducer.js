@@ -13,7 +13,7 @@ export default function(state = INITIAL_STATE, action) {
     switch(action.type) {
         case FETCH_USER_PLATFORMS:
             if (action.error)
-                return { fetchUserPlatformError : `${action.payload.message}: Could not fetch the user's platforms`};
+                return { ...INITIAL_STATE, fetchUserPlatformError : `${action.payload.message}: Could not fetch the user's platforms`};
             else {
                 const data = action.payload.data;
                 return {...data, availablePlatforms :  _.mapKeys(data.availablePlatforms, "id")};
