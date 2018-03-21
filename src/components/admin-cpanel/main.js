@@ -9,16 +9,16 @@ import NavItemDropdown from "./nav-item-dropdown";
 export default class Main extends Component {
     constructor() {
         super();
-        this.state = { hasNavItemDropdownActiveChild: false }
+        this.state = { hasNavItemDropDownActiveChild: false }
         this.activateChild = this.activateChild.bind(this);
     }
 
     handleSelect = () => {
-        this.setState({ hasNavItemDropdownActiveChild: false })
+        this.setState({ hasNavItemDropDownActiveChild: false })
     };
 
     activateChild = () => {
-        this.setState({ hasNavItemDropdownActiveChild: true })
+        this.setState({ hasNavItemDropDownActiveChild: true })
     };
 
     render() {
@@ -36,7 +36,7 @@ export default class Main extends Component {
                                         Delete Information model
                                     </NavItem>
                                     <NavItemDropdown
-                                        hasActiveChild={this.state.hasNavItemDropdownActiveChild}
+                                        hasActiveChild={this.state.hasNavItemDropDownActiveChild}
                                         activateChild={this.activateChild}
                                     />
                                 </Nav>

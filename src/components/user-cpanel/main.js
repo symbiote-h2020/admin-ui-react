@@ -3,23 +3,24 @@ import { Row, Col, Tab, Nav, NavItem } from "react-bootstrap";
 import UserDetails from "./tabs/user-details-tab";
 import ClientDetails from "./tabs/client-details-tab";
 import PlatformDetails from "./tabs/platforms-tab";
+import SSPDetails from "./tabs/ssps-tab"
 import InformationModels from "./tabs/information-models-tab";
-import NavItemDropdown from "../admin-cpanel/nav-item-dropdown";
+import NavItemDropDown from "../admin-cpanel/nav-item-dropdown";
 import FederationListPanel from "./tabs/federations-tab";
 
 export default class Main extends Component {
     constructor() {
         super();
-        this.state = { hasNavItemDropdownActiveChild: false };
+        this.state = { hasNavItemDropDownActiveChild: false };
         this.activateChild = this.activateChild.bind(this);
     }
 
     handleSelect = () => {
-        this.setState({ hasNavItemDropdownActiveChild: false })
+        this.setState({ hasNavItemDropDownActiveChild: false })
     };
 
     activateChild = () => {
-        this.setState({ hasNavItemDropdownActiveChild: true })
+        this.setState({ hasNavItemDropDownActiveChild: true })
     };
 
     render() {
@@ -39,11 +40,14 @@ export default class Main extends Component {
                                     <NavItem eventKey="platform-details" onSelect={this.handleSelect}>
                                         Platform Details
                                     </NavItem>
+                                    <NavItem eventKey="ssp-details" onSelect={this.handleSelect}>
+                                        SSP Details
+                                    </NavItem>
                                     <NavItem eventKey="information-models" onSelect={this.handleSelect}>
                                         Information Models
                                     </NavItem>
-                                    <NavItemDropdown
-                                        hasActiveChild={this.state.hasNavItemDropdownActiveChild}
+                                    <NavItemDropDown
+                                        hasActiveChild={this.state.hasNavItemDropDownActiveChild}
                                         activateChild={this.activateChild}
                                     />
                                 </Nav>
@@ -58,6 +62,9 @@ export default class Main extends Component {
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="platform-details">
                                         <PlatformDetails />
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="ssp-details">
+                                        <SSPDetails />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="information-models">
                                         <InformationModels />
@@ -76,5 +83,4 @@ export default class Main extends Component {
             </div>
         )
     }
-
 }

@@ -1,6 +1,6 @@
 import {ROOT_URL} from "../configuration";
 import {FETCH_USER_SERVICES, headers} from "./index";
-import axios from "axios/index";
+import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
