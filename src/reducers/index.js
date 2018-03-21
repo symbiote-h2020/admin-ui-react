@@ -12,6 +12,7 @@ import PlatformConfigModalReducer from "./platform/config-platform--modal-reduce
 import InfoModelDeleteModalReducer from "./information-model/delete-info-model-modal-reducer";
 import InformationModelReducer from "./information-model/information-models-reducer";
 import UserPlatformsReducer from "./platform/user-platforms-reducer";
+import UserSSPsReducer from "./ssp/user-ssps-reducer";
 import FederationsReducer from "./federation/federations-reducer";
 import FederationDeleteModalReducer from "./federation/delete-federation-modal-reducer";
 import FederationLeaveModalReducer from "./federation/leave-federation-modal-reducer";
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
     infoModelDeleteModal: InfoModelDeleteModalReducer,
     informationModels: InformationModelReducer,
     userPlatforms: UserPlatformsReducer,
+    userSSPs: UserSSPsReducer,
     federations: FederationsReducer,
     federationDeleteModal: FederationDeleteModalReducer,
     federationLeaveModal: FederationLeaveModalReducer,

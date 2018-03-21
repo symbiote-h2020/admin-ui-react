@@ -7,7 +7,7 @@ import {
 } from "../../actions";
 import { ROOT_URL } from "../../configuration";
 
-const INITIAL_STATE = { availablePlatforms: {} };
+const INITIAL_STATE = { availablePlatforms: {}, unavailablePlatforms: {} };
 
 export default function(state = INITIAL_STATE, action) {
     switch(action.type) {
@@ -16,7 +16,11 @@ export default function(state = INITIAL_STATE, action) {
                 return { ...INITIAL_STATE, fetchUserPlatformError : `${action.payload.message}: Could not fetch the user's platforms`};
             else {
                 const data = action.payload.data;
-                return {...data, availablePlatforms :  _.mapKeys(data.availablePlatforms, "id")};
+                return {
+                    message: data.message,
+                    availablePlatforms :  _.mapKeys(data.availablePlatforms, "id"),
+                    unavailablePlatforms : data.unavailablePlatforms
+                };
             }
         case REGISTER_PLATFORM:
             if (action.error) {
