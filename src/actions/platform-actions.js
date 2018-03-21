@@ -1,28 +1,8 @@
 import axios from "axios";
-import {ROOT_URL} from "../configuration";
-import {
-    headers, DELETE_PLATFORM, FETCH_USER_PLATFORMS,
-    GET_PLATFORM_CONFIGURATION, REGISTER_PLATFORM, UPDATE_PLATFORM
-} from "./index";
+import { ROOT_URL } from "../configuration";
+import { DELETE_PLATFORM, GET_PLATFORM_CONFIGURATION, headers, REGISTER_PLATFORM, UPDATE_PLATFORM } from "./index";
 
 axios.defaults.withCredentials = true;
-
-export function fetchUserPlatforms() {
-    const url = `${ROOT_URL}/user/cpanel/list_user_platforms`;
-
-    const config = {
-        url: url,
-        method: 'post',
-        headers: headers
-    };
-
-    const request = axios.request(config);
-
-    return {
-        type: FETCH_USER_PLATFORMS,
-        payload: request
-    };
-}
 
 export function registerPlatform(platform, cb) {
     const url = `${ROOT_URL}/user/cpanel/register_platform`;

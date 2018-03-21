@@ -8,7 +8,7 @@ import PlatformDeleteModal from "../../components/platform/platform-delete-modal
 import PlatformConfigModal from "./platform-config-modal";
 import { FieldError, AlertDismissable } from "../../helpers/errors";
 import {
-    fetchUserPlatforms, deletePlatform, activatePlatformModal, deactivatePlatformModal
+    deletePlatform, activatePlatformModal, deactivatePlatformModal
 } from "../../actions/platform-actions";
 import {
     changeModalState, dismissAlert, DISMISS_PLATFORM_DELETION_ERROR_ALERT, DISMISS_PLATFORM_REGISTRATION_SUCCESS_ALERT,
@@ -16,6 +16,7 @@ import {
 } from "../../actions/index";
 import { ROOT_URL } from "../../configuration/index";
 import { PLATFORM_REGISTRATION_MODAL, USER_LOGIN_MODAL } from "../../reducers/modal/modal-reducer";
+import {fetchUserServices} from "../../actions/owned-services-actions";
 
 class PlatformList extends Component {
 
@@ -152,7 +153,7 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-    fetchUserPlatforms,
+    fetchUserPlatforms: fetchUserServices,
     changeModalState,
     deletePlatform,
     activatePlatformModal,

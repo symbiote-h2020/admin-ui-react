@@ -1,7 +1,7 @@
 import _ from "lodash";
 import {
     DISMISS_PLATFORM_DELETION_SUCCESS_ALERT, REGISTER_PLATFORM, DELETE_PLATFORM, UPDATE_PLATFORM,
-    DISMISS_PLATFORM_REGISTRATION_ERROR_ALERT, DISMISS_PLATFORM_REGISTRATION_SUCCESS_ALERT, FETCH_USER_PLATFORMS,
+    DISMISS_PLATFORM_REGISTRATION_ERROR_ALERT, DISMISS_PLATFORM_REGISTRATION_SUCCESS_ALERT, FETCH_USER_SERVICES,
     REMOVE_PLATFORM_ERRORS, DISMISS_PLATFORM_DELETION_ERROR_ALERT,
     DISMISS_PLATFORM_UPDATE_ERROR_ALERT, DISMISS_PLATFORM_UPDATE_SUCCESS_ALERT
 } from "../../actions";
@@ -11,7 +11,7 @@ const INITIAL_STATE = { availablePlatforms: {} };
 
 export default function(state = INITIAL_STATE, action) {
     switch(action.type) {
-        case FETCH_USER_PLATFORMS:
+        case FETCH_USER_SERVICES:
             if (action.error)
                 return { ...INITIAL_STATE, fetchUserPlatformError : `${action.payload.message}: Could not fetch the user's platforms`};
             else {
