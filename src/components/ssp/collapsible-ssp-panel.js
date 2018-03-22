@@ -3,6 +3,7 @@ import { Panel, Glyphicon, Button } from "react-bootstrap";
 import {
     ACTIVATE_SSP_DELETE_MODAL
 } from "../../actions";
+import SSPPanelBody from "./ssp-panel-body";
 
 export default class CollapsibleSSPPanel extends Component {
     constructor(props) {
@@ -38,6 +39,12 @@ export default class CollapsibleSSPPanel extends Component {
     render() {
         const { ssp } = this.state;
 
+        const exposingSiteLocalAddressOptions = [{
+            label : ssp.exposingSiteLocalAddress ? "Yes" : "No",
+            value : ssp.exposingSiteLocalAddress ? "true" : "false"
+        }];
+
+
         return(
             <Panel id="id" bsStyle="primary" className="platform-panel-entry"
                    expanded={this.state.open} onToggle={() => {}}>
@@ -48,11 +55,10 @@ export default class CollapsibleSSPPanel extends Component {
                     <Glyphicon glyph={this.state.open ? "minus" : "plus"} className="pull-right" />
                 </Panel.Heading>
                 <Panel.Collapse>
-                    {/*<PlatformPanelBody*/}
-                        {/*platform={ssp}*/}
-                        {/*informationModelOptions={informationModelOptions}*/}
-                        {/*platformOptions={platformOptions} */}
-                    {/*/>*/}
+                    <SSPPanelBody
+                        ssp={ssp}
+                        exposingSiteLocalAddressOptions={exposingSiteLocalAddressOptions}
+                    />
                 </Panel.Collapse>
                 <Panel.Footer className="platform-info-footer">
                     <Button
