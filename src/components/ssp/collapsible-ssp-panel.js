@@ -36,7 +36,7 @@ export default class CollapsibleSSPPanel extends Component {
     };
 
     render() {
-        const { ssp, informationModels : {availableInfoModels} } = this.state;
+        const { ssp } = this.state;
         // const informationModelId = ssp.interworkingServices[0].informationModelId;
         // const informationModelOptions = [{
         //     label : availableInfoModels[informationModelId].name,

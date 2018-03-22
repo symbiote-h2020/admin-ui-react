@@ -18,9 +18,9 @@ import {
 } from "../../actions";
 import {
     validateName, validateDescriptions,
-    validateInterworkingInterfaceUrl, validateInformationModel
+    validateInformationModel
 } from "../../validation/platform-registration-validation";
-import { validateId } from "../../validation/helpers";
+import {validateHttpsUrl, validateId} from "../../validation/helpers";
 
 class PlatformUpdateModal extends Component {
 
@@ -114,7 +114,7 @@ function validate(values) {
         "id" : validateId,
         "name" : validateName,
         "descriptions" : validateDescriptions,
-        "interworkingServiceUrl" : validateInterworkingInterfaceUrl,
+        "interworkingServiceUrl" : validateHttpsUrl,
         "informationModel" : validateInformationModel
     };
 

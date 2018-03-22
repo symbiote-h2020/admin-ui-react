@@ -8,7 +8,7 @@ import { removeErrors, changeModalState, REMOVE_USER_REGISTRATION_ERRORS } from 
 import { USER_REGISTRATION_MODAL } from "../../reducers/modal/modal-reducer";
 import { FieldError } from "../../helpers/errors";
 import { fetchUserRoles, registerUser, setSuccessfulUserRegistrationFlag } from "../../actions/user-actions";
-import { getValidationState, isEmpty } from "../../validation/helpers";
+import { getValidationState, isNotEmpty } from "../../validation/helpers";
 import { getRegisterUserFormValidity } from "../../selectors";
 import { validateId, validatePassword, validateEmail } from "../../validation/user-registration-validation";
 
@@ -141,7 +141,7 @@ function validate(values) {
         "validUsername" : validateId,
         "validPassword" : validatePassword,
         "recoveryMail" : validateEmail,
-        "role" : isEmpty
+        "role" : isNotEmpty
     };
 
     Object.keys(validationFunctions).forEach(function (key) {

@@ -26,36 +26,24 @@ export default function(state = INITIAL_STATE, action) {
         case REGISTER_SSP:
             if (action.error) {
                 let newState = {};
-
+                console.log(action)
                 if (action.payload.response) {
                     const message = action.payload.response.data;
 
-                    // if (message["error_id"])
-                    //     newState.id_error = message["error_id"];
-                    //
-                    // if (message["error_name"])
-                    //     newState.name_error = message["error_name"];
-                    //
-                    // if (message["error_description_description"]) {
-                    //     newState["descriptions_error"] = [];
-                    //     for (let i of message["error_description_description"])
-                    //         newState.descriptions_error.push(i);
-                    // }
-                    //
-                    // if (message["error_interworkingServices_url"]) {
-                    //     for(let i = 0; i < message["error_interworkingServices_url"].length; i++)
-                    //         if(message["error_interworkingServices_url"][i])
-                    //             newState.interworkingServiceUrl_error = message["error_interworkingServices_url"][i];
-                    // }
-                    //
-                    // if (message["error_interworkingServices_informationModelId"]) {
-                    //     for(let i = 0; i < message["error_interworkingServices_url"].length; i++)
-                    //         if(message["error_interworkingServices_informationModelId"][i] != null)
-                    //             newState.informationModel_error = message["error_interworkingServices_informationModelId"][i];
-                    // }
-                    //
-                    // if (message["error_isEnabler"])
-                    //     newState["type_error"] = message["error_isEnabler"];
+                    if (message["error_id"])
+                        newState.id_error = message["error_id"];
+
+                    if (message["error_name"])
+                        newState.name_error = message["error_name"];
+
+                    if (message["error_externalAddress"])
+                        newState.externalAddress_error = message["error_externalAddress"];
+
+                    if (message["error_siteLocalAddress"])
+                        newState.siteLocalAddress_error = message["error_siteLocalAddress"];
+
+                    if (message["error_exposingSiteLocalAddress"])
+                        newState.exposingSiteLocalAddress_error = message["error_exposingSiteLocalAddress"];
 
                     newState["sspRegistrationError"] = message.error;
                     return { ...removeErrors(state), ...newState };
@@ -95,7 +83,8 @@ export default function(state = INITIAL_STATE, action) {
 
 const removeErrors = (state) => {
     const errors = [
-        "successfulSSPRegistration", "sspRegistrationError"
+        "id_error", "name_error", "externalAddress_error", "siteLocalAddress_error",
+        "exposingSiteLocalAddress_error", "sspRegistrationError"
     ];
 
     let newState = {...state};

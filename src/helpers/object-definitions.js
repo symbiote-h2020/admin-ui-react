@@ -11,6 +11,14 @@ export function Platform(id, name, description, interworkingServices, isEnabler)
     this.isEnabler = isEnabler;
 }
 
+export function SSP(id, name, externalAddress, siteLocalAddress, exposingSiteLocalAddress) {
+    this.id = id;
+    this.name = name;
+    this.externalAddress = externalAddress;
+    this.siteLocalAddress = siteLocalAddress;
+    this.exposingSiteLocalAddress = exposingSiteLocalAddress;
+}
+
 export function PlatformConfigurationMessage(platformId, platformOwnerUsername, platformOwnerPassword,
                                       componentsKeystorePassword, aamKeystoreName, aamKeystorePassword,
                                       aamPrivateKeyPassword, sslKeystore, sslKeystorePassword, sslKeyPassword,

@@ -1,4 +1,4 @@
-import { lengthValidation } from "./helpers";
+import {lengthValidation} from "./helpers";
 
 
 export function validateName(value) {
@@ -18,20 +18,6 @@ export function validateDescriptions(values) {
         return errors;
     }
     return null;
-}
-
-export function validateInterworkingInterfaceUrl(value) {
-    const error = "A valid https url is required";
-
-    if (!value)
-        return error;
-    const pattern = new RegExp('(https:\\/\\/www\\.|https:\\/\\/)[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$$');
-
-    if (value && !pattern.test(value)) {
-        return error;
-    } else {
-        return null;
-    }
 }
 
 export function validateInformationModel(value) {

@@ -1,4 +1,4 @@
-import { isEmpty, lengthValidation } from "./helpers";
+import { isNotEmpty, lengthValidation } from "./helpers";
 
 export function validateName(value) {
     return lengthValidation("name", value ? value.length : 0, 3, 30);
@@ -39,7 +39,7 @@ function validatePlatformId(value) {
 }
 
 export function validateThreshold(value) {
-    const isEmptyResult = isEmpty(value);
+    const isEmptyResult = isNotEmpty(value);
 
     if (isEmptyResult)
         return isEmptyResult;
@@ -68,8 +68,8 @@ export function validateQoSConstraints(values) {
             const { metric, comparator, threshold, duration } = qosConstraint;
             const qosConstraintError = {};
 
-            qosConstraintError.metric = isEmpty(metric);
-            qosConstraintError.comparator = isEmpty(comparator);
+            qosConstraintError.metric = isNotEmpty(metric);
+            qosConstraintError.comparator = isNotEmpty(comparator);
             qosConstraintError.threshold = validateThreshold(threshold);
             qosConstraintError.duration = validateDuration(duration);
 

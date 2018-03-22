@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { getPlatformConfiguration, deactivatePlatformModal } from "../../actions/platform-actions";
 import { changeModalState, dismissAlert} from "../../actions/index";
-import { getValidationState, isEmpty } from "../../validation/helpers";
+import { getValidationState, isNotEmpty } from "../../validation/helpers";
 import { validateTokenValidity } from "../../validation/platform-config-validation";
 import { FieldError } from "../../helpers/errors";
 import { getPlatformConfigurationValidity } from "../../selectors/index";
@@ -302,11 +302,11 @@ class PlatformConfigModal extends Component {
 function validate(values) {
     const errors = {};
     const validationFunctions = {
-        "paam_username" : isEmpty,
-        "paam_password" : isEmpty,
-        "ssl_keystore" : isEmpty,
-        "ssl_keystore_password" : isEmpty,
-        "ssl_key_password" : isEmpty,
+        "paam_username" : isNotEmpty,
+        "paam_password" : isNotEmpty,
+        "ssl_keystore" : isNotEmpty,
+        "ssl_keystore_password" : isNotEmpty,
+        "ssl_key_password" : isNotEmpty,
         "token_validity" : validateTokenValidity
     };
 

@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import { FormGroup, FormControl, ControlLabel, HelpBlock, Button, InputGroup, Glyphicon } from "react-bootstrap";
 import axios from "axios";
 import { FieldError, AlertDismissable } from "../../helpers/errors";
-import { getValidationState, isEmpty } from "../../validation/helpers";
+import { getValidationState, isNotEmpty } from "../../validation/helpers";
 import { validatePassword } from "../../validation/user-registration-validation";
 import { getChangePasswordFormValidity } from "../../selectors";
 import { changePassword } from "../../actions/user-actions";
@@ -134,7 +134,7 @@ class ChangePassword extends Component {
 function validate(values) {
     const errors = {};
     const validationFunctions = {
-        "oldPassword" : isEmpty,
+        "oldPassword" : isNotEmpty,
         "newPassword" : validatePassword,
         "newPasswordRetyped" : validatePassword
     };

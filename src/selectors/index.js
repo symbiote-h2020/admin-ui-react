@@ -2,6 +2,7 @@ import { createSelector } from "reselect";
 import _ from "lodash";
 
 const getPlatformRegistrationForm = (state) => state.form.PlatformRegistrationForm;
+const getSSPRegistrationForm = (state) => state.form.SSPRegistrationForm;
 const getPlatformUpdateForm = (state) => state.form.PlatformUpdateForm;
 const getInfoModelRegistrationForm = (state) => state.form.InformationModelRegistrationForm;
 const getPlatformConfigurationForm = (state) => state.form.PlatformConfigurationForm;
@@ -43,6 +44,10 @@ const checkForm =  (form) => {
 
 export const getPlatformRegistrationValidity = createSelector(
     [ getPlatformRegistrationForm ], checkForm
+);
+
+export const getSSPRegistrationValidity = createSelector(
+    [ getSSPRegistrationForm ], checkForm
 );
 
 export const getPlatformUpdateValidity = createSelector(

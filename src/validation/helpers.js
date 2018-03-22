@@ -20,7 +20,7 @@ export function lengthValidation(fieldName, length, min, max) {
     }
 }
 
-export function isEmpty(value) {
+export function isNotEmpty(value) {
     return value ? null : "This field is required";
 }
 
@@ -38,4 +38,18 @@ export function validateId(value) {
     }
 
     return null;
+}
+
+export function validateHttpsUrl(value) {
+    const error = "A valid https url is required";
+
+    if (!value)
+        return error;
+    const pattern = new RegExp('(https:\\/\\/www\\.|https:\\/\\/)[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$$');
+
+    if (value && !pattern.test(value)) {
+        return error;
+    } else {
+        return null;
+    }
 }

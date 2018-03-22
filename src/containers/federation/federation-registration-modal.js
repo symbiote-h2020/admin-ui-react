@@ -13,7 +13,7 @@ import {
     validateName, validatePlatformIds, validateQoSConstraints
 } from "../../validation/federation-registration-validation";
 import { validateInformationModel } from "../../validation/platform-registration-validation";
-import { isEmpty, validateId } from "../../validation/helpers";
+import { isNotEmpty, validateId } from "../../validation/helpers";
 import {
     changeModalState, dismissAlert, removeErrors,
     DISMISS_FEDERATION_REGISTRATION_ERROR_ALERT, DISMISS_FEDERATION_REGISTRATION_SUCCESS_ALERT,
@@ -137,7 +137,7 @@ function validate(values) {
         "id" : validateId,
         "name" : validateName,
         "informationModel" : validateInformationModel,
-        "public" : isEmpty,
+        "public" : isNotEmpty,
         "members" : validatePlatformIds,
         "slaConstraints" : validateQoSConstraints
     };
