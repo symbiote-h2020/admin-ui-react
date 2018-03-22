@@ -4,7 +4,10 @@ import {
     DISMISS_SSP_REGISTRATION_SUCCESS_ALERT,
     FETCH_USER_SERVICES,
     REGISTER_SSP,
-    REMOVE_SSP_ERRORS
+    DELETE_SSP,
+    REMOVE_SSP_ERRORS,
+    DISMISS_SSP_DELETION_SUCCESS_ALERT,
+    DISMISS_SSP_DELETION_ERROR_ALERT
 } from "../../actions";
 import { ROOT_URL } from "../../configuration";
 
@@ -26,7 +29,7 @@ export default function(state = INITIAL_STATE, action) {
         case REGISTER_SSP:
             if (action.error) {
                 let newState = {};
-                console.log(action)
+
                 if (action.payload.response) {
                     const message = action.payload.response.data;
 
@@ -69,11 +72,43 @@ export default function(state = INITIAL_STATE, action) {
                     return { ...removeErrors(state), availableSSPs : newAvailableSSPs, successfulSSPRegistration };
                 }
             }
+        case DELETE_SSP:
+            if (action.error) {
+                if (action.payload.response) {
+                    const message = action.payload.response.data;
+                    let newState = _.omit(state, "successfulSSPDeletion");
+                    return { ...newState, sspDeletionError : message };
+                } else {
+                    let newState = _.omit(state, "successfulSSPDeletion");
+                    return {...newState, sspDeletionError: "Network Error: Could not contact server"};
+                }
+            }
+            else {
+                const pattern = new RegExp(`${ROOT_URL}$`);
 
+                if (pattern.test(action.payload.request.responseURL))
+                    return state;
+                else {
+                    const sspId = action.payload.config.data.get("sspIdToDelete");
+                    const successfulSSPDeletion = `SSP "${state.availableSSPs[sspId].name}" was deleted successfully!`;
+
+                    let newState = _.omit(state, "sspDeletionError");
+
+                    return {
+                        ...newState,
+                        availableSSPs : _.omit(state.availableSSPs, sspId),
+                        successfulSSPDeletion
+                    };
+                }
+            }
         case DISMISS_SSP_REGISTRATION_SUCCESS_ALERT:
             return _.omit(state, "successfulSSPRegistration");
         case DISMISS_SSP_REGISTRATION_ERROR_ALERT:
             return _.omit(state, "sspRegistrationError");
+        case DISMISS_SSP_DELETION_SUCCESS_ALERT:
+            return _.omit(state, "successfulSSPDeletion");
+        case DISMISS_SSP_DELETION_ERROR_ALERT:
+            return _.omit(state, "sspDeletionError");
         case REMOVE_SSP_ERRORS:
             return removeErrors(state);
         default:
