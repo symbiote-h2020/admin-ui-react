@@ -14,7 +14,7 @@ export default function(state = INITIAL_STATE, action) {
     switch(action.type) {
         case FETCH_USER_SERVICES:
             if (action.error)
-                return { ...INITIAL_STATE, fetchUserSSPError : `${action.payload.message}: Could not fetch the user's ssps`};
+                return { ...INITIAL_STATE, fetchUserSSPsError : `${action.payload.message}: Could not fetch the user's ssps`};
             else {
                 const data = action.payload.data;
                 return {

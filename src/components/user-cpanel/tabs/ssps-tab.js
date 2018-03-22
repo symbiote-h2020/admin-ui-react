@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import SSPList from "../../../containers/ssp/ssp-list";
 
 const SSPDetails = () => {
     return(
@@ -6,7 +7,7 @@ const SSPDetails = () => {
             SSP details
             {/*<PlatformRegistrationModal />*/}
             {/*<PlatformUpdateModal/>*/}
-            {/*<PlatformList />*/}
+            <SSPList />
         </Fragment>
     );
 };
