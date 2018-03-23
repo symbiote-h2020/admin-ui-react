@@ -33,7 +33,7 @@ export function validateId(value) {
     }
 
     if (value && value.length > 30) {
-        return `Please lengthen the name to 30 characters or less (you are currently using
+        return `Please lengthen the id to 30 characters or less (you are currently using
          ${value.length} characters).`;
     }
 

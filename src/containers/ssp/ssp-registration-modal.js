@@ -15,8 +15,8 @@ import {
     changeModalState, removeErrors, dismissAlert,
     DISMISS_SSP_REGISTRATION_ERROR_ALERT, REMOVE_SSP_ERRORS
 } from "../../actions";
-import { validateName } from "../../validation/platform-registration-validation";
-import { validateHttpsUrl, validateId, isNotEmpty } from "../../validation/helpers";
+import { validateHttpsUrl, isNotEmpty } from "../../validation/helpers";
+import { validateId, validateName } from "../../validation/ssp-registration-validation";
 
 class SSPRegistrationModal extends Component {
 
@@ -65,8 +65,7 @@ class SSPRegistrationModal extends Component {
             if (pattern.test(res.request.responseURL)) {
                 this.props.history.push(ROOT_URL);
                 this.props.changeModalState(USER_LOGIN_MODAL, true);
-            }
-            else if (res.status === 201) {
+            } else if (res.status === 201) {
                 this.close();
             }
 

@@ -48,7 +48,7 @@ export default function(state = INITIAL_STATE, action) {
                     if (message["error_exposingSiteLocalAddress"])
                         newState.exposingSiteLocalAddress_error = message["error_exposingSiteLocalAddress"];
 
-                    newState["sspRegistrationError"] = message.error;
+                    newState["sspRegistrationError"] = message.sspRegistrationError;
                     return { ...removeErrors(state), ...newState };
                 } else {
                     return { ...removeErrors(state), sspRegistrationError: "Network Error: Could not contact server" };

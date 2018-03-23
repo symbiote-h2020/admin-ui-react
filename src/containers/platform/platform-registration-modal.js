@@ -67,8 +67,7 @@ class PlatformRegistrationModal extends Component {
             if (pattern.test(res.request.responseURL)) {
                 this.props.history.push(ROOT_URL);
                 this.props.changeModalState(USER_LOGIN_MODAL, true);
-            }
-            else if (res.status === 201) {
+            } else if (res.status === 201) {
                 this.close();
             }
 

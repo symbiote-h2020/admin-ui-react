@@ -23,11 +23,13 @@ export default function(state = INITIAL_STATE, action) {
                 };
             }
         case REGISTER_PLATFORM:
+            console.log(action)
             if (action.error) {
                 let newState = {};
 
                 if (action.payload.response) {
                     const message = action.payload.response.data;
+                    console.log("passed")
 
                     if (message["error_id"])
                         newState.id_error = message["error_id"];
@@ -56,7 +58,7 @@ export default function(state = INITIAL_STATE, action) {
                     if (message["error_isEnabler"])
                         newState["type_error"] = message["error_isEnabler"];
 
-                    newState["platformRegistrationError"] = message.error;
+                    newState["platformRegistrationError"] = message.platformRegistrationError;
                     return { ...removeErrors(state), ...newState };
                 } else {
                     return { ...removeErrors(state), platformRegistrationError: "Network Error: Could not contact server" };
@@ -115,7 +117,7 @@ export default function(state = INITIAL_STATE, action) {
                     if (message["error_isEnabler"])
                         newState.type_error = message["error_isEnabler"];
 
-                    newState.platformUpdateError = message.error;
+                    newState.platformUpdateError = message.platformUpdateError;
                     return { ...removeErrors(state), ...newState };
                 } else {
                     return { ...removeErrors(state), platformUpdateError: "Network Error: Could not contact server" };

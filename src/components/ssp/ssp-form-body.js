@@ -26,7 +26,7 @@ const SSPFormBody = ({ userSSPs, informationModels, idDisabled, isActive }) => {
                     <Field
                         name="id" type="text" maxLength={30}
                         label="SSP Id" placeholder="Enter preferred ssp id"
-                        helpMessage={"From 4 to 30 characters. Include only letters, digits, '-' and" +
+                        helpMessage={"Should start with \"SSP_\". Include only letters, digits, '-' and" +
                         " '_'. You can leave it empty for autogeneration"}
                         errorField={userSSPs.id_error} disabled={idDisabled}
                         component={renderInputField}
