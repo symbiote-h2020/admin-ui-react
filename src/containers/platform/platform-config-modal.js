@@ -6,7 +6,7 @@ import { reduxForm, Field } from "redux-form";
 import { getPlatformConfiguration, deactivatePlatformModal } from "../../actions/platform-actions";
 import { changeModalState, dismissAlert} from "../../actions/index";
 import { getValidationState, isNotEmpty } from "../../validation/helpers";
-import { validateTokenValidity } from "../../validation/platform-config-validation";
+import { validateTokenValidity, validateAAMKeystorePassword } from "../../validation/platform-config-validation";
 import { FieldError } from "../../helpers/errors";
 import { getPlatformConfigurationValidity } from "../../selectors/index";
 import RFReactSelect from "../../helpers/redux-form-react-selector-integrator";
@@ -307,6 +307,7 @@ function validate(values) {
         "ssl_keystore" : isNotEmpty,
         "ssl_keystore_password" : isNotEmpty,
         "ssl_key_password" : isNotEmpty,
+        "aam_keystore_password" : validateAAMKeystorePassword,
         "token_validity" : validateTokenValidity
     };
 
