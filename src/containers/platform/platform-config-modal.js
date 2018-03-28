@@ -48,8 +48,7 @@ class PlatformConfigModal extends Component {
         } = props;
 
         const {
-            paam_username, paam_password, ssl_keystore, ssl_keystore_password, ssl_key_password
-        } = props;
+            paam_username, paam_password } = props;
 
         const { id } = this.props.platform;
 
@@ -65,10 +64,10 @@ class PlatformConfigModal extends Component {
 
         const platformConfigurationMessage = new PlatformConfigurationMessage(
             id, paam_username, paam_password, component_keystore_password, aam_keystore_name,
-            aam_keystore_password, "", ssl_keystore, ssl_keystore_password, ssl_key_password,
-            token_validity, built_in_plugin
+            aam_keystore_password, "", token_validity, built_in_plugin
         );
 
+        console.log(platformConfigurationMessage)
         this.props.getPlatformConfiguration(platformConfigurationMessage, (res) => {
             const pattern = new RegExp(`${ROOT_URL}$`);
 
@@ -186,34 +185,6 @@ class PlatformConfigModal extends Component {
                                     <Row>
                                         <Col lg={6} md={6} sm={6} xs={6}>
                                             <Field
-                                                name="ssl_keystore" type="text"
-                                                label="Host SSL Keystore File Name" placeholder="Mandatory Field"
-                                                helpMessage={"The name of the keystore containing the letsencrypt" +
-                                                " (or other) certificate and key pair for your AAM host's SSL" +
-                                                " (including any suffixes e.g. .p12"}
-                                                component={this.renderInputField}
-                                            />
-                                        </Col>
-                                        <Col lg={6} md={6} sm={6} xs={6}>
-                                            <Field
-                                                name="ssl_keystore_password" type="text"
-                                                label="Host SSL Keystore Password" placeholder="Mandatory Field"
-                                                helpMessage={"The SSL keystore password"}
-                                                component={this.renderInputField}
-                                            />
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col lg={6} md={6} sm={6} xs={6}>
-                                            <Field
-                                                name="ssl_key_password" type="text"
-                                                label="Host SSL Key Password" placeholder="Mandatory Field"
-                                                helpMessage={"The SSL certificate private key password"}
-                                                component={this.renderInputField}
-                                            />
-                                        </Col>
-                                        <Col lg={6} md={6} sm={6} xs={6}>
-                                            <Field
                                                 name="component_keystore_password" type="text"
                                                 label="Components Keystore Password" placeholder="Optional"
                                                 helpMessage={
@@ -225,8 +196,6 @@ class PlatformConfigModal extends Component {
                                                 component={this.renderInputField}
                                             />
                                         </Col>
-                                    </Row>
-                                    <Row>
                                         <Col lg={6} md={6} sm={6} xs={6}>
                                             <Field
                                                 name="aam_keystore_name" type="text"
@@ -240,6 +209,8 @@ class PlatformConfigModal extends Component {
                                                 component={this.renderInputField}
                                             />
                                         </Col>
+                                    </Row>
+                                    <Row>
                                         <Col lg={6} md={6} sm={6} xs={6}>
                                             <Field
                                                 name="aam_keystore_password" type="text"
@@ -253,8 +224,6 @@ class PlatformConfigModal extends Component {
                                                 component={this.renderInputField}
                                             />
                                         </Col>
-                                    </Row>
-                                    <Row>
                                         <Col lg={6} md={6} sm={6} xs={6}>
                                             <Field
                                                 name="token_validity" type="text"
@@ -269,6 +238,8 @@ class PlatformConfigModal extends Component {
                                                 component={this.renderInputField}
                                             />
                                         </Col>
+                                    </Row>
+                                    <Row>
                                         <Col lg={6} md={6} sm={6} xs={6}>
                                             <FormGroup controlId="built-in-plugin">
                                                 <ControlLabel>Type</ControlLabel>
@@ -304,9 +275,6 @@ function validate(values) {
     const validationFunctions = {
         "paam_username" : isNotEmpty,
         "paam_password" : isNotEmpty,
-        "ssl_keystore" : isNotEmpty,
-        "ssl_keystore_password" : isNotEmpty,
-        "ssl_key_password" : isNotEmpty,
         "aam_keystore_password" : validateAAMKeystorePassword,
         "token_validity" : validateTokenValidity
     };
