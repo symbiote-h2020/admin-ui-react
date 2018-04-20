@@ -7,8 +7,7 @@ import CollapsibleInformationModelPanel from "../../components/information-model
 import InfoModelDeleteModal from "../../components/information-model/info-model-delete-modal";
 import { FieldError, AlertDismissable } from "../../helpers/errors";
 import {
-    fetchUserInformationModels, fetchAllInformationModels, deleteInfoModel,
-    activateInfoModelDeleteModal, deactivateInfoModelDeleteModal
+    deleteInfoModel, activateInfoModelDeleteModal, deactivateInfoModelDeleteModal
 } from "../../actions/info-model-actions";
 import {
     changeModalState,
@@ -22,11 +21,7 @@ import { INFORMATION_MODEL_REGISTRATION_MODAL, USER_LOGIN_MODAL } from "../../re
 
 class InformationModelList extends Component {
 
-    componentDidMount() {
-        this.props.fetchUserInformationModels();
-        this.props.fetchAllInformationModels();
-    }
-
+    // The federation models are loaded in federation-list
     openRegistrationModal = () => {
         this.props.changeModalState(INFORMATION_MODEL_REGISTRATION_MODAL, true);
 
@@ -118,8 +113,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-    fetchUserInformationModels,
-    fetchAllInformationModels,
     changeModalState,
     deleteInfoModel,
     dismissAlert,

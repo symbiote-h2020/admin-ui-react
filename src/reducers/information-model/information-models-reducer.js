@@ -8,7 +8,7 @@ import {
 import {ROOT_URL} from "../../configuration/index";
 
 const INITIAL_STATE = { availableInfoModels : {} };
-export default function(state = {}, action) {
+export default function(state = INITIAL_STATE, action) {
     switch(action.type) {
         case FETCH_ALL_INFORMATION_MODELS:
             if (action.error)

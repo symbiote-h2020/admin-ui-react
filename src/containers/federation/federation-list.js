@@ -6,6 +6,7 @@ import CollapsibleFederationPanel from "../../components/federation/collapsible-
 import FederationLeaveModal from "../../components/federation/federation-leave-modal";
 import FederationDeleteModal from "../../components/federation/federation-delete-modal";
 import { FieldError, AlertDismissable } from "../../helpers/errors";
+import { fetchAllInformationModels, fetchUserInformationModels } from "../../actions/info-model-actions";
 import {
     fetchFederations, deleteFederation, leaveFederation,
     activateFederationDeleteModal, deactivateFederationDeleteModal,
@@ -33,6 +34,8 @@ class FederationList extends Component {
     }
 
     componentDidMount() {
+        this.props.fetchUserInformationModels();
+        this.props.fetchAllInformationModels();
         this.props.fetchFederations();
     }
 
@@ -175,6 +178,8 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
     fetchFederations,
+    fetchUserInformationModels,
+    fetchAllInformationModels,
     changeModalState,
     leaveFederation,
     deleteFederation,

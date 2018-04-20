@@ -7,14 +7,18 @@ import { COMPARATOR, QOS_METRICS, FEDERATION_VISIBILITY_TYPES} from "../../confi
 const FederationPanelBody = ({ federation, userPlatforms, availableInfoModels, onOpenLeaveModal, isAdmin }) => {
 
     const informationModelId = federation.informationModel.id;
-    const informationModelOptions = [{
+    const informationModelOptions = availableInfoModels[informationModelId] ? [{
         label : availableInfoModels[informationModelId].name,
         value : informationModelId
+    }] :
+        [{
+        label: "",
+        value: ""
     }];
 
     const leaveButton = (ownsPlatform, platformId, width) => {
         return(
-            ownsPlatform || isAdmin ?
+            isAdmin || ownsPlatform ?
                 <Col lg={12 - width} md={12 - width} sm={12 - width} xs={12 - width}
                      style={{paddingTop: "6px"}}>
                     <Button bsStyle="danger" bsSize="xsmall"
@@ -50,7 +54,7 @@ const FederationPanelBody = ({ federation, userPlatforms, availableInfoModels, o
     };
 
     const ownsPlatform = (platformId, userPlatforms) => {
-        if (userPlatforms === null) {
+        if (!userPlatforms) {
             // is admin
             return true;
         }
