@@ -21,7 +21,7 @@ export function SSP(id, name, externalAddress, siteLocalAddress, exposingSiteLoc
 
 export function PlatformConfigurationMessage(platformId, platformOwnerUsername, platformOwnerPassword,
                                       componentsKeystorePassword, aamKeystoreName, aamKeystorePassword,
-                                      aamPrivateKeyPassword, tokenValidity, useBuiltInRapPlugin) {
+                                      aamPrivateKeyPassword, tokenValidity, useBuiltInRapPlugin, level) {
     this.platformId = platformId;
     this.platformOwnerUsername = platformOwnerUsername;
     this.platformOwnerPassword = platformOwnerPassword;
@@ -31,6 +31,7 @@ export function PlatformConfigurationMessage(platformId, platformOwnerUsername, 
     this.aamPrivateKeyPassword = aamPrivateKeyPassword;
     this.tokenValidity = tokenValidity;
     this.useBuiltInRapPlugin = useBuiltInRapPlugin;
+    this.level = level;
 }
 
 export function InformationModel(id, uri, name, owner, rdf, rdfFormat) {

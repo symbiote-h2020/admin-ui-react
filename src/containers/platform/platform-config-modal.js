@@ -30,7 +30,19 @@ class PlatformConfigModal extends Component {
                 value : "true"
             }
         ];
+
+        this.levelOptions = [
+            {
+                label : "L1",
+                value : "L1"
+            },
+            {
+                label : "L2",
+                value : "L2"
+            }
+        ];
         this.typeDefault = "false";
+        this.levelDefault = "L1";
     }
 
     close() {
@@ -44,7 +56,7 @@ class PlatformConfigModal extends Component {
 
     onSubmit(props) {
         let {
-            built_in_plugin, component_keystore_password, aam_keystore_name, aam_keystore_password, token_validity
+            built_in_plugin, level, component_keystore_password, aam_keystore_name, aam_keystore_password, token_validity
         } = props;
 
         const {
@@ -53,6 +65,8 @@ class PlatformConfigModal extends Component {
         const { id } = this.props.platform;
 
         built_in_plugin = built_in_plugin ? (built_in_plugin === "true") : (this.typeDefault === "true");
+        level = level ? level : this.levelDefault;
+
         if (!component_keystore_password)
             component_keystore_password = "";
         if (!aam_keystore_name)
@@ -64,10 +78,9 @@ class PlatformConfigModal extends Component {
 
         const platformConfigurationMessage = new PlatformConfigurationMessage(
             id, paam_username, paam_password, component_keystore_password, aam_keystore_name,
-            aam_keystore_password, "", token_validity, built_in_plugin
+            aam_keystore_password, "", token_validity, built_in_plugin, level
         );
 
-        console.log(platformConfigurationMessage)
         this.props.getPlatformConfiguration(platformConfigurationMessage, (res) => {
             const pattern = new RegExp(`${ROOT_URL}$`);
 
@@ -252,6 +265,19 @@ class PlatformConfigModal extends Component {
                                                 <FormControl.Feedback />
                                                 <HelpBlock>Use built-in plugin provided by rap.<br/>
                                                     <strong>Default:</strong> No</HelpBlock>
+                                            </FormGroup>
+                                        </Col>
+                                        <Col lg={6} md={6} sm={6} xs={6}>
+                                            <FormGroup controlId="Level">
+                                                <ControlLabel>Compliance Level</ControlLabel>
+                                                <Field
+                                                    name="level" options={this.levelOptions}
+                                                    clearable={false} searchable={false}
+                                                    defaultValue={this.levelDefault}
+                                                    component={RFReactSelect}
+                                                />
+                                                <FormControl.Feedback />
+                                                <HelpBlock>Choose your compliance level</HelpBlock>
                                             </FormGroup>
                                         </Col>
                                     </Row>
