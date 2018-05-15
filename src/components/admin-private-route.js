@@ -1,41 +1,9 @@
-import React, {Component} from "react";
-import axios from "axios";
+import React from "react";
 import { Redirect, Route } from 'react-router-dom'
-import { ROOT_URL } from "../configuration";
-import { ADMIN, USER } from "../configuration/roles";
+import { ADMIN } from "../configuration/roles";
+import PrivateRoute, { AUTHENTICATED, AUTHENTICATION_PENDING } from "./private-route";
 
-axios.defaults.withCredentials = true;
-const NOT_AUTHENTICATED = "NOT_AUTHENTICATED";
-const AUTHENTICATED = "AUTHENTICATED";
-const AUTHENTICATION_PENDING = "AUTHENTICATION_PENDING";
-
-
-
-export default class AdminPrivateRoute extends Component {
-    constructor() {
-        super();
-        this.state = {
-            isAuthenticated: AUTHENTICATION_PENDING,
-            role: ""
-        }
-    }
-
-    componentDidMount() {
-        axios
-            .get(`${ROOT_URL}/isAuthenticated`)
-            .then((res) => {
-                this.setState({
-                    isAuthenticated: AUTHENTICATED,
-                    role: res.data.role
-                })
-            })
-            .catch(() => {
-                this.setState({
-                    isAuthenticated: NOT_AUTHENTICATED,
-                    role: ""
-                })
-            })
-    }
+export default class AdminPrivateRoute extends PrivateRoute {
 
     render() {
         const { isAuthenticated, role } = this.state;
@@ -52,7 +20,7 @@ export default class AdminPrivateRoute extends Component {
                         props => {
                             if (isAuthenticated === AUTHENTICATED && role === ADMIN)
                                 return (<Component {...props}/>);
-                            else if (isAuthenticated === AUTHENTICATED && role === USER)
+                            else if (isAuthenticated === AUTHENTICATED)
                                 return (<DeniedComponent {...props}/>);
                             else
                                 return(
@@ -61,7 +29,8 @@ export default class AdminPrivateRoute extends Component {
                                         state: { from: props.location }
                                     }}/>
                                 );
-                        }}
+                        }
+                    }
                 />
             )
         }
