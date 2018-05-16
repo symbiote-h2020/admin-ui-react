@@ -1,22 +1,20 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { Button, Modal, FormGroup, FormControl, ControlLabel, HelpBlock, Row, Col } from "react-bootstrap";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import { getPlatformConfiguration, deactivatePlatformModal } from "../../actions/platform-actions";
-import { changeModalState, dismissAlert} from "../../actions/index";
-import { getValidationState, isNotEmpty } from "../../validation/helpers";
+import { changeModalState, dismissAlert} from "../../actions";
+import { isNotEmpty } from "../../validation/helpers";
 import { validateTokenValidity, validateAAMKeystorePassword } from "../../validation/platform-config-validation";
-import { FieldError } from "../../helpers/errors";
-import { getPlatformConfigurationValidity } from "../../selectors/index";
+import { getPlatformConfigurationValidity } from "../../selectors";
 import RFReactSelect from "../../helpers/redux-form-react-selector-integrator";
 import { PlatformConfigurationMessage } from "../../helpers/object-definitions";
 import { AlertDismissable } from "../../helpers/errors";
-import { DISMISS_PLATFORM_CONFIG_ERROR_ALERT, DEACTIVATE_PLATFORM_CONFIG_MODAL } from "../../actions/index";
-import { ROOT_URL } from "../../configuration/index";
-import { USER_LOGIN_MODAL } from "../../reducers/modal/modal-reducer";
+import { DISMISS_PLATFORM_CONFIG_ERROR_ALERT, DEACTIVATE_PLATFORM_CONFIG_MODAL } from "../../actions";
+import ServiceConfigModal from "./service-config-modal";
 
-class PlatformConfigModal extends Component {
+class PlatformConfigModal extends ServiceConfigModal {
 
     constructor() {
         super();
@@ -82,81 +80,10 @@ class PlatformConfigModal extends Component {
         );
 
         this.props.getPlatformConfiguration(platformConfigurationMessage, (res) => {
-            const pattern = new RegExp(`${ROOT_URL}$`);
-
-            // If the root url is returned, that means that the user is not authenticated (possibly the
-            // session is expired, so we redirect to the homepage and open the login modal
-            if (pattern.test(res.request.responseURL)) {
-                this.props.history.push(ROOT_URL);
-                this.props.changeModalState(USER_LOGIN_MODAL, true);
-            }
-            else if (res.status === 200) {
-                this.close();
-                let filename = "";
-                const disposition = res.headers["content-disposition"];
-
-                if (disposition && disposition.indexOf('attachment') !== -1) {
-                    const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                    const matches = filenameRegex.exec(disposition);
-                    if (matches !== null && matches[1])
-                        filename = matches[1].replace(/['"]/g, '');
-                }
-
-                const type = res.headers["content-type"];
-                const blob = typeof File === 'function'
-                    ? new File([res.data], filename, { type: type })
-                    : new Blob([res.data], { type: type });
-
-
-                if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                    // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they
-                    // were created. These URLs will no longer resolve as the data backing the URL has been freed."
-                    window.navigator.msSaveBlob(blob, filename);
-                } else {
-                    const URL = window.URL || window.webkitURL;
-                    const downloadUrl = URL.createObjectURL(blob);
-
-                    if (filename) {
-                        // use HTML5 a[download] attribute to specify filename
-                        const a = document.createElement("a");
-                        // safari doesn't support this yet
-                        if (typeof a.download === 'undefined') {
-                            window.location = downloadUrl;
-                        } else {
-                            a.href = downloadUrl;
-                            a.download = filename;
-                            document.body.appendChild(a);
-                            a.click();
-                        }
-                    } else {
-                        window.location = downloadUrl;
-                    }
-
-                    setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
-                }
-            }
+            this.downloadZipFile(res, this.close.bind(this), this.props.history, this.props.changeModalState);
 
         });
     }
-
-    renderInputField = (field) => {
-        const { input, type, placeholder, componentClass, rows, subElement, errorField,
-            label, helpMessage, maxLength, meta : { touched, invalid, error } } = field;
-        const validationState = getValidationState(input.value, touched, invalid);
-
-        return (
-            <FormGroup controlId={input.name} validationState={validationState}>
-                {label ? <ControlLabel>{label}</ControlLabel> : ""}
-                <FormControl
-                    { ...input } componentClass={componentClass} rows={rows}
-                    type={type} placeholder={placeholder} maxLength={maxLength} />
-                <FormControl.Feedback className={subElement ? "sub-element" : ""}/>
-                <HelpBlock>{validationState === "error" ? error : helpMessage}</HelpBlock>
-                <FieldError error={errorField} />
-            </FormGroup>
-        );
-    };
-
 
     render() {
         const { platform, configModalOpen, handleSubmit, platformConfigModal, platformConfigurationValidity } = this.props;

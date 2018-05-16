@@ -23,13 +23,11 @@ export default function(state = INITIAL_STATE, action) {
                 };
             }
         case REGISTER_PLATFORM:
-            console.log(action)
             if (action.error) {
                 let newState = {};
 
                 if (action.payload.response) {
                     const message = action.payload.response.data;
-                    console.log("passed")
 
                     if (message["error_id"])
                         newState.id_error = message["error_id"];
