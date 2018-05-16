@@ -6,6 +6,7 @@ const getSSPRegistrationForm = (state) => state.form.SSPRegistrationForm;
 const getPlatformUpdateForm = (state) => state.form.PlatformUpdateForm;
 const getInfoModelRegistrationForm = (state) => state.form.InformationModelRegistrationForm;
 const getPlatformConfigurationForm = (state) => state.form.PlatformConfigurationForm;
+const getSSPConfigurationForm = (state) => state.form.SSPConfigurationForm;
 const getFederationRegistrationForm = (state) => state.form.FederationRegistrationForm;
 const getRegisterUserForm = (state) => state.form.RegisterUserForm;
 const getChangeEmailForm = (state) => state.form.ChangeEmailForm;
@@ -60,6 +61,10 @@ export const getInfoModelRegistrationValidity = createSelector(
 
 export const getPlatformConfigurationValidity = createSelector(
     [ getPlatformConfigurationForm ], checkForm
+);
+
+export const getSSPConfigurationValidity = createSelector(
+    [ getSSPConfigurationForm ], checkForm
 );
 
 export const getFederationRegistrationValidity = createSelector(

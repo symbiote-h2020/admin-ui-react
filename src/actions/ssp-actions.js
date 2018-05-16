@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ROOT_URL } from "../configuration";
-import { headers, REGISTER_SSP, DELETE_SSP } from "./index";
+import {headers, REGISTER_SSP, DELETE_SSP, GET_SSP_CONFIGURATION} from "./index";
 
 axios.defaults.withCredentials = true;
 
@@ -49,6 +49,31 @@ export function deleteSSP(sspId, cb) {
 
     return {
         type: DELETE_SSP,
+        payload: request
+    };
+}
+
+export function getSSPConfiguration(sspConfig, cb) {
+    const url = `${ROOT_URL}/user/cpanel/get_platform_config`;
+
+    const config = {
+        url: url,
+        method: 'post',
+        data: sspConfig,
+        headers: headers,
+        responseType: 'arraybuffer'
+    };
+
+    const request = axios.request(config)
+        .then(res => {
+            cb(res);
+            return res;
+        }).catch(res => {
+            return({...res, error: true});
+        });
+
+    return {
+        type: GET_SSP_CONFIGURATION,
         payload: request
     };
 }

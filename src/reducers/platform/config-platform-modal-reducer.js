@@ -2,7 +2,7 @@ import _ from "lodash";
 import {
     ACTIVATE_PLATFORM_CONFIG_MODAL, DEACTIVATE_PLATFORM_CONFIG_MODAL,
     GET_PLATFORM_CONFIGURATION, DISMISS_PLATFORM_CONFIG_ERROR_ALERT
-} from "../../actions/index";
+} from "../../actions";
 import {ROOT_URL} from "../../configuration/index";
 
 const INITIAL_STATE = { platformId : "" };

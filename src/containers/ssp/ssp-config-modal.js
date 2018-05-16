@@ -1,69 +1,45 @@
 import React, { Fragment } from "react";
 import { withRouter } from "react-router-dom";
-import { Button, Modal, FormGroup, FormControl, ControlLabel, HelpBlock, Row, Col } from "react-bootstrap";
+import { Button, Modal, Row, Col } from "react-bootstrap";
 import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
-import { getPlatformConfiguration, deactivatePlatformModal } from "../../actions/platform-actions";
-import { changeModalState, dismissAlert} from "../../actions";
+import {
+    changeModalState,
+    DEACTIVATE_SSP_CONFIG_MODAL,
+    DISMISS_SSP_CONFIG_ERROR_ALERT,
+    dismissAlert
+} from "../../actions";
 import { isNotEmpty } from "../../validation/helpers";
 import { validateTokenValidity, validateAAMKeystorePassword } from "../../validation/platform-config-validation";
-import { getPlatformConfigurationValidity } from "../../selectors";
-import RFReactSelect from "../../helpers/redux-form-react-selector-integrator";
-import { PlatformConfigurationMessage } from "../../helpers/object-definitions";
+import { getSSPConfigurationValidity } from "../../selectors";
 import { AlertDismissable } from "../../helpers/errors";
-import { DISMISS_PLATFORM_CONFIG_ERROR_ALERT, DEACTIVATE_PLATFORM_CONFIG_MODAL } from "../../actions";
 import ServiceConfigModal from "../../components/service-config-modal";
+import { deactivateSSPModal, getSSPConfiguration } from "../../actions/ssp-actions";
+import {PlatformConfigurationMessage} from "../../helpers/object-definitions";
 
-class PlatformConfigModal extends ServiceConfigModal {
-
-    constructor() {
-        super();
-        this.usePluginOptions = [
-            {
-                label : "No",
-                value : "false"
-            },
-            {
-                label : "Yes",
-                value : "true"
-            }
-        ];
-
-        this.levelOptions = [
-            {
-                label : "L1",
-                value : "L1"
-            },
-            {
-                label : "L2",
-                value : "L2"
-            }
-        ];
-        this.typeDefault = "false";
-        this.levelDefault = "L1";
-    }
+class SSPConfigModal extends ServiceConfigModal {
 
     close() {
-        this.props.deactivatePlatformModal(DEACTIVATE_PLATFORM_CONFIG_MODAL);
+        this.props.deactivateSSPModal(DEACTIVATE_SSP_CONFIG_MODAL);
         this.props.reset();
     }
 
     dismissErrorAlert() {
-        this.props.dismissAlert(DISMISS_PLATFORM_CONFIG_ERROR_ALERT)
+        this.props.dismissAlert(DISMISS_SSP_CONFIG_ERROR_ALERT)
     }
 
-    onSubmit(props) {
+    onSubmit(formProps) {
         let {
-            built_in_plugin, level, component_keystore_password, aam_keystore_name, aam_keystore_password, token_validity
-        } = props;
+            component_keystore_password, aam_keystore_name, aam_keystore_password, token_validity
+        } = formProps;
 
         const {
-            paam_username, paam_password } = props;
+            saam_username, saam_password } = formProps;
 
-        const { id } = this.props.platform;
+        const { id } = this.props.ssp;
 
-        built_in_plugin = built_in_plugin ? (built_in_plugin === "true") : (this.typeDefault === "true");
-        level = level ? level : this.levelDefault;
+        const built_in_plugin = true;
+        const level = "L1";
 
         if (!component_keystore_password)
             component_keystore_password = "";
@@ -74,50 +50,50 @@ class PlatformConfigModal extends ServiceConfigModal {
         if (!token_validity)
             token_validity = 0;
 
-        const platformConfigurationMessage = new PlatformConfigurationMessage(
-            id, paam_username, paam_password, component_keystore_password, aam_keystore_name,
+        const sspConfigurationMessage = new PlatformConfigurationMessage(
+            id, saam_username, saam_password, component_keystore_password, aam_keystore_name,
             aam_keystore_password, "", token_validity, built_in_plugin, level
         );
 
-        this.props.getPlatformConfiguration(platformConfigurationMessage, (res) => {
+        this.props.getSSPConfiguration(sspConfigurationMessage, (res) => {
             this.downloadZipFile(res, this.close.bind(this), this.props.history, this.props.changeModalState);
 
         });
     }
 
     render() {
-        const { platform, configModalOpen, handleSubmit, platformConfigModal, platformConfigurationValidity } = this.props;
-        const opts = { disabled : !platformConfigurationValidity };
+        const { ssp, configModalOpen, handleSubmit, sspConfigModal, sspConfigurationValidity } = this.props;
+        const opts = { disabled : !sspConfigurationValidity };
 
         return(
             <Modal show={configModalOpen} onHide={this.close.bind(this)}>
                 {
-                    platform ?
+                    ssp ?
                         <Fragment>
                             <Modal.Header closeButton>
                                 <Modal.Title>
-                                    Get Configuration for platform <strong>{platform.id}</strong>
+                                    Get Configuration for SSP <strong>{ssp.id}</strong>
                                 </Modal.Title>
                             </Modal.Header>
                             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
 
                                 <Modal.Body>
-                                    <AlertDismissable alertStyle="danger" message={platformConfigModal.platformConfigError}
+                                    <AlertDismissable alertStyle="danger" message={sspConfigModal.sspConfigError}
                                                       dismissHandler={this.dismissErrorAlert.bind(this)} />
                                     <Row>
                                         <Col lg={6} md={6} sm={6} xs={6}>
                                             <Field
-                                                name="paam_username" type="text"
-                                                label="Platform Admin Username" placeholder="Mandatory Field"
-                                                helpMessage={"The Platform Owner Username in your Cloud deployment"}
+                                                name="saam_username" type="text"
+                                                label="SSP Admin Username" placeholder="Mandatory Field"
+                                                helpMessage={"The SSP Owner Username in your Cloud deployment"}
                                                 component={this.renderInputField}
                                             />
                                         </Col>
                                         <Col lg={6} md={6} sm={6} xs={6}>
                                             <Field
-                                                name="paam_password" type="text"
-                                                label="Platform Admin Password" placeholder="Mandatory Field"
-                                                helpMessage={"The Platform Owner Password in your Cloud deployment"}
+                                                name="saam_password" type="text"
+                                                label="SSP Admin Password" placeholder="Mandatory Field"
+                                                helpMessage={"The SSP Owner Password in your Cloud deployment"}
                                                 component={this.renderInputField}
                                             />
                                         </Col>
@@ -129,7 +105,7 @@ class PlatformConfigModal extends ServiceConfigModal {
                                                 label="Components Keystore Password" placeholder="Optional"
                                                 helpMessage={
                                                     <Fragment>
-                                                        The keystore password in your cloud components (apart from PAAM) <br/>
+                                                        The keystore password in your ssp components (apart from SAAM) <br/>
                                                         <strong>Default:</strong> 'pass'
                                                     </Fragment>
                                                 }
@@ -143,7 +119,7 @@ class PlatformConfigModal extends ServiceConfigModal {
                                                 helpMessage={
                                                     <Fragment>
                                                         The name of the AAM keystore generated.<br/>
-                                                        <strong>Default:</strong> 'paam-keystore-platform_name'
+                                                        <strong>Default:</strong> 'paam-keystore-ssp_name'
                                                     </Fragment>
                                                 }
                                                 component={this.renderInputField}
@@ -179,35 +155,6 @@ class PlatformConfigModal extends ServiceConfigModal {
                                             />
                                         </Col>
                                     </Row>
-                                    <Row>
-                                        <Col lg={6} md={6} sm={6} xs={6}>
-                                            <FormGroup controlId="built-in-plugin">
-                                                <ControlLabel>Type</ControlLabel>
-                                                <Field
-                                                    name="built_in_plugin" options={this.usePluginOptions}
-                                                    clearable={false} searchable={false}
-                                                    defaultValue={this.typeDefault}
-                                                    component={RFReactSelect}
-                                                />
-                                                <FormControl.Feedback />
-                                                <HelpBlock>Use built-in plugin provided by rap.<br/>
-                                                    <strong>Default:</strong> No</HelpBlock>
-                                            </FormGroup>
-                                        </Col>
-                                        <Col lg={6} md={6} sm={6} xs={6}>
-                                            <FormGroup controlId="Level">
-                                                <ControlLabel>Compliance Level</ControlLabel>
-                                                <Field
-                                                    name="level" options={this.levelOptions}
-                                                    clearable={false} searchable={false}
-                                                    defaultValue={this.levelDefault}
-                                                    component={RFReactSelect}
-                                                />
-                                                <FormControl.Feedback />
-                                                <HelpBlock>Choose your compliance level</HelpBlock>
-                                            </FormGroup>
-                                        </Col>
-                                    </Row>
                                 </Modal.Body>
                                 <Modal.Footer>
                                     <Button type="submit" bsStyle="info" {...opts}>Get Configuration</Button>
@@ -226,8 +173,8 @@ class PlatformConfigModal extends ServiceConfigModal {
 function validate(values) {
     const errors = {};
     const validationFunctions = {
-        "paam_username" : isNotEmpty,
-        "paam_password" : isNotEmpty,
+        "saam_username" : isNotEmpty,
+        "saam_password" : isNotEmpty,
         "aam_keystore_password" : validateAAMKeystorePassword,
         "token_validity" : validateTokenValidity
     };
@@ -241,16 +188,16 @@ function validate(values) {
 
 function mapStateToProps(state) {
     return {
-        platformConfigModal: state.platformConfigModal,
-        platformConfigurationValidity: getPlatformConfigurationValidity(state)
+        sspConfigModal: state.sspConfigModal,
+        sspConfigurationValidity: getSSPConfigurationValidity(state)
     };
 }
 
 export default reduxForm({
-    form: 'PlatformConfigurationForm',
+    form: 'SSPConfigurationForm',
     validate
 })(
     connect(mapStateToProps, {
-        changeModalState, getPlatformConfiguration, deactivatePlatformModal, dismissAlert
-    })(withRouter(PlatformConfigModal))
+        changeModalState, getSSPConfiguration, deactivateSSPModal, dismissAlert
+    })(withRouter(SSPConfigModal))
 );

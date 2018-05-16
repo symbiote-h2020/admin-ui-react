@@ -5,6 +5,7 @@ import { Button } from "react-bootstrap";
 import _ from "lodash";
 import CollapsibleSSPPanel from "../../components/ssp/collapsible-ssp-panel";
 import SSPDeleteModal from "../../components/ssp/ssp-delete-modal";
+import SSPConfigModal from "../../containers/ssp/ssp-config-modal";
 import { FieldError, AlertDismissable } from "../../helpers/errors";
 import {
     deleteSSP, activateSSPModal, deactivateSSPModal
@@ -15,7 +16,7 @@ import {
 } from "../../actions";
 import { ROOT_URL } from "../../configuration/index";
 import { SSP_REGISTRATION_MODAL, USER_LOGIN_MODAL } from "../../reducers/modal/modal-reducer";
-import {fetchUserServices} from "../../actions/owned-services-actions";
+import { fetchUserServices } from "../../actions/owned-services-actions";
 
 class SSPList extends Component {
 
@@ -62,6 +63,16 @@ class SSPList extends Component {
         );
     };
 
+    showSSPConfigModal = (sspId, availableSSPs) => {
+        return (
+            availableSSPs ?
+                <SSPConfigModal
+                    ssp={availableSSPs[sspId]}
+                    configModalOpen={!!sspId}/>
+                : null
+        );
+    };
+
     dismissSSPRegistrationSuccessAlert() {
         this.props.dismissAlert(DISMISS_SSP_REGISTRATION_SUCCESS_ALERT)
     }
@@ -82,6 +93,7 @@ class SSPList extends Component {
         const { availableSSPs, successfulSSPRegistration, successfulSSPUpdate,
             successfulSSPDeletion, sspDeletionError, fetchUserSSPsError } = this.props.userSSPs;
         const { sspIdToDelete } = this.props.sspDeleteModal;
+        const { sspId } = this.props.sspConfigModal;
 
         return(
             <Fragment>
@@ -114,6 +126,10 @@ class SSPList extends Component {
                         this.props.deactivateSSPModal, this.handleDeleteSSP)
                 }
 
+                {
+                    this.showSSPConfigModal(sspId, availableSSPs)
+                }
+
             </Fragment>
         );
     }
@@ -126,6 +142,7 @@ function mapStateToProps(state) {
         informationModels: state.informationModels,
         sspDeleteModal: state.sspDeleteModal,
         sspUpdateModal: state.sspUpdateModal,
+        sspConfigModal: state.sspConfigModal
     };
 }
 

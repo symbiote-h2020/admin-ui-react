@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { ControlLabel, FormControl, FormGroup, HelpBlock } from "react-bootstrap";
-import { getValidationState } from "../../validation/helpers";
-import { FieldError } from "../../helpers/errors";
-import { ROOT_URL } from "../../configuration";
-import { USER_LOGIN_MODAL } from "../../reducers/modal/modal-reducer";
+import { getValidationState } from "../validation/helpers";
+import { FieldError } from "../helpers/errors";
+import { ROOT_URL } from "../configuration/index";
+import { USER_LOGIN_MODAL } from "../reducers/modal/modal-reducer";
 
 export default class ServiceConfigModal extends Component {
 
