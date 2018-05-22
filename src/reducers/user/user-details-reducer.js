@@ -1,11 +1,13 @@
 import {
-    FETCH_USER_INFORMATION, CHANGE_EMAIL, CHANGE_PASSWORD,
+    FETCH_USER_INFORMATION, CHANGE_EMAIL, CHANGE_PASSWORD,  DELETE_CLIENT,
     DISMISS_EMAIL_CHANGE_SUCCESS_ALERT, DISMISS_EMAIL_CHANGE_ERROR_ALERT,
-    DISMISS_PASSWORD_CHANGE_SUCCESS_ALERT, DISMISS_PASSWORD_CHANGE_ERROR_ALERT
-} from "../../actions/index";
+    DISMISS_PASSWORD_CHANGE_SUCCESS_ALERT, DISMISS_PASSWORD_CHANGE_ERROR_ALERT,
+    DISMISS_CLIENT_DELETION_SUCCESS_ALERT, DISMISS_CLIENT_DELETION_ERROR_ALERT
+} from "../../actions";
 import _ from "lodash";
+import {ROOT_URL} from "../../configuration";
 
-const INITIAL_STATE = { username: "", email: "", role: "" };
+const INITIAL_STATE = { username: "", email: "", role: "", clients: {} };
 
 export default function(state = INITIAL_STATE, action) {
     switch(action.type) {
@@ -70,6 +72,36 @@ export default function(state = INITIAL_STATE, action) {
                 ...removeChangePasswordErrors(state),
                 successfulPasswordChange: "Your password was updated successfully"
             };
+        case DELETE_CLIENT:
+            console.log(action)
+            if (action.error) {
+                if (action.payload.response) {
+                    const message = action.payload.response.data;
+                    let newState = _.omit(state, "successfulClientDeletion");
+                    return { ...newState, clientDeletionError : message };
+                } else {
+                    let newState = _.omit(state, "successfulClientDeletion");
+                    return {...newState, clientDeletionError: "Network Error: Could not contact server"};
+                }
+            }
+            else {
+                const pattern = new RegExp(`${ROOT_URL}$`);
+
+                if (pattern.test(action.payload.request.responseURL))
+                    return state;
+                else {
+                    const clientId = action.payload.config.data.get("clientIdToDelete");
+                    const successfulClientDeletion = `Client "${clientId}" was deleted successfully!`;
+
+                    let newState = _.omit(state, "clientDeletionError");
+
+                    return {
+                        ...newState,
+                        clients : _.omit(state.clients, clientId),
+                        successfulClientDeletion
+                    };
+                }
+            }
         default:
             return state;
         case DISMISS_EMAIL_CHANGE_SUCCESS_ALERT:
@@ -80,6 +112,10 @@ export default function(state = INITIAL_STATE, action) {
             return _.omit(state, "successfulPasswordChange");
         case DISMISS_PASSWORD_CHANGE_ERROR_ALERT:
             return _.omit(state, "changePasswordError");
+        case DISMISS_CLIENT_DELETION_SUCCESS_ALERT:
+            return _.omit(state, "successfulClientDeletion");
+        case DISMISS_CLIENT_DELETION_ERROR_ALERT:
+            return _.omit(state, "clientDeletionError");
     }
 }
 

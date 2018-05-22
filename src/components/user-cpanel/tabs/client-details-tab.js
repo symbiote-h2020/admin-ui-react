@@ -1,8 +1,9 @@
 import React from "react";
+import ClientList from "../../../containers/clients/client-list"
 
 const ClientDetails = () => {
     return(
-        <h3>Client Details</h3>
+        <ClientList />
     );
 };
 

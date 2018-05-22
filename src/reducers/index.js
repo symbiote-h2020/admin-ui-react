@@ -6,6 +6,7 @@ import UserRegistrationReducer from "./user/user-registration-reducer";
 import UserLoginReducer from "./user/user-login-reducer";
 import UserLogoutReducer from "./user/user-logout-reducer";
 import ModalReducer from "./modal/modal-reducer";
+import ClientDeleteModalReducer from "./client/delete-client-modal-reducer";
 import PlatformDeleteModalReducer from "./platform/delete-platform-modal-reducer";
 import PlatformUpdateModalReducer from "./platform/update-platform-modal-reducer";
 import PlatformConfigModalReducer from "./platform/config-platform-modal-reducer";
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
     userLoginState: UserLoginReducer,
     userLogoutState: UserLogoutReducer,
     modalState: ModalReducer,
+    clientDeleteModal: ClientDeleteModalReducer,
     platformDeleteModal: PlatformDeleteModalReducer,
     platformUpdateModal: PlatformUpdateModalReducer,
     platformConfigModal: PlatformConfigModalReducer,

@@ -193,17 +193,7 @@ a.clickable:hover { text-decoration:none; }
     float: right;
 }
 
-.platform-panel-entry {
-    clear:both;
-    margin-bottom:0.3em;
-}
-
-.info-model-panel-entry {
-    clear:both;
-    margin-bottom:0.3em;
-}
-
-.federation-panel-entry {
+.platform-panel-entry, .info-model-panel-entry, .federation-panel-entry, .client-panel-entry {
     clear:both;
     margin-bottom:0.3em;
 }
@@ -238,7 +228,7 @@ a.clickable:hover { text-decoration:none; }
     margin-left: 0.5em;
 }
 
-.platform-info-footer, .info-model-info-footer, .federation-info-footer {
+.platform-info-footer, .info-model-info-footer, .federation-info-footer, .client-info-footer {
     overflow: hidden;
 }
 
