@@ -39,8 +39,21 @@ class PlatformConfigModal extends ServiceConfigModal {
                 value : "L2"
             }
         ];
+
+        this.deploymentOptions = [
+            {
+                label : "Docker",
+                value : "DOCKER"
+            },
+            {
+                label : "Manual",
+                value : "MANUAL"
+            }
+        ];
+
         this.typeDefault = "false";
         this.levelDefault = "L1";
+        this.deploymentTypeDefault = "DOCKER";
     }
 
     close() {
@@ -54,7 +67,8 @@ class PlatformConfigModal extends ServiceConfigModal {
 
     onSubmit(props) {
         let {
-            built_in_plugin, level, component_keystore_password, aam_keystore_name, aam_keystore_password, token_validity
+            built_in_plugin, level, component_keystore_password, aam_keystore_name, aam_keystore_password, token_validity,
+            deployment_type
         } = props;
 
         const {
@@ -64,6 +78,7 @@ class PlatformConfigModal extends ServiceConfigModal {
 
         built_in_plugin = built_in_plugin ? (built_in_plugin === "true") : (this.typeDefault === "true");
         level = level ? level : this.levelDefault;
+        deployment_type = deployment_type ? deployment_type : this.deploymentTypeDefault;
 
         if (!component_keystore_password)
             component_keystore_password = "";
@@ -76,7 +91,7 @@ class PlatformConfigModal extends ServiceConfigModal {
 
         const platformConfigurationMessage = new PlatformConfigurationMessage(
             id, paam_username, paam_password, component_keystore_password, aam_keystore_name,
-            aam_keystore_password, "", token_validity, built_in_plugin, level
+            aam_keystore_password, "", token_validity, built_in_plugin, level, deployment_type
         );
 
         this.props.getPlatformConfiguration(platformConfigurationMessage, (res) => {
@@ -205,6 +220,21 @@ class PlatformConfigModal extends ServiceConfigModal {
                                                 />
                                                 <FormControl.Feedback />
                                                 <HelpBlock>Choose your compliance level</HelpBlock>
+                                            </FormGroup>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col lg={6} md={6} sm={6} xs={6}>
+                                            <FormGroup controlId="deployment">
+                                                <ControlLabel>Deployment Type</ControlLabel>
+                                                <Field
+                                                    name="deployment_type" options={this.deploymentOptions}
+                                                    clearable={false} searchable={false}
+                                                    defaultValue={this.deploymentTypeDefault}
+                                                    component={RFReactSelect}
+                                                />
+                                                <FormControl.Feedback />
+                                                <HelpBlock>Choose your deployment type</HelpBlock>
                                             </FormGroup>
                                         </Col>
                                     </Row>
