@@ -188,7 +188,7 @@ a.clickable { color: inherit; }
 a.clickable:hover { text-decoration:none; }
 
 
-.registration-btn {
+.registration-btn, .user-deletion-btn {
     margin-bottom: 0.3em;
     float: right;
 }

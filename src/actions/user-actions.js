@@ -2,7 +2,7 @@ import axios from "axios";
 import { USER_CPANEL_URL, ROOT_URL, ADMIN_CPANEL_URL } from "../configuration";
 import {
     FETCH_USER_ROLES, headers, REGISTER_USER, USER_LOGIN, USER_LOGOUT, FETCH_USER_INFORMATION,
-    SET_SUCCESSFUL_USER_REGISTRATION_FLAG, CHANGE_EMAIL, CHANGE_PASSWORD
+    SET_SUCCESSFUL_USER_REGISTRATION_FLAG, CHANGE_EMAIL, CHANGE_PASSWORD, DELETE_USER
 } from "./index";
 
 
@@ -157,6 +157,27 @@ export function changePassword(props, cb) {
 
     return {
         type: CHANGE_PASSWORD,
+        payload: request
+    };
+}
+
+export function deleteUser(cb) {
+    const url = `${ROOT_URL}/user/delete_user`;
+
+    const config = {
+        url: url,
+        method: 'post',
+        headers: headers
+    };
+
+    const request = axios.request(config)
+        .then(res => {
+            cb(res);
+            return res;
+        });
+
+    return {
+        type: DELETE_USER,
         payload: request
     };
 }

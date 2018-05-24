@@ -12,8 +12,18 @@ const getRegisterUserForm = (state) => state.form.RegisterUserForm;
 const getChangeEmailForm = (state) => state.form.ChangeEmailForm;
 const getChangePasswordForm = (state) => state.form.ChangePasswordForm;
 const getUserPlatforms = (state) => state.userPlatforms.availablePlatforms;
+const getUserSSPs = (state) => state.userSSPs.availableSSPs;
 const getFederations = (state) => state.federations.availableFederations;
 const getPlatformIdToUpdate = (state) => state.platformUpdateModal.platformIdToUpdate;
+
+export const hasUserAnyServices = createSelector(
+    [ getUserPlatforms, getUserSSPs, getFederations ], (platforms, ssps, federations) => {
+        const noPlatforms = !platforms ? 0 :  Object.keys(platforms).length;
+        const noSSPs = !ssps ? 0 : Object.keys(ssps).length;
+        const noFederations = !federations ? 0 : Object.keys(federations).length;
+        return noPlatforms !== 0 || noSSPs !== 0 || noFederations !== 0;
+    }
+);
 
 const checkForm =  (form) => {
     if (!form)

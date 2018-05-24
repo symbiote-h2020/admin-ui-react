@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { Button, Modal } from "react-bootstrap";
-import { DEACTIVATE_PLATFORM_DELETE_MODAL } from "../../actions/index";
+import { DEACTIVATE_PLATFORM_DELETE_MODAL } from "../../actions";
 
 const PlatformDeleteModal = ({ platform, deleteModalOpen, closeModal, handleDeletePlatform }) => {
 
@@ -15,7 +15,8 @@ const PlatformDeleteModal = ({ platform, deleteModalOpen, closeModal, handleDele
                 <Fragment>
                     <Modal.Header closeButton>
                         <Modal.Title>Are you sure you want to delete the platform
-                            <strong> {platform.name}</strong>?</Modal.Title>
+                            <strong> {platform.name}</strong>?
+                        </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <h4 className="text-danger">Warning - if you delete this platform, some information may be lost!</h4>

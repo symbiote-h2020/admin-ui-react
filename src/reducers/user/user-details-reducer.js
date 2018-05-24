@@ -1,6 +1,6 @@
 import {
-    FETCH_USER_INFORMATION, CHANGE_EMAIL, CHANGE_PASSWORD,  DELETE_CLIENT,
-    DISMISS_EMAIL_CHANGE_SUCCESS_ALERT, DISMISS_EMAIL_CHANGE_ERROR_ALERT,
+    FETCH_USER_INFORMATION, CHANGE_EMAIL, CHANGE_PASSWORD, DELETE_USER, DELETE_CLIENT,
+    DISMISS_EMAIL_CHANGE_SUCCESS_ALERT, DISMISS_EMAIL_CHANGE_ERROR_ALERT, DISMISS_USER_DELETION_ERROR_ALERT,
     DISMISS_PASSWORD_CHANGE_SUCCESS_ALERT, DISMISS_PASSWORD_CHANGE_ERROR_ALERT,
     DISMISS_CLIENT_DELETION_SUCCESS_ALERT, DISMISS_CLIENT_DELETION_ERROR_ALERT
 } from "../../actions";
@@ -72,13 +72,28 @@ export default function(state = INITIAL_STATE, action) {
                 ...removeChangePasswordErrors(state),
                 successfulPasswordChange: "Your password was updated successfully"
             };
-        case DELETE_CLIENT:
-            console.log(action)
+        case DELETE_USER:
             if (action.error) {
                 if (action.payload.response) {
-                    const message = action.payload.response.data;
+                    const userDeletionError = action.payload.response.data["userDeletionError"];
+                    return { ...state, userDeletionError };
+                }
+                return {
+                    ...state,
+                    userDeletionError: "Could not contact the server"
+                };
+
+            }
+
+            return {
+                ...removeUserDeletionError(state)
+            };
+        case DELETE_CLIENT:
+            if (action.error) {
+                if (action.payload.response) {
+                    const clientDeletionError = action.payload.response.data["clientDeletionError"];
                     let newState = _.omit(state, "successfulClientDeletion");
-                    return { ...newState, clientDeletionError : message };
+                    return { ...newState, clientDeletionError };
                 } else {
                     let newState = _.omit(state, "successfulClientDeletion");
                     return {...newState, clientDeletionError: "Network Error: Could not contact server"};
@@ -116,6 +131,8 @@ export default function(state = INITIAL_STATE, action) {
             return _.omit(state, "successfulClientDeletion");
         case DISMISS_CLIENT_DELETION_ERROR_ALERT:
             return _.omit(state, "clientDeletionError");
+        case DISMISS_USER_DELETION_ERROR_ALERT:
+            return _.omit(state, "userDeletionError");
     }
 }
 
@@ -141,4 +158,8 @@ const removeChangePasswordErrors = (state) => {
         newState =  _.omit(newState, errors[i]);
 
     return newState;
+};
+
+const removeUserDeletionError = (state) => {
+    return _.omit(...state, "userDeletionError");
 };
