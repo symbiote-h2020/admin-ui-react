@@ -109,6 +109,32 @@ a {
     width: 35%;
 }
 
+.registration-textarea {
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    height: 200px;
+    overflow: auto;
+    padding: 10px;
+}
+
+@media screen and (max-width: 992px) {
+    #registration-modal .modal-dialog {
+        width: 90vw
+    }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1400px) {
+    #registration-modal .modal-dialog {
+        width: 70vw
+    }
+}
+
+@media screen and (min-width: 1400px) {
+    #registration-modal .modal-dialog {
+        width: 50vw
+    }
+}
+
 .content .login.button {
     float: left;
     margin-left: 2em;

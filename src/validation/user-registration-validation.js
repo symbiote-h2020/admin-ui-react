@@ -34,3 +34,25 @@ export function validateEmail(value) {
     } else
         return null;
 }
+
+export function validateClickedCheckbox(value, error) {
+    if(!value)
+        return error;
+    return null;
+}
+
+export function validateTermsAndConditions(value) {
+    return validateClickedCheckbox(value, "You must accept the Terms And Conditions")
+}
+
+export function validateUsernamePermission(value) {
+    return validateClickedCheckbox(value, "You grant permission for your username")
+}
+
+export function validatePasswordPermission(value) {
+    return validateClickedCheckbox(value, "You grant permission for your password")
+}
+
+export function validateEmailPermission(value) {
+    return validateClickedCheckbox(value, "You grant permission for your email")
+}

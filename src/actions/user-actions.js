@@ -25,6 +25,10 @@ export function registerUser(userInfo, cb) {
     formData.append("validPassword", userInfo.validPassword);
     formData.append("recoveryMail", userInfo.recoveryMail);
     formData.append("role", userInfo.role);
+    formData.append("termsAndConditions", userInfo.termsAndConditions ? "true" : "false");
+    formData.append("usernamePermission", userInfo.usernamePermission ? "true" : "false");
+    formData.append("passwordPermission", userInfo.passwordPermission ? "true" : "false");
+    formData.append("emailPermission", userInfo.emailPermission ? "true" : "false");
 
     const config = {
         url: url,

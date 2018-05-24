@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import { Modal, Button, FormGroup, FormControl, InputGroup, Glyphicon, HelpBlock } from "react-bootstrap";
+import { Modal, Button, FormGroup, FormControl, InputGroup, Glyphicon, HelpBlock, Row, Col, ControlLabel, Checkbox } from "react-bootstrap";
 import _ from "lodash";
 import RFReactSelect from "../../helpers/redux-form-react-selector-integrator";
 import { removeErrors, changeModalState, REMOVE_USER_REGISTRATION_ERRORS } from "../../actions";
@@ -10,7 +10,11 @@ import { FieldError } from "../../helpers/errors";
 import { fetchUserRoles, registerUser, setSuccessfulUserRegistrationFlag } from "../../actions/user-actions";
 import { getValidationState, isNotEmpty } from "../../validation/helpers";
 import { getRegisterUserFormValidity } from "../../selectors";
-import { validateId, validatePassword, validateEmail } from "../../validation/user-registration-validation";
+import {
+    validateId, validatePassword, validateEmail,
+    validateTermsAndConditions, validateUsernamePermission, validatePasswordPermission, validateEmailPermission
+} from "../../validation/user-registration-validation";
+import { termsAndConditions, breachPolicies } from "../../configuration";
 
 class UserRegistrationModal extends Component {
 
@@ -72,6 +76,45 @@ class UserRegistrationModal extends Component {
         );
     };
 
+    renderCheckbox = (field) => {
+        const { input, placeholder, helpMessage, errorField, meta : { touched, invalid, error } } = field;
+        const validationState = getValidationState(input.value, touched, invalid);
+
+        return (
+            <InputGroup {...input}>
+                <Checkbox >{placeholder}</Checkbox>
+                <HelpBlock>{validationState === "error" ? error : helpMessage}</HelpBlock>
+                <FieldError error={errorField} />
+            </InputGroup>
+        )
+    };
+
+    renderCheckboxWithText = (field) => {
+        const { text, title } = field;
+        const { input, meta : { touched, invalid } } = field;
+        const validationState = getValidationState(input.value, touched, invalid);
+
+        return (
+            <FormGroup>
+                <Row>
+                    <Col xs={12} sm={3} md={3} lg={3}>
+                        <ControlLabel>{title}</ControlLabel>
+                    </Col>
+                    <Col xs={12} sm={9} md={9} lg={9}>
+                        <div className="registration-textarea">
+                            {text}
+                        </div>
+                    </Col>
+                </Row>
+                <FormGroup controlId={input.name} validationState={validationState}>
+                    <Col xs={12} sm={9} md={9} lg={9} smOffset={3} mdOffset={3} lgOffset={3}>
+                        {this.renderCheckbox(field)}
+                    </Col>
+                </FormGroup>
+            </FormGroup>
+        );
+    };
+
     render() {
         const { userRegistrationState : { validationErrors, errorMessage },
             userRoles, modalState, handleSubmit, registerUserFormValidity } = this.props;
@@ -85,44 +128,104 @@ class UserRegistrationModal extends Component {
                     onClick={this.open}>
                     Register
                 </Button>
-                <Modal show={modalState[USER_REGISTRATION_MODAL]} onHide={this.close}>
+                <Modal show={modalState[USER_REGISTRATION_MODAL]} onHide={this.close} id="registration-modal">
                     <Modal.Header closeButton>
                         <Modal.Title>Registration</Modal.Title>
                     </Modal.Header>
                     <form onSubmit={handleSubmit(this.onSubmit)}>
                         <Modal.Body>
                             <FieldError error={errorMessage} />
+                            <Row>
+                                <Col xs={12} sm={6} md={6} lg={6}>
+                                    <Field
+                                        type="text" error={validationErrors.validUsername}
+                                        icon="user" placeholder="Username" subElement={true}
+                                        name="validUsername" component={this.renderInputField}
+                                    />
+                                    <FieldError error={validationErrors.validUsername} />
+                                </Col>
+                                <Col xs={12} sm={6} md={6} lg={6}>
+                                    <Field
+                                        type="password"
+                                        icon="lock" placeholder="Password" subElement={true}
+                                        name="validPassword" component={this.renderInputField}
+                                    />
+                                    <FieldError error={validationErrors.validPassword} />
+                                </Col>
+
+                                <Col xs={12} sm={6} md={6} lg={6}>
+                                    <Field
+                                        type="text"
+                                        icon="envelope" placeholder="Email" subElement={true}
+                                        name="recoveryMail" component={this.renderInputField}
+                                    />
+                                    <FieldError error={validationErrors.recoveryMail} />
+                                </Col>
+                                <Col xs={12} sm={6} md={6} lg={6}>
+                                    <InputGroup id="user-role-input-group">
+                                        <Field
+                                            options={this.roles()}
+                                            placeholder="Choose your User Role"
+                                            name="role" component={RFReactSelect}
+                                        />
+                                    </InputGroup>
+                                    <FieldError error={validationErrors.role} />
+                                </Col>
+                            </Row>
 
                             <Field
-                                type="text" error={validationErrors.validUsername}
-                                icon="user" placeholder="Username" subElement={true}
-                                name="validUsername" component={this.renderInputField}
+                                placeholder=" I accept the Terms and Conditions"
+                                name="termsAndConditions"
+                                title="Terms of use"
+                                text={termsAndConditions()}
+                                component={this.renderCheckboxWithText}
                             />
-                            <FieldError error={validationErrors.validUsername} />
+                            <FieldError error={userRoles.termsAndConditions} />
 
-                            <Field
-                                type="password"
-                                icon="lock" placeholder="Password" subElement={true}
-                                name="validPassword" component={this.renderInputField}
-                            />
-                            <FieldError error={validationErrors.validPassword} />
-
-                            <Field
-                                type="text"
-                                icon="envelope" placeholder="Email" subElement={true}
-                                name="recoveryMail" component={this.renderInputField}
-                            />
-                            <FieldError error={validationErrors.recoveryMail} />
-
-                            <InputGroup id="user-role-input-group">
-                                <Field
-                                    options={this.roles()}
-                                    placeholder="Choose your User Role"
-                                    name="role" component={RFReactSelect}
-                                />
+                            <InputGroup>
+                                <FormGroup>
+                                    <Row>
+                                        <Col xs={12} sm={3} md={3} lg={3}>
+                                            <ControlLabel>Data Breach Policy</ControlLabel>
+                                        </Col>
+                                        <Col xs={12} sm={9} md={9} lg={9}>
+                                            <div className="registration-textarea">
+                                                {breachPolicies()}
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </FormGroup>
                             </InputGroup>
+
+                                <Row>
+                                    <Col xs={12} sm={3} md={3} lg={3}>
+                                        <ControlLabel>Permissions</ControlLabel>
+                                    </Col>
+                                    <Col xs={12} sm={9} md={9} lg={9}>
+                                        <Field
+                                            placeholder="Username, used for analysis"
+                                            name="usernamePermission"
+                                            error={validationErrors.usernamePermission}
+                                            component={this.renderCheckbox}
+                                        />
+                                        <Field
+                                            placeholder="Password, used for analysis"
+                                            name="passwordPermission"
+                                            error={validationErrors.passwordPermission}
+                                            component={this.renderCheckbox}
+                                        />
+                                        <Field
+                                            placeholder="Email, used for analysis"
+                                            name="emailPermission"
+                                            error={validationErrors.emailPermission}
+                                            component={this.renderCheckbox}
+                                        />
+                                    </Col>
+                                </Row>
+
+
                             <FieldError error={userRoles.error} />
-                            <FieldError error={validationErrors.role} />
+
 
                         </Modal.Body>
                         <Modal.Footer>
@@ -141,7 +244,11 @@ function validate(values) {
         "validUsername" : validateId,
         "validPassword" : validatePassword,
         "recoveryMail" : validateEmail,
-        "role" : isNotEmpty
+        "role" : isNotEmpty,
+        "termsAndConditions" : validateTermsAndConditions,
+        "usernamePermission" : validateUsernamePermission,
+        "passwordPermission" : validatePasswordPermission,
+        "emailPermission" : validateEmailPermission
     };
 
     Object.keys(validationFunctions).forEach(function (key) {
