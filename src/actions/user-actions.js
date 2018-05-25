@@ -25,10 +25,14 @@ export function registerUser(userInfo, cb) {
     formData.append("validPassword", userInfo.validPassword);
     formData.append("recoveryMail", userInfo.recoveryMail);
     formData.append("role", userInfo.role);
-    formData.append("termsAndConditions", userInfo.termsAndConditions ? "true" : "false");
-    formData.append("usernamePermission", userInfo.usernamePermission ? "true" : "false");
-    formData.append("passwordPermission", userInfo.passwordPermission ? "true" : "false");
-    formData.append("emailPermission", userInfo.emailPermission ? "true" : "false");
+    formData.append("termsAndConditions", getCheckBoxValue(userInfo.termsAndConditions));
+    formData.append("usernamePermission", getCheckBoxValue(userInfo.usernamePermission));
+    formData.append("passwordPermission", getCheckBoxValue(userInfo.passwordPermission));
+    formData.append("emailPermission", getCheckBoxValue(userInfo.emailPermission));
+    formData.append("publicKeysPermission", getCheckBoxValue(userInfo.publicKeysPermission));
+    formData.append("jwtPermission", getCheckBoxValue(userInfo.jwtPermission));
+    formData.append("extraAnalyticsPermission", getCheckBoxValue(userInfo.extraAnalyticsPermission));
+    formData.append("marketingPermission", getCheckBoxValue(userInfo.marketingPermission));
 
     const config = {
         url: url,
@@ -184,4 +188,8 @@ export function deleteUser(cb) {
         type: DELETE_USER,
         payload: request
     };
+}
+
+function getCheckBoxValue(value) {
+    return value ? "true" : "false";
 }

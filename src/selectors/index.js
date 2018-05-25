@@ -21,7 +21,7 @@ export const hasUserAnyServices = createSelector(
         const noPlatforms = !platforms ? 0 :  Object.keys(platforms).length;
         const noSSPs = !ssps ? 0 : Object.keys(ssps).length;
         const noFederations = !federations ? 0 : Object.keys(federations).length;
-        return noPlatforms !== 0 || noSSPs !== 0 || noFederations !== 0;
+        return noPlatforms + noSSPs + noFederations !== 0;
     }
 );
 

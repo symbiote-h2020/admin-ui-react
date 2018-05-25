@@ -50,7 +50,7 @@ export default class CollapsiblePlatformPanel extends Component {
         const { platform, informationModels : {availableInfoModels} } = this.state;
         const informationModelId = platform.interworkingServices[0].informationModelId;
         const informationModelOptions = [{
-            label : availableInfoModels[informationModelId].name,
+            label : availableInfoModels[informationModelId] ? availableInfoModels[informationModelId].name : "Fetching info...",
             value : informationModelId
         }];
         const platformOptions = [{

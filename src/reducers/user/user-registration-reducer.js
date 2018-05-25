@@ -9,7 +9,7 @@ export default function(state = INITIAL_STATE, action) {
                 if (action.payload.response)
                     return {
                         validationErrors: action.payload.response.data.validationErrors,
-                        errorMessage: "Invalid Fields!",
+                        errorMessage: action.payload.response.data.errorMessage,
                         successful: false
                     };
                 else

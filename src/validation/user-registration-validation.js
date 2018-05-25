@@ -46,13 +46,21 @@ export function validateTermsAndConditions(value) {
 }
 
 export function validateUsernamePermission(value) {
-    return validateClickedCheckbox(value, "You grant permission for your username")
+    return validateClickedCheckbox(value, "You must grant permission for processing your username")
 }
 
 export function validatePasswordPermission(value) {
-    return validateClickedCheckbox(value, "You grant permission for your password")
+    return validateClickedCheckbox(value, "You must grant permission for processing your password")
 }
 
 export function validateEmailPermission(value) {
-    return validateClickedCheckbox(value, "You grant permission for your email")
+    return validateClickedCheckbox(value, "You must grant permission for processing your email")
+}
+
+export function validatePublicKeysPermission(value) {
+    return validateClickedCheckbox(value, "You must grant permission for processing your clients public keys")
+}
+
+export function validateJWTTokensPermission(value) {
+    return validateClickedCheckbox(value, "You must grant permission for processing your clients JWT tokens")
 }
