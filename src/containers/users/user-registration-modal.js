@@ -83,8 +83,8 @@ class UserRegistrationModal extends Component {
         const validationState = getValidationState(input.value, touched, invalid);
 
         return (
-            <Fragment >
-                <Checkbox {...input}>{placeholder}</Checkbox>
+            <Fragment>
+                <Checkbox className="registration-checkbox" {...input}>{placeholder}</Checkbox>
                 <HelpBlock>{validationState === "error" ? error : helpMessage}</HelpBlock>
                 <FieldError error={errorField} />
             </Fragment>
@@ -108,11 +108,13 @@ class UserRegistrationModal extends Component {
                         </div>
                     </Col>
                 </Row>
-                <FormGroup controlId={input.name} validationState={validationState}>
-                    <Col xs={12} sm={9} md={9} lg={9} smOffset={3} mdOffset={3} lgOffset={3}>
-                        {this.renderCheckbox(field)}
-                    </Col>
-                </FormGroup>
+                <Row>
+                    <FormGroup controlId={input.name} validationState={validationState}>
+                        <Col xs={12} sm={9} md={9} lg={9} smOffset={3} mdOffset={3} lgOffset={3}>
+                            {this.renderCheckbox(field)}
+                        </Col>
+                    </FormGroup>
+                </Row>
             </FormGroup>
         );
     };
@@ -176,7 +178,7 @@ class UserRegistrationModal extends Component {
                             </Row>
 
                             <Field
-                                placeholder=" I accept the Terms and Conditions"
+                                placeholder="I accept the Terms and Conditions"
                                 name="termsAndConditions"
                                 title="Terms of use"
                                 text={termsAndConditions()}
@@ -184,56 +186,58 @@ class UserRegistrationModal extends Component {
                             />
                             <FieldError error={userRoles.termsAndConditions} />
 
-                            <Row>
-                                <Col xs={12} sm={3} md={3} lg={3}>
-                                    <ControlLabel>Permissions</ControlLabel>
-                                    <p>Please, add permissions to the data that symbIoTe can process. Some of them are
-                                    mandatory for creating an account</p>
-                                </Col>
-                                <Col xs={12} sm={9} md={9} lg={9}>
-                                    <Field
-                                        placeholder="Username (Mandatory)"
-                                        name="usernamePermission"
-                                        error={validationErrors.usernamePermission}
-                                        component={this.renderCheckbox}
-                                    />
-                                    <Field
-                                        placeholder="Password (Mandatory)"
-                                        name="passwordPermission"
-                                        error={validationErrors.passwordPermission}
-                                        component={this.renderCheckbox}
-                                    />
-                                    <Field
-                                        placeholder="Email (Mandatory)"
-                                        name="emailPermission"
-                                        error={validationErrors.emailPermission}
-                                        component={this.renderCheckbox}
-                                    />
-                                    <Field
-                                        placeholder="Public Keys, bound to the user clients (Mandatory)"
-                                        name="publicKeysPermission"
-                                        error={validationErrors.publicKeysPermission}
-                                        component={this.renderCheckbox}
-                                    />
-                                    <Field
-                                        placeholder="JWT tokens, issued for clients (Mandatory)"
-                                        name="jwtPermission"
-                                        error={validationErrors.jwtPermission}
-                                        component={this.renderCheckbox}
-                                    />
-                                    <Field
-                                        placeholder="I agree to have my data processed for extra analytics
+                            <FormGroup>
+                                <Row>
+                                    <Col xs={12} sm={3} md={3} lg={3}>
+                                        <ControlLabel>Permissions</ControlLabel>
+                                        <p>Please, add permissions to the data that symbIoTe can process. Some of them are
+                                            mandatory for creating an account</p>
+                                    </Col>
+                                    <Col xs={12} sm={9} md={9} lg={9}>
+                                        <Field
+                                            placeholder="Username (Mandatory)"
+                                            name="usernamePermission"
+                                            error={validationErrors.usernamePermission}
+                                            component={this.renderCheckbox}
+                                        />
+                                        <Field
+                                            placeholder="Password (Mandatory)"
+                                            name="passwordPermission"
+                                            error={validationErrors.passwordPermission}
+                                            component={this.renderCheckbox}
+                                        />
+                                        <Field
+                                            placeholder="Email (Mandatory)"
+                                            name="emailPermission"
+                                            error={validationErrors.emailPermission}
+                                            component={this.renderCheckbox}
+                                        />
+                                        <Field
+                                            placeholder="Public Keys, bound to the user clients (Mandatory)"
+                                            name="publicKeysPermission"
+                                            error={validationErrors.publicKeysPermission}
+                                            component={this.renderCheckbox}
+                                        />
+                                        <Field
+                                            placeholder="JWT tokens, issued for clients (Mandatory)"
+                                            name="jwtPermission"
+                                            error={validationErrors.jwtPermission}
+                                            component={this.renderCheckbox}
+                                        />
+                                        <Field
+                                            placeholder="I agree to have my data processed for extra analytics
                                              e.g. client abuse notification (Optional)"
-                                        name="extraAnalyticsPermission"
-                                        component={this.renderCheckbox}
-                                    />
-                                    <Field
-                                        placeholder="I agree to have my data processed marketing (Optional)"
-                                        name="marketingPermission"
-                                        component={this.renderCheckbox}
-                                    />
-                                </Col>
-                            </Row>
+                                            name="extraAnalyticsPermission"
+                                            component={this.renderCheckbox}
+                                        />
+                                        <Field
+                                            placeholder="I agree to have my data processed marketing (Optional)"
+                                            name="marketingPermission"
+                                            component={this.renderCheckbox}
+                                        />
+                                    </Col>
+                                </Row>
+                            </FormGroup>
 
                             <InputGroup>
                                 <FormGroup>
@@ -251,8 +255,6 @@ class UserRegistrationModal extends Component {
                             </InputGroup>
 
                             <FieldError error={userRoles.error} />
-                            <FieldError error={userRoles.error} />
-
 
                         </Modal.Body>
                         <Modal.Footer>
