@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Button, Modal, Row } from "react-bootstrap";
 import { USER_DELETION_MODAL, USER_LOGIN_MODAL } from "../../reducers/modal/modal-reducer";
-import { hasUserAnyServices } from "../../selectors";
+import { hasUserAnyServices, getUserFederations } from "../../selectors";
 import { ROOT_URL } from "../../configuration";
 import { changeModalState, DISMISS_USER_DELETION_ERROR_ALERT, dismissAlert, removeErrors } from "../../actions";
 import { userLogout, deleteUser } from "../../actions/user-actions";
@@ -52,8 +52,9 @@ class UserDeletionModal extends Component {
     }
 
     render() {
-        const { modalState, hasUserAnyServices } = this.props;
+        const { modalState, hasUserAnyServices, getUserFederations } = this.props;
         const { userDeletionError } = this.props.userDetails;
+        let hasServicesOrFederations = hasUserAnyServices || (Object.keys(getUserFederations) > 0);
 
         return(
             <Fragment>
@@ -74,12 +75,12 @@ class UserDeletionModal extends Component {
                     <Modal.Body>
                         <h4 className="text-danger">Are you sure that you want to delete this user?</h4>
                         <p>Make sure that you have deleted all your services before deleting the user<br/>
-                            (e.g. Platform, Enabler, SSP)
+                            (e.g. Platform, Enabler, SSP) and leave any federation you participate to.
                         </p>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button type="submit" bsStyle="danger" disabled={hasUserAnyServices}
-                                onClick={this.handleDeleteUser}>Submit</Button>
+                        <Button type="submit" bsStyle="danger" onClick={this.handleDeleteUser}
+                                disabled={hasServicesOrFederations}>Submit</Button>
                         <Button type="button" bsStyle="default" onClick={this.close}>Close</Button>
                     </Modal.Footer>
                 </Modal>
@@ -92,7 +93,8 @@ function mapStateToProps(state) {
     return {
         userDetails: state.userDetails,
         modalState: state.modalState,
-        hasUserAnyServices: hasUserAnyServices(state)
+        hasUserAnyServices: hasUserAnyServices(state),
+        getUserFederations: getUserFederations(state)
     };
 }
 

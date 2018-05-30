@@ -16,15 +16,6 @@ const getUserSSPs = (state) => state.userSSPs.availableSSPs;
 const getFederations = (state) => state.federations.availableFederations;
 const getPlatformIdToUpdate = (state) => state.platformUpdateModal.platformIdToUpdate;
 
-export const hasUserAnyServices = createSelector(
-    [ getUserPlatforms, getUserSSPs, getFederations ], (platforms, ssps, federations) => {
-        const noPlatforms = !platforms ? 0 :  Object.keys(platforms).length;
-        const noSSPs = !ssps ? 0 : Object.keys(ssps).length;
-        const noFederations = !federations ? 0 : Object.keys(federations).length;
-        return noPlatforms + noSSPs + noFederations !== 0;
-    }
-);
-
 const checkForm =  (form) => {
     if (!form)
         return {};
@@ -127,5 +118,13 @@ export const getUserFederations = createSelector(
                 const platformIds = federation.members.map(member => member.platformId);
                 return _.intersection(_.keysIn(userPlatforms), platformIds).length > 0;
             }), "id");
+    }
+);
+
+export const hasUserAnyServices = createSelector(
+    [ getUserPlatforms, getUserSSPs ], (platforms, ssps) => {
+        const noPlatforms = !platforms ? 0 :  Object.keys(platforms).length;
+        const noSSPs = !ssps ? 0 : Object.keys(ssps).length;
+        return noPlatforms + noSSPs !== 0;
     }
 );
