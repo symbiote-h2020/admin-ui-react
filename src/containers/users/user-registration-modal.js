@@ -11,10 +11,7 @@ import { fetchUserRoles, registerUser, setSuccessfulUserRegistrationFlag } from 
 import { getValidationState, isNotEmpty } from "../../validation/helpers";
 import { getRegisterUserFormValidity } from "../../selectors";
 import {
-    validateId, validatePassword, validateEmail,
-    validateTermsAndConditions, validateUsernamePermission,
-    validatePasswordPermission, validateEmailPermission,
-    validatePublicKeysPermission, validateJWTTokensPermission
+    validateId, validatePassword, validateEmail, validateTerms, validateConditions
 } from "../../validation/user-registration-validation";
 import { termsAndConditions, breachPolicies } from "../../configuration";
 
@@ -144,7 +141,9 @@ class UserRegistrationModal extends Component {
                                     <Field
                                         type="text" error={validationErrors.validUsername}
                                         icon="user" placeholder="Username" subElement={true}
-                                        name="validUsername" component={this.renderInputField}
+                                        name="validUsername"
+                                        helpMessage="We use the username for uniquely identify each user in the system"
+                                        component={this.renderInputField}
                                     />
                                     <FieldError error={validationErrors.validUsername} />
                                 </Col>
@@ -156,12 +155,17 @@ class UserRegistrationModal extends Component {
                                     />
                                     <FieldError error={validationErrors.validPassword} />
                                 </Col>
-
+                            </Row>
+                            <Row>
                                 <Col xs={12} sm={6} md={6} lg={6}>
                                     <Field
                                         type="text"
                                         icon="envelope" placeholder="Email" subElement={true}
-                                        name="recoveryMail" component={this.renderInputField}
+                                        name="recoveryMail"
+                                        helpMessage="We use your email address as part of allowing access to your account,
+                                        and in order to contact you with important information about any changes to your
+                                        account"
+                                        component={this.renderInputField}
                                     />
                                     <FieldError error={validationErrors.recoveryMail} />
                                 </Col>
@@ -177,62 +181,65 @@ class UserRegistrationModal extends Component {
                                 </Col>
                             </Row>
 
-                            <Field
-                                placeholder="I accept the Terms and Conditions"
-                                name="termsAndConditions"
-                                title="Terms of use"
-                                text={termsAndConditions()}
-                                component={this.renderCheckboxWithText}
-                            />
-                            <FieldError error={userRoles.termsAndConditions} />
+                            <FormGroup>
+                                <Row>
+                                    <Col xs={12} sm={3} md={3} lg={3}>
+                                        <ControlLabel>Terms and Conditions</ControlLabel>
+                                    </Col>
+                                    <Col xs={12} sm={9} md={9} lg={9}>
+                                        <div className="registration-textarea">
+                                            {termsAndConditions()}
+                                        </div>
+
+                                        <Field
+                                            placeholder="I accept the Terms"
+                                            name="termsAccepted"
+                                            error={validationErrors.terms}
+                                            component={this.renderCheckbox}
+                                        />
+                                        <FieldError error={userRoles.terms} />
+
+                                        <Field
+                                            placeholder="I accept the Conditions"
+                                            name="conditionsAccepted"
+                                            error={validationErrors.conditions}
+                                            component={this.renderCheckbox}
+                                        />
+                                        <FieldError error={userRoles.conditions} />
+                                    </Col>
+                                </Row>
+                            </FormGroup>
 
                             <FormGroup>
                                 <Row>
                                     <Col xs={12} sm={3} md={3} lg={3}>
                                         <ControlLabel>Permissions</ControlLabel>
-                                        <p>Please, add permissions to the data that symbIoTe can process. Some of them are
-                                            mandatory for creating an account</p>
+                                        <p>Please, specify permissions for the data that symbIoTe can use for analysis and
+                                            commercial purposes. Some of them are mandatory for creating an account</p>
                                     </Col>
                                     <Col xs={12} sm={9} md={9} lg={9}>
                                         <Field
-                                            placeholder="Username (Mandatory)"
+                                            placeholder="Username"
                                             name="usernamePermission"
                                             error={validationErrors.usernamePermission}
                                             component={this.renderCheckbox}
                                         />
                                         <Field
-                                            placeholder="Password (Mandatory)"
-                                            name="passwordPermission"
-                                            error={validationErrors.passwordPermission}
-                                            component={this.renderCheckbox}
-                                        />
-                                        <Field
-                                            placeholder="Email (Mandatory)"
+                                            placeholder="Email"
                                             name="emailPermission"
                                             error={validationErrors.emailPermission}
                                             component={this.renderCheckbox}
                                         />
                                         <Field
-                                            placeholder="Public Keys, bound to the user clients (Mandatory)"
+                                            placeholder="Public Keys, bound to the user clients"
                                             name="publicKeysPermission"
                                             error={validationErrors.publicKeysPermission}
                                             component={this.renderCheckbox}
                                         />
                                         <Field
-                                            placeholder="JWT tokens, issued for clients (Mandatory)"
+                                            placeholder="JWT tokens, issued for clients"
                                             name="jwtPermission"
                                             error={validationErrors.jwtPermission}
-                                            component={this.renderCheckbox}
-                                        />
-                                        <Field
-                                            placeholder="I agree to have my data processed for extra analytics
-                                             e.g. client abuse notification (Optional)"
-                                            name="extraAnalyticsPermission"
-                                            component={this.renderCheckbox}
-                                        />
-                                        <Field
-                                            placeholder="I agree to have my data processed marketing (Optional)"
-                                            name="marketingPermission"
                                             component={this.renderCheckbox}
                                         />
                                     </Col>
@@ -274,12 +281,8 @@ function validate(values) {
         "validPassword" : validatePassword,
         "recoveryMail" : validateEmail,
         "role" : isNotEmpty,
-        "termsAndConditions" : validateTermsAndConditions,
-        "usernamePermission" : validateUsernamePermission,
-        "passwordPermission" : validatePasswordPermission,
-        "emailPermission" : validateEmailPermission,
-        "publicKeysPermission" : validatePublicKeysPermission,
-        "jwtPermission" : validateJWTTokensPermission
+        "termsAccepted" : validateTerms,
+        "conditionsAccepted" : validateConditions
     };
 
     Object.keys(validationFunctions).forEach(function (key) {

@@ -178,10 +178,12 @@ a {
 #user-role-input-group {
     width: 100%;
 }
+
 .input-group {
     margin-bottom: 0.5em;
 }
 
+/*Style the checkboxes in the registration form*/
 /*.registration-checkbox.checkbox input {*/
     /*vertical-align: bottom;*/
     /*position: relative;*/

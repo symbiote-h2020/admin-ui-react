@@ -41,26 +41,10 @@ export function validateClickedCheckbox(value, error) {
     return null;
 }
 
-export function validateTermsAndConditions(value) {
-    return validateClickedCheckbox(value, "You must accept the Terms And Conditions")
+export function validateTerms(value) {
+    return validateClickedCheckbox(value, "You must accept the Terms")
 }
 
-export function validateUsernamePermission(value) {
-    return validateClickedCheckbox(value, "You must grant permission for processing your username")
-}
-
-export function validatePasswordPermission(value) {
-    return validateClickedCheckbox(value, "You must grant permission for processing your password")
-}
-
-export function validateEmailPermission(value) {
-    return validateClickedCheckbox(value, "You must grant permission for processing your email")
-}
-
-export function validatePublicKeysPermission(value) {
-    return validateClickedCheckbox(value, "You must grant permission for processing your clients public keys")
-}
-
-export function validateJWTTokensPermission(value) {
-    return validateClickedCheckbox(value, "You must grant permission for processing your clients JWT tokens")
+export function validateConditions(value) {
+    return validateClickedCheckbox(value, "You must accept the Conditions")
 }

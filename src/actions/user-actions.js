@@ -25,14 +25,12 @@ export function registerUser(userInfo, cb) {
     formData.append("validPassword", userInfo.validPassword);
     formData.append("recoveryMail", userInfo.recoveryMail);
     formData.append("role", userInfo.role);
-    formData.append("termsAndConditions", getCheckBoxValue(userInfo.termsAndConditions));
+    formData.append("termsAccepted", getCheckBoxValue(userInfo.termsAccepted));
+    formData.append("conditionsAccepted", getCheckBoxValue(userInfo.conditionsAccepted));
     formData.append("usernamePermission", getCheckBoxValue(userInfo.usernamePermission));
-    formData.append("passwordPermission", getCheckBoxValue(userInfo.passwordPermission));
     formData.append("emailPermission", getCheckBoxValue(userInfo.emailPermission));
     formData.append("publicKeysPermission", getCheckBoxValue(userInfo.publicKeysPermission));
     formData.append("jwtPermission", getCheckBoxValue(userInfo.jwtPermission));
-    formData.append("extraAnalyticsPermission", getCheckBoxValue(userInfo.extraAnalyticsPermission));
-    formData.append("marketingPermission", getCheckBoxValue(userInfo.marketingPermission));
 
     const config = {
         url: url,
