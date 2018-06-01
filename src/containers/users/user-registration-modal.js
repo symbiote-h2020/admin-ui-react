@@ -192,7 +192,7 @@ class UserRegistrationModal extends Component {
                                         </div>
 
                                         <Field
-                                            placeholder="I accept the Terms"
+                                            placeholder="I understand the Terms and Conditions"
                                             name="termsAccepted"
                                             error={validationErrors.terms}
                                             component={this.renderCheckbox}
@@ -200,7 +200,7 @@ class UserRegistrationModal extends Component {
                                         <FieldError error={userRoles.terms} />
 
                                         <Field
-                                            placeholder="I accept the Conditions"
+                                            placeholder="I accept the Term and Conditions"
                                             name="conditionsAccepted"
                                             error={validationErrors.conditions}
                                             component={this.renderCheckbox}
@@ -215,7 +215,7 @@ class UserRegistrationModal extends Component {
                                     <Col xs={12} sm={3} md={3} lg={3}>
                                         <ControlLabel>Permissions</ControlLabel>
                                         <p>Please, specify permissions for the data that symbIoTe can use for analysis and
-                                            commercial purposes. Some of them are mandatory for creating an account</p>
+                                            research purposes</p>
                                     </Col>
                                     <Col xs={12} sm={9} md={9} lg={9}>
                                         <Field

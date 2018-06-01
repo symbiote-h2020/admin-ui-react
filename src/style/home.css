@@ -183,6 +183,10 @@ a {
     margin-bottom: 0.5em;
 }
 
+ol li p {
+    font-weight: normal;
+}
+
 /*Style the checkboxes in the registration form*/
 /*.registration-checkbox.checkbox input {*/
     /*vertical-align: bottom;*/
