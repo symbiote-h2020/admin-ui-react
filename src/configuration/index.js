@@ -594,7 +594,16 @@ export const termsAndConditions = () => {
             <strong>Who to Contact</strong>
             <p>For accessing/modifying/stopping participation you can contact the support organization:</p>
 
-            Name and email of the contact person
+            <ul style={{fontWeight: "bold", listStyleType: "none"}}>
+                <li>symbIoTe</li>
+                <li>Wielkopolskie - Poznan - Institute Of Bioorganic Chemistry Polish Academy Of Science Poznan
+                    Supercomputing And Networking Center</li>
+                <li>61-131 Poznan</li>
+                <li>Poland</li>
+                <li>Phone: 0203 1220 810</li>
+                <li>Email: info@psnc.org.uk</li>
+                <li>Website: symbiote-open.man.poznan.pl</li>
+            </ul>
         </Fragment>
     )
 };
