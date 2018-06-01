@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 import { Row, Col, Tab, Nav, NavItem } from "react-bootstrap";
 import UserDetails from "./tabs/user-details-tab";
 import ClientDetails from "./tabs/client-details-tab";
@@ -58,43 +58,41 @@ class Main extends Component {
             </Nav>
     };
 
-    tabsContent = (role) => {
-        return role === SERVICE_OWNER ?
+    tabsContent = (role, username) => {
+        return (
             <Tab.Content animation className="clearfix">
                 <Tab.Pane eventKey="user-details">
-                    <UserDetails />
+                    <UserDetails bill={username}/>
                 </Tab.Pane>
                 <Tab.Pane eventKey="client-details">
                     <ClientDetails />
                 </Tab.Pane>
-                <Tab.Pane eventKey="platform-details">
-                    <PlatformDetails />
-                </Tab.Pane>
-                <Tab.Pane eventKey="ssp-details">
-                    <SSPDetails />
-                </Tab.Pane>
-                <Tab.Pane eventKey="information-models">
-                    <InformationModels />
-                </Tab.Pane>
-                <Tab.Pane eventKey="federation-requests">
-                    Federation Requests
-                </Tab.Pane>
-                <Tab.Pane eventKey="federation-list">
-                    <FederationListPanel />
-                </Tab.Pane>
-            </Tab.Content> :
-            <Tab.Content animation className="clearfix">
-                <Tab.Pane eventKey="user-details">
-                    <UserDetails />
-                </Tab.Pane>
-                <Tab.Pane eventKey="client-details">
-                    <ClientDetails />
-                </Tab.Pane>
+                {
+                    role === SERVICE_OWNER ?
+                    <Fragment>
+                        <Tab.Pane eventKey="platform-details">
+                            <PlatformDetails/>
+                        </Tab.Pane>
+                        < Tab.Pane eventKey="ssp-details">
+                            <SSPDetails />
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="information-models">
+                            <InformationModels />
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="federation-requests">
+                            Federation Requests
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="federation-list">
+                            <FederationListPanel />
+                        </Tab.Pane>
+                    </Fragment> : ""
+                }
             </Tab.Content>
+        )
     };
 
     render() {
-        const {role} = this.props.userDetails;
+        const { role, username } = this.props.userDetails;
 
         return(
             <div className="main cpanel">
@@ -106,7 +104,7 @@ class Main extends Component {
 
                             </Col>
                             <Col lg={9} md={9} sm={9} xs={9}>
-                                {this.tabsContent(role)}
+                                {this.tabsContent(role, username)}
                             </Col>
                         </Row>
                     </Tab.Container>

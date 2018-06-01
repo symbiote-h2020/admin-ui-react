@@ -15,6 +15,7 @@ const getUserPlatforms = (state) => state.userPlatforms.availablePlatforms;
 const getUserSSPs = (state) => state.userSSPs.availableSSPs;
 const getFederations = (state) => state.federations.availableFederations;
 const getPlatformIdToUpdate = (state) => state.platformUpdateModal.platformIdToUpdate;
+const getUserDetails = (state) => state.userDetails;
 
 const checkForm =  (form) => {
     if (!form)
@@ -106,6 +107,18 @@ export const getFieldsForPlatformToUpdate = createSelector(
                 informationModel : platformToBeUpdated.interworkingServices[0].informationModelId,
                 type : platformToBeUpdated.isEnabler ? "true" : "false"
             }
+        }
+    }
+);
+
+export const getFieldsForPermissionsUpdate = createSelector(
+    [ getUserDetails ],
+    (userDetails) => {
+        return {
+            usernamePermission : userDetails.usernamePermission,
+            emailPermission : userDetails.emailPermission,
+            publicKeysPermission : userDetails.publicKeysPermission,
+            jwtPermission : userDetails.jwtPermission
         }
     }
 );

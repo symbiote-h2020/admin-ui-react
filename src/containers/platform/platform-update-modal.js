@@ -143,9 +143,10 @@ PlatformUpdateModal = reduxForm({
     validate
 })(PlatformUpdateModal);
 
-export default PlatformUpdateModal = connect(mapStateToProps,
+export default PlatformUpdateModal = connect(
+    mapStateToProps,
     { changeModalState, updatePlatform, fetchAllInformationModels,
         deactivatePlatformModal, dismissAlert, removeErrors }
-)(withRouter(PlatformUpdateModal));
+        )(withRouter(PlatformUpdateModal));
 
 

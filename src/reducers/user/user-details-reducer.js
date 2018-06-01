@@ -1,13 +1,23 @@
 import {
-    FETCH_USER_INFORMATION, CHANGE_EMAIL, CHANGE_PASSWORD, DELETE_USER, DELETE_CLIENT,
-    DISMISS_EMAIL_CHANGE_SUCCESS_ALERT, DISMISS_EMAIL_CHANGE_ERROR_ALERT, DISMISS_USER_DELETION_ERROR_ALERT,
-    DISMISS_PASSWORD_CHANGE_SUCCESS_ALERT, DISMISS_PASSWORD_CHANGE_ERROR_ALERT,
+    FETCH_USER_INFORMATION, CHANGE_EMAIL, CHANGE_PASSWORD, CHANGE_PERMISSIONS, DELETE_USER, DELETE_CLIENT,
+    DISMISS_EMAIL_CHANGE_SUCCESS_ALERT, DISMISS_EMAIL_CHANGE_ERROR_ALERT,
+    DISMISS_PERMISSIONS_CHANGE_ERROR_ALERT, DISMISS_PERMISSIONS_CHANGE_SUCCESS_ALERT,
+    DISMISS_USER_DELETION_ERROR_ALERT, DISMISS_PASSWORD_CHANGE_SUCCESS_ALERT, DISMISS_PASSWORD_CHANGE_ERROR_ALERT,
     DISMISS_CLIENT_DELETION_SUCCESS_ALERT, DISMISS_CLIENT_DELETION_ERROR_ALERT
 } from "../../actions";
 import _ from "lodash";
 import {ROOT_URL} from "../../configuration";
 
-const INITIAL_STATE = { username: "", email: "", role: "", clients: {} };
+const INITIAL_STATE = {
+    username: "",
+    email: "",
+    role: "",
+    clients: {},
+    usernamePermission : false,
+    emailPermission : false,
+    publicKeysPermission : false,
+    jwtPermission : false
+};
 
 export default function(state = INITIAL_STATE, action) {
     switch(action.type) {
@@ -41,6 +51,37 @@ export default function(state = INITIAL_STATE, action) {
                 ...removeChangeEmailErrors(state),
                 email: newEmail,
                 successfulEmailChange: "Your email was updated successfully"
+            };
+
+        case CHANGE_PERMISSIONS:
+            console.log(action)
+
+            if (action.error) {
+                if (action.payload.response) {
+                    const message = action.payload.response.data;
+                    let errors = {};
+                    console.log(message)
+
+                    errors.changePermissionsError = message["changePermissionsError"];
+                    return {
+                        ...removeChangePermissionsErrors(_.omit(state, "successfulPermissionsChange")),
+                        changePermissionsError: message
+                    };
+                }
+                return { ...removeChangePermissionsErrors(_.omit(state, "successfulPermissionsChange")),
+                    changePermissionsError: "Could not contact the server" };
+
+            }
+
+            const permissionsResponse = JSON.parse(action.payload.config.data);
+            const { usernamePermission, emailPermission, publicKeysPermission, jwtPermission } = permissionsResponse;
+            return {
+                ...removeChangePermissionsErrors(state),
+                usernamePermission,
+                emailPermission,
+                publicKeysPermission,
+                jwtPermission,
+                successfulPermissionsChange: "Your permissions were updated successfully"
             };
 
         case CHANGE_PASSWORD:
@@ -123,6 +164,10 @@ export default function(state = INITIAL_STATE, action) {
             return _.omit(state, "successfulEmailChange");
         case DISMISS_EMAIL_CHANGE_ERROR_ALERT:
             return _.omit(state, "changeEmailError");
+        case DISMISS_PERMISSIONS_CHANGE_SUCCESS_ALERT:
+            return _.omit(state, "successfulPermissionsChange");
+        case DISMISS_PERMISSIONS_CHANGE_ERROR_ALERT:
+            return removeChangePermissionsErrors(state);
         case DISMISS_PASSWORD_CHANGE_SUCCESS_ALERT:
             return _.omit(state, "successfulPasswordChange");
         case DISMISS_PASSWORD_CHANGE_ERROR_ALERT:
@@ -146,6 +191,10 @@ const removeChangeEmailErrors = (state) => {
         newState =  _.omit(newState, errors[i]);
 
     return newState;
+};
+
+const removeChangePermissionsErrors = (state) => {
+    return _.omit(state, "changePermissionsError");
 };
 
 const removeChangePasswordErrors = (state) => {

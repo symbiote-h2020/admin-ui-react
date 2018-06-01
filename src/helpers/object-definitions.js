@@ -58,3 +58,10 @@ export function FederationMember(platformId, interworkingServiceURL) {
     this.platformId = platformId;
     this.interworkingServiceUrl = interworkingServiceURL;
 }
+
+export function Permissions(usernamePermission, emailPermission, publicKeysPermission, jwtPermission) {
+    this.usernamePermission = usernamePermission;
+    this.emailPermission = emailPermission;
+    this.publicKeysPermission = publicKeysPermission;
+    this.jwtPermission = jwtPermission;
+}
