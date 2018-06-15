@@ -46,8 +46,10 @@ export function registerFederation(props, cb) {
     };
 }
 
-export function deleteFederation(federationIdToDelete, cb) {
-    const url = `${ROOT_URL}/admin/cpanel/delete_federation`;
+export function deleteFederation(federationIdToDelete, isAdmin, cb) {
+
+    const url = `${ROOT_URL}/${isAdmin ? "admin" : "user"}/cpanel/delete_federation`;
+
     // eslint-disable-next-line
     const customHeaders = {...headers, ['Content-Type']: 'application/x-www-form-urlencoded; charset=UTF-8'};
     let formData = new FormData();
@@ -73,12 +75,8 @@ export function deleteFederation(federationIdToDelete, cb) {
 }
 
 export function leaveFederation(federationId, platformId, isAdmin, cb) {
-    let url = "";
 
-    if (isAdmin)
-        url = `${ROOT_URL}/admin/cpanel/leave_federation`;
-    else
-        url = `${ROOT_URL}/user/cpanel/leave_federation`;
+    const url = `${ROOT_URL}/${isAdmin ? "admin" : "user"}/cpanel/leave_federation`;
 
     // eslint-disable-next-line
     const customHeaders = {...headers, ['Content-Type']: 'application/x-www-form-urlencoded; charset=UTF-8'};

@@ -18,7 +18,7 @@ import {
     DISMISS_FEDERATION_LEAVE_SUCCESS_ALERT, DISMISS_FEDERATION_LEAVE_ERROR_ALERT
 } from "../../actions";
 import { ROOT_URL } from "../../configuration";
-import { ADMIN_LOGIN_MODAL, USER_LOGIN_MODAL } from "../../reducers/modal/modal-reducer";
+import { USER_LOGIN_MODAL } from "../../reducers/modal/modal-reducer";
 import { getUserFederations } from "../../selectors";
 
 class FederationList extends Component {
@@ -57,13 +57,15 @@ class FederationList extends Component {
     };
 
     handleDeleteFederation = () => {
-        this.props.deleteFederation(this.props.federationDeleteModal.federationIdToDelete, (res) => {
+        const { isAdmin } = this.props;
+
+        this.props.deleteFederation(this.props.federationDeleteModal.federationIdToDelete, isAdmin, (res) => {
             const pattern = new RegExp(`${ROOT_URL}$`);
 
             // If the root url is returned, that means that the user is not authenticated (possibly the
             // session is expired, so we redirect to the homepage and open the login modal
             if (pattern.test(res.request.responseURL)) {
-                this.props.changeModalState(ADMIN_LOGIN_MODAL, true);
+                this.props.changeModalState(USER_LOGIN_MODAL, true);
                 this.props.history.push(ROOT_URL);
             }
         });
@@ -85,10 +87,9 @@ class FederationList extends Component {
     };
 
     showFederationDeleteModal = (federationIdToDelete, availableFederations,
-                                 deactivateFederationDeleteModal, handleDeleteFederation,
-                                 isAdmin) => {
+                                 deactivateFederationDeleteModal, handleDeleteFederation) => {
         return (
-            availableFederations && isAdmin?
+            availableFederations ?
                 <FederationDeleteModal
                     federation={availableFederations[federationIdToDelete]}
                     deleteModalOpen={!!federationIdToDelete}
@@ -151,7 +152,7 @@ class FederationList extends Component {
 
                 {
                     this.showFederationDeleteModal(federationIdToDelete, federations,
-                        this.props.deactivateFederationDeleteModal, this.handleDeleteFederation, isAdmin)
+                        this.props.deactivateFederationDeleteModal, this.handleDeleteFederation)
                 }
 
                 {
