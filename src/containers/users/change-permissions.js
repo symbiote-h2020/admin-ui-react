@@ -34,7 +34,6 @@ class ChangePermissions extends Component {
         this.props.changePermissions(props, (res) => {
             const pattern = new RegExp(`${ROOT_URL}$`);
 
-            console.log(res)
             // If the root url is returned, that means that the user is not authenticated (possibly the
             // session is expired, so we redirect to the homepage and open the login modal
             if (pattern.test(res.request.responseURL)) {

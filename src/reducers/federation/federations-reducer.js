@@ -130,14 +130,22 @@ export default function(state = {}, action) {
                 else {
                     const federationId = action.payload.config.data.get("federationId");
                     const platformId = action.payload.config.data.get("platformId");
-                    const successfulFederationLeave = `The platform with id "${platformId}" left the federation "${federationId}" successfully!`;
-
+                    const { status } = action.payload;
+                    let successfulFederationLeave = "";
                     let newState = _.omit(state, "federationLeaveError");
+                    let newAvailableFederation = { };
 
-                    const newAvailableFederation = {
-                        ...state.availableFederations,
-                        [federationId]: action.payload.data[federationId]
-                    };
+                    if (status === 200) {
+                        successfulFederationLeave = `The platform with id "${platformId}" left the federation "${federationId}" successfully!`;
+                        newAvailableFederation = {
+                            ...state.availableFederations,
+                            [federationId]: action.payload.data[federationId]
+                        };
+                    } else if (status === 204) {
+                        successfulFederationLeave = `The federation "${federationId}" was deleted, since platform `
+                            + `"${platformId}" was the only platform left in the federation`;
+                        newAvailableFederation = _.omit(state.availableFederations, federationId);
+                    }
 
                     return {
                         ...removeErrors(newState),

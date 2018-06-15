@@ -36,7 +36,6 @@ export default class CollapsibleFederationPanel extends Component {
         const { federation, userPlatforms } = this.state;
         const { isAdmin } = this.props;
 
-        console.log(federation.members.length)
         return(
             <Panel id="id" bsStyle="primary" className="federation-panel-entry"
                    expanded={this.state.open} onToggle={() => {}}>
