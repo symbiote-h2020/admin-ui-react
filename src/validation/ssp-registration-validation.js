@@ -19,3 +19,23 @@ export function validateId(value) {
 export function validateName(value) {
     return lengthValidation("name", value ? value.length : 0, 3, 30);
 }
+
+export function validateHttpsUrl(value) {
+    const error = "A valid https url is required";
+
+    if (!value)
+        return null;
+    const pattern = new RegExp('(https:\\/\\/www\\.|https:\\/\\/)[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$$');
+
+    if (value && !pattern.test(value)) {
+        return error;
+    } else {
+        return null;
+    }
+}
+
+export function validateSiteLocalAddress(value, exposingSiteLocalAddress) {
+    if (exposingSiteLocalAddress === "true" && !value)
+        return "You have to set the site local address if 'Exposing Site Local Address' is set to true";
+    return validateHttpsUrl(value);
+}

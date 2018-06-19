@@ -1,9 +1,10 @@
 import React, { Fragment } from "react";
-import { Field } from "redux-form";
+import { Field, FieldArray } from "redux-form";
 import { FormGroup, FormControl, ControlLabel, Row, Col, HelpBlock } from "react-bootstrap";
 import RFReactSelect from "../../helpers/redux-form-react-selector-integrator";
 import { FieldError } from "../../helpers/errors";
 import { getValidationState } from "../../validation/helpers";
+import { renderDescriptions } from "../../helpers/render-descriptions";
 
 
 const SSPFormBody = ({ userSSPs, informationModels, idDisabled, isActive }) => {
@@ -43,12 +44,20 @@ const SSPFormBody = ({ userSSPs, informationModels, idDisabled, isActive }) => {
                 </Col>
             </Row>
 
+            <FieldArray
+                name="descriptions" componentClass="textarea"
+                rows={3} maxLength={300} label="SSP Descriptions"
+                placeholder="Enter the SSP description" helpMessage="From 4 to 300 characters"
+                errorField={userSSPs.descriptions_error} isActive={isActive}
+                component={renderDescriptions}
+            />
+
             <Row>
                 <Col lg={6} md={6} sm={6} xs={6}>
                     <Field
                         name="externalAddress" type="text"
                         label="External Address" placeholder="Enter the external address"
-                        helpMessage={"Enter a valid https url for the address where the SSP is available from the Internet"}
+                        helpMessage={"(Optional) Enter a valid https url for the address where the SSP is available from the Internet"}
                         errorField={userSSPs.externalAddress_error}
                         component={renderInputField}
                     />
@@ -57,8 +66,8 @@ const SSPFormBody = ({ userSSPs, informationModels, idDisabled, isActive }) => {
                     <Field
                         name="siteLocalAddress" type="text"
                         label="Site Local Address" placeholder="Enter the site local address"
-                        helpMessage={"Enter a valid https url for the address where the SSP is available for clients " +
-                        "residing in the same network"}
+                        helpMessage={"(Optional) Enter a valid https url for the address where the SSP is available for clients " +
+                        "residing in the same network. It is mandatory if you set to true the 'Exposing Site Local Address' field"}
                         errorField={userSSPs.siteLocalAddress_error}
                         component={renderInputField}
                     />
@@ -66,6 +75,19 @@ const SSPFormBody = ({ userSSPs, informationModels, idDisabled, isActive }) => {
             </Row>
 
             <Row>
+                <Col lg={6} md={6} sm={6} xs={6}>
+                    <FormGroup controlId="information-model">
+                        <ControlLabel>Information Model</ControlLabel>
+                        <Field
+                            name="informationModelId" options={informationModels}
+                            placeholder="Information Model"
+                            clearable={true} searchable={false}
+                            component={RFReactSelect}
+                        />
+                        <FormControl.Feedback />
+                        <HelpBlock>(Optional) Select your information model</HelpBlock>
+                    </FormGroup>
+                </Col>
                 <Col lg={6} md={6} sm={6} xs={6}>
                     <FormGroup controlId="exposing-site-local-address">
                         <ControlLabel>Exposing Site Local Address</ControlLabel>

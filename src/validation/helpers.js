@@ -40,6 +40,21 @@ export function validateId(value) {
     return null;
 }
 
+export function validateDescriptions(values) {
+    const errors = [];
+
+    if (values) {
+        values.forEach((descriptionObject, descriptionIndex) => {
+            const { description } = descriptionObject;
+            const descriptionError = {};
+            descriptionError.description = lengthValidation("description", description ? description.length : 0, 4, 300);
+            errors[descriptionIndex] = descriptionError;
+        });
+        return errors;
+    }
+    return null;
+}
+
 export function validateHttpsUrl(value) {
     const error = "A valid https url is required";
 

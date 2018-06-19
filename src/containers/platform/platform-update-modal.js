@@ -16,11 +16,8 @@ import {
     changeModalState, removeErrors, dismissAlert,
     DEACTIVATE_PLATFORM_UPDATE_MODAL, DISMISS_PLATFORM_UPDATE_ERROR_ALERT, REMOVE_PLATFORM_ERRORS
 } from "../../actions";
-import {
-    validateName, validateDescriptions,
-    validateInformationModel
-} from "../../validation/platform-registration-validation";
-import {validateHttpsUrl, validateId} from "../../validation/helpers";
+import { validateName, validateInformationModel } from "../../validation/platform-registration-validation";
+import { validateHttpsUrl, validateId, validateDescriptions } from "../../validation/helpers";
 
 class PlatformUpdateModal extends Component {
 

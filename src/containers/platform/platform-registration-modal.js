@@ -15,11 +15,8 @@ import {
     changeModalState, removeErrors, dismissAlert,
     DISMISS_PLATFORM_REGISTRATION_ERROR_ALERT, REMOVE_PLATFORM_ERRORS
 } from "../../actions/index";
-import {
-    validateName, validateDescriptions,
-    validateInformationModel
-} from "../../validation/platform-registration-validation";
-import {validateHttpsUrl, validateId} from "../../validation/helpers";
+import { validateName, validateInformationModel } from "../../validation/platform-registration-validation";
+import { validateHttpsUrl, validateId, validateDescriptions } from "../../validation/helpers";
 
 class PlatformRegistrationModal extends Component {
 

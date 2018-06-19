@@ -15,8 +15,8 @@ import {
     changeModalState, removeErrors, dismissAlert,
     DISMISS_SSP_REGISTRATION_ERROR_ALERT, REMOVE_SSP_ERRORS
 } from "../../actions";
-import { validateHttpsUrl, isNotEmpty } from "../../validation/helpers";
-import { validateId, validateName } from "../../validation/ssp-registration-validation";
+import { isNotEmpty, validateDescriptions } from "../../validation/helpers";
+import { validateId, validateName, validateHttpsUrl, validateSiteLocalAddress } from "../../validation/ssp-registration-validation";
 
 class SSPRegistrationModal extends Component {
 
@@ -46,13 +46,15 @@ class SSPRegistrationModal extends Component {
     }
 
     onSubmit = (props) => {
-        let { id, name, externalAddress, siteLocalAddress, exposingSiteLocalAddress } = props;
+        let { id, name, descriptions, externalAddress, siteLocalAddress, informationModelId, exposingSiteLocalAddress } = props;
 
         const newSSP = new SSP(
             id ? id : "",
-            name ? name : null,
-            externalAddress ? externalAddress : null,
-            siteLocalAddress ? siteLocalAddress : null,
+            name ? name : "",
+            descriptions,
+            externalAddress ? externalAddress : "",
+            siteLocalAddress ? siteLocalAddress : "",
+            informationModelId ? informationModelId : "",
             exposingSiteLocalAddress
         );
 
@@ -110,13 +112,18 @@ function validate(values) {
     const validationFunctions = {
         "id" : validateId,
         "name" : validateName,
+        "descriptions" : validateDescriptions,
         "externalAddress" : validateHttpsUrl,
-        "siteLocalAddress" : validateHttpsUrl,
+        "siteLocalAddress" : validateSiteLocalAddress,
         "exposingSiteLocalAddress" : isNotEmpty
     };
 
     Object.keys(validationFunctions).forEach(function (key) {
-        errors[key] = validationFunctions[key](values[key]);
+        if (key === "siteLocalAddress") {
+            errors[key] = validationFunctions[key](values[key], values["exposingSiteLocalAddress"]);
+        }
+        else
+            errors[key] = validationFunctions[key](values[key]);
     });
 
     return errors;

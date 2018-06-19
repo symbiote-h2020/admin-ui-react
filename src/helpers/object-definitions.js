@@ -11,11 +11,13 @@ export function Platform(id, name, description, interworkingServices, isEnabler)
     this.isEnabler = isEnabler;
 }
 
-export function SSP(id, name, externalAddress, siteLocalAddress, exposingSiteLocalAddress) {
+export function SSP(id, name, description, externalAddress, siteLocalAddress, informationModelId, exposingSiteLocalAddress) {
     this.id = id;
     this.name = name;
+    this.description = description;
     this.externalAddress = externalAddress;
     this.siteLocalAddress = siteLocalAddress;
+    this.informationModelId = informationModelId;
     this.exposingSiteLocalAddress = exposingSiteLocalAddress;
 }
 

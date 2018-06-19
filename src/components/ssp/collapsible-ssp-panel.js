@@ -43,8 +43,12 @@ export default class CollapsibleSSPPanel extends Component {
     };
 
     render() {
-        const { ssp } = this.state;
-
+        const { ssp, informationModels : {availableInfoModels} } = this.state;
+        const informationModelId = ssp.informationModelId;
+        const informationModelOptions = [{
+            label : availableInfoModels[informationModelId] ? availableInfoModels[informationModelId].name : "Fetching info...",
+            value : informationModelId
+        }];
         const exposingSiteLocalAddressOptions = [{
             label : ssp.exposingSiteLocalAddress ? "Yes" : "No",
             value : ssp.exposingSiteLocalAddress ? "true" : "false"
@@ -63,6 +67,7 @@ export default class CollapsibleSSPPanel extends Component {
                 <Panel.Collapse>
                     <SSPPanelBody
                         ssp={ssp}
+                        informationModelOptions={informationModelOptions}
                         exposingSiteLocalAddressOptions={exposingSiteLocalAddressOptions}
                     />
                 </Panel.Collapse>
