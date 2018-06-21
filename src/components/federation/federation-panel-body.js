@@ -15,6 +15,7 @@ const FederationPanelBody = ({ federation, userPlatforms, availableInfoModels, o
         label: "",
         value: ""
     }];
+    userPlatforms = userPlatforms ? userPlatforms : {};
 
     const leaveButton = (ownsPlatform, platformId, width) => {
         return(

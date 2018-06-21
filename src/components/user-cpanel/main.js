@@ -6,7 +6,8 @@ import PlatformDetails from "./tabs/platforms-tab";
 import SSPDetails from "./tabs/ssps-tab"
 import InformationModels from "./tabs/information-models-tab";
 import NavItemDropDown from "../admin-cpanel/nav-item-dropdown";
-import FederationListPanel from "./tabs/federations-tab";
+import FederationDetails from "./tabs/federations-tab";
+import FederationInvitationDetails from "./tabs/federation-invitations-tab";
 import {connect} from "react-redux";
 import {SERVICE_OWNER} from "../../configuration/roles";
 
@@ -80,10 +81,10 @@ class Main extends Component {
                             <InformationModels />
                         </Tab.Pane>
                         <Tab.Pane eventKey="federation-requests">
-                            Federation Requests
+                            <FederationInvitationDetails />
                         </Tab.Pane>
                         <Tab.Pane eventKey="federation-list">
-                            <FederationListPanel />
+                            <FederationDetails />
                         </Tab.Pane>
                     </Fragment> : ""
                 }

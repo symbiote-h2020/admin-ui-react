@@ -134,6 +134,27 @@ export const getUserFederations = createSelector(
     }
 );
 
+export const getFederationsInvitations = createSelector(
+    [ getUserPlatforms, getFederations ],
+    (userPlatforms, federations) => {
+        if (typeof federations === "undefined")
+            return {};
+
+        const userPlatformsIds = _.keysIn(userPlatforms);
+        let invitations = {};
+
+        for(const [federationId, federation] of Object.entries(federations)) {
+            const platformInvitations = _.keysIn(federation.openInvitations);
+
+            for (const platformId of platformInvitations) {
+                if (_.includes(userPlatformsIds, platformId))
+                    invitations[[federationId, platformId]] = federation.openInvitations[platformId];
+            }
+        }
+        return invitations;
+    }
+);
+
 export const hasUserAnyServices = createSelector(
     [ getUserPlatforms, getUserSSPs ], (platforms, ssps) => {
         const noPlatforms = !platforms ? 0 :  Object.keys(platforms).length;

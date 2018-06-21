@@ -1,9 +1,9 @@
 import React from "react";
 
-const FederationRequests = () => {
+const FederationInvitations = () => {
     return(
-        <h3>Federation Requests</h3>
+        <h3>Federation Invitation</h3>
     );
 };
 
-export default FederationRequests;
+export default FederationInvitations;
