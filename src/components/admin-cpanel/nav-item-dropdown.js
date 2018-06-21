@@ -39,8 +39,8 @@ export default class NavItemDropdown extends Component {
             >
                 <Nav bsStyle="pills" stacked className="sidebar panel-primary shadow"
                      onClick={ this.handleClick }>
-                    <NavItem eventKey="federation-requests">
-                        Federation Requests
+                    <NavItem eventKey="federation-invitations">
+                        Federation Invitations
                     </NavItem>
                     <NavItem eventKey="federation-list">
                         Federation List

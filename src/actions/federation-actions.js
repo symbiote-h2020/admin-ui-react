@@ -4,7 +4,9 @@ import {
     headers, FETCH_FEDERATIONS, REGISTER_FEDERATION, DELETE_FEDERATION, LEAVE_FEDERATION,
     ACTIVATE_FEDERATION_DELETE_MODAL, DEACTIVATE_FEDERATION_DELETE_MODAL,
     ACTIVATE_FEDERATION_LEAVE_MODAL, DEACTIVATE_FEDERATION_LEAVE_MODAL,
-    ACTIVATE_FEDERATION_INVITE_MODAL, DEACTIVATE_FEDERATION_INVITE_MODAL, INVITE_TO_FEDERATION
+    ACTIVATE_FEDERATION_INVITE_MODAL, DEACTIVATE_FEDERATION_INVITE_MODAL,
+    ACTIVATE_HANDLE_FEDERATION_INVITATION_MODAL, DEACTIVATE_HANDLE_FEDERATION_INVITATION_MODAL,
+    INVITE_TO_FEDERATION, HANDLE_INVITATION
 } from "./index";
 
 axios.defaults.withCredentials = true;
@@ -125,6 +127,35 @@ export function inviteToFederation(invitation, cb) {
     };
 }
 
+export function handleFederationInvitation(federationId, platformId, accepted, cb) {
+    const url = `${ROOT_URL}/user/cpanel/federation/handleInvitation`;
+
+    // eslint-disable-next-line
+    const customHeaders = {...headers, ['Content-Type']: 'application/x-www-form-urlencoded; charset=UTF-8'};
+    let formData = new FormData();
+    formData.append('federationId', federationId);
+    formData.append('platformId', platformId);
+    formData.append('accepted', accepted);
+
+    const config = {
+        url: url,
+        method: 'post',
+        data: formData,
+        headers: customHeaders
+    };
+
+    const request = axios.request(config)
+        .then((res) => {
+            cb(res);
+            return res;
+        });
+
+    return {
+        type: HANDLE_INVITATION,
+        payload: request
+    };
+}
+
 export function activateFederationDeleteModal(federationId) {
     return {
         type: ACTIVATE_FEDERATION_DELETE_MODAL,
@@ -161,5 +192,18 @@ export function activateFederationInviteModal(federationId) {
 export function deactivateFederationInviteModal() {
     return {
         type: DEACTIVATE_FEDERATION_INVITE_MODAL,
+    };
+}
+
+export function activateHandleFederationInvitationModal(federationId, platformId, accept) {
+    return {
+        type: ACTIVATE_HANDLE_FEDERATION_INVITATION_MODAL,
+        payload: { federationId, platformId, accept }
+    };
+}
+
+export function deactivateHandleFederationInvitationModal() {
+    return {
+        type: DEACTIVATE_HANDLE_FEDERATION_INVITATION_MODAL,
     };
 }

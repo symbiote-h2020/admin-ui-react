@@ -80,7 +80,7 @@ class Main extends Component {
                         <Tab.Pane eventKey="information-models">
                             <InformationModels />
                         </Tab.Pane>
-                        <Tab.Pane eventKey="federation-requests">
+                        <Tab.Pane eventKey="federation-invitations">
                             <FederationInvitationDetails />
                         </Tab.Pane>
                         <Tab.Pane eventKey="federation-list">

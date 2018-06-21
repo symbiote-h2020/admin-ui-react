@@ -33,6 +33,7 @@ class FederationList extends Component {
         super();
 
         this.handleDeleteFederation = this.handleDeleteFederation.bind(this);
+        this.handleLeaveFederation = this.handleLeaveFederation.bind(this);
         this.dismissFederationLeaveSuccessAlert = this.dismissFederationLeaveSuccessAlert.bind(this);
         this.dismissFederationLeaveErrorAlert = this.dismissFederationLeaveErrorAlert.bind(this);
         this.dismissFederationDeletionSuccessAlert = this.dismissFederationDeletionSuccessAlert.bind(this);

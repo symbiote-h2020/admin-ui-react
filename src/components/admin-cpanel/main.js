@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Row, Col, Tab, Nav, NavItem } from "react-bootstrap";
 import DeletePlatformResources from "./tabs/delete-platform-resources-tab";
 import DeleteInformationModel from "./tabs/delete-information-model-tab";
-import FederationInvitations from "./tabs/federation-requests-tab";
+import FederationInvitations from "./tabs/federation-invitations-tab";
 import FederationList from "./tabs/federations-tab";
 import NavItemDropdown from "./nav-item-dropdown";
 
@@ -49,7 +49,7 @@ export default class Main extends Component {
                                     <Tab.Pane eventKey="delete-information-model">
                                         <DeleteInformationModel />
                                     </Tab.Pane>
-                                    <Tab.Pane eventKey="federation-requests">
+                                    <Tab.Pane eventKey="federation-invitations">
                                         <FederationInvitations />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="federation-list">

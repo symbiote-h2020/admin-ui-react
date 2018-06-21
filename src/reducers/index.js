@@ -20,6 +20,8 @@ import FederationsReducer from "./federation/federations-reducer";
 import FederationDeleteModalReducer from "./federation/delete-federation-modal-reducer";
 import FederationLeaveModalReducer from "./federation/leave-federation-modal-reducer";
 import FederationInviteModalReducer from "./federation/invite-federation-modal-reducer";
+import HandleFederationInvitationModalReducer from "./federation/handle-federation-invitation-modal-reducer";
+
 
 const rootReducer = combineReducers({
     userRoles: UserRolesReducer,
@@ -42,6 +44,7 @@ const rootReducer = combineReducers({
     federationDeleteModal: FederationDeleteModalReducer,
     federationLeaveModal: FederationLeaveModalReducer,
     federationInviteModal: FederationInviteModalReducer,
+    handleFederationInvitationModalReducer: HandleFederationInvitationModalReducer,
     form: formReducer
 });
 

@@ -13,6 +13,8 @@ export default class CollapsibleFederationInvitationPanel extends Component {
         };
 
         this.togglePanel = this.togglePanel.bind(this);
+        this.acceptInvitation = this.acceptInvitation.bind(this);
+        this.rejectInvitation = this.rejectInvitation.bind(this);
         this.handleOpenInvitationModal = this.handleOpenInvitationModal.bind(this);
     }
 
@@ -32,9 +34,19 @@ export default class CollapsibleFederationInvitationPanel extends Component {
         this.setState({...this.state, open : !this.state.open});
     };
 
-    handleOpenInvitationModal = () => {
-        // this.props.openModal();
+    handleOpenInvitationModal = (accept) => {
+        const { federation, platform } = this.state;
+        this.props.openHandleFederationInvitationModal(federation.id, platform.id, accept);
     };
+
+    acceptInvitation = () => {
+        this.handleOpenInvitationModal(true);
+    };
+
+    rejectInvitation = () => {
+        this.handleOpenInvitationModal(false);
+    };
+
 
     render() {
         const { federation, platform } = this.state;
@@ -63,13 +75,13 @@ export default class CollapsibleFederationInvitationPanel extends Component {
                     </p>
                     <Button
                         bsStyle="info"
-                        onClick={this.handleOpenInvitationModal}>
+                        onClick={this.acceptInvitation}>
                         Accept
                     </Button>
                     <Button
                         className="panel-footer-btn"
                         bsStyle="warning"
-                        onClick={this.handleOpenInvitationModal}>
+                        onClick={this.rejectInvitation}>
                         Reject
                     </Button>
                 </Panel.Footer>
