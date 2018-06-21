@@ -13,6 +13,7 @@ export default class CollapsibleFederationPanel extends Component {
 
         this.togglePanel = this.togglePanel.bind(this);
         this.handleOpenDeleteModal = this.handleOpenDeleteModal.bind(this);
+        this.handleOpenInviteModal = this.handleOpenInviteModal.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -30,6 +31,10 @@ export default class CollapsibleFederationPanel extends Component {
 
     handleOpenDeleteModal = () => {
         this.props.openDeleteModal(this.props.federation.id);
+    };
+
+    handleOpenInviteModal = () => {
+        this.props.openInviteModal(this.props.federation.id);
     };
 
     render() {
@@ -55,6 +60,11 @@ export default class CollapsibleFederationPanel extends Component {
                     />
                 </Panel.Collapse>
                 <Panel.Footer className="federation-info-footer">
+                    <Button
+                        bsStyle="info"
+                        onClick={this.handleOpenInviteModal}>
+                        Invite
+                    </Button>
                     {!isAdmin && federation.members.length !== 1 ? "" :
                         <Button
                             className="panel-footer-btn"

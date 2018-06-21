@@ -19,6 +19,7 @@ import UserSSPsReducer from "./ssp/user-ssps-reducer";
 import FederationsReducer from "./federation/federations-reducer";
 import FederationDeleteModalReducer from "./federation/delete-federation-modal-reducer";
 import FederationLeaveModalReducer from "./federation/leave-federation-modal-reducer";
+import FederationInviteModalReducer from "./federation/invite-federation-modal-reducer";
 
 const rootReducer = combineReducers({
     userRoles: UserRolesReducer,
@@ -40,6 +41,7 @@ const rootReducer = combineReducers({
     federations: FederationsReducer,
     federationDeleteModal: FederationDeleteModalReducer,
     federationLeaveModal: FederationLeaveModalReducer,
+    federationInviteModal: FederationInviteModalReducer,
     form: formReducer
 });
 

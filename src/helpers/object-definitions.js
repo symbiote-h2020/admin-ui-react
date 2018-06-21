@@ -67,3 +67,8 @@ export function Permissions(usernamePermission, emailPermission, publicKeysPermi
     this.publicKeysPermission = publicKeysPermission;
     this.jwtPermission = jwtPermission;
 }
+
+export function InvitationRequest(federationId, invitedPlatforms) {
+    this.federationId = federationId;
+    this.invitedPlatforms = invitedPlatforms;
+}

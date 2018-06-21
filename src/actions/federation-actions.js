@@ -3,7 +3,8 @@ import { ROOT_URL } from "../configuration";
 import {
     headers, FETCH_FEDERATIONS, REGISTER_FEDERATION, DELETE_FEDERATION, LEAVE_FEDERATION,
     ACTIVATE_FEDERATION_DELETE_MODAL, DEACTIVATE_FEDERATION_DELETE_MODAL,
-    ACTIVATE_FEDERATION_LEAVE_MODAL, DEACTIVATE_FEDERATION_LEAVE_MODAL
+    ACTIVATE_FEDERATION_LEAVE_MODAL, DEACTIVATE_FEDERATION_LEAVE_MODAL,
+    ACTIVATE_FEDERATION_INVITE_MODAL, DEACTIVATE_FEDERATION_INVITE_MODAL, INVITE_TO_FEDERATION
 } from "./index";
 
 axios.defaults.withCredentials = true;
@@ -103,6 +104,27 @@ export function leaveFederation(federationId, platformId, isAdmin, cb) {
     };
 }
 
+export function inviteToFederation(invitation, cb) {
+    const url = `${ROOT_URL}/user/cpanel/federation_invite`;
+
+    const config = {
+        url: url,
+        method: 'post',
+        data: invitation,
+    };
+
+    const request = axios.request(config)
+        .then(res => {
+            cb(res);
+            return res;
+        });
+
+    return {
+        type: INVITE_TO_FEDERATION,
+        payload: request
+    };
+}
+
 export function activateFederationDeleteModal(federationId) {
     return {
         type: ACTIVATE_FEDERATION_DELETE_MODAL,
@@ -126,5 +148,18 @@ export function activateFederationLeaveModal(federationId, platformId) {
 export function deactivateFederationLeaveModal() {
     return {
         type: DEACTIVATE_FEDERATION_LEAVE_MODAL,
+    };
+}
+
+export function activateFederationInviteModal(federationId) {
+    return {
+        type: ACTIVATE_FEDERATION_INVITE_MODAL,
+        payload: federationId
+    };
+}
+
+export function deactivateFederationInviteModal() {
+    return {
+        type: DEACTIVATE_FEDERATION_INVITE_MODAL,
     };
 }

@@ -1,9 +1,10 @@
 import _ from "lodash";
 import {
-    FETCH_FEDERATIONS, REGISTER_FEDERATION, DELETE_FEDERATION, LEAVE_FEDERATION,
+    FETCH_FEDERATIONS, REGISTER_FEDERATION, DELETE_FEDERATION, LEAVE_FEDERATION, INVITE_TO_FEDERATION,
     DISMISS_FEDERATION_REGISTRATION_SUCCESS_ALERT, DISMISS_FEDERATION_REGISTRATION_ERROR_ALERT,
     DISMISS_FEDERATION_LEAVE_SUCCESS_ALERT, DISMISS_FEDERATION_LEAVE_ERROR_ALERT,
     DISMISS_FEDERATION_DELETION_SUCCESS_ALERT, DISMISS_FEDERATION_DELETION_ERROR_ALERT,
+    DISMISS_FEDERATION_INVITATION_SUCCESS_ALERT, DISMISS_FEDERATION_INVITATION_ERROR_ALERT,
     REMOVE_FEDERATION_REGISTRATION_ERRORS
 } from "../../actions";
 import { ROOT_URL } from "../../configuration";
@@ -158,7 +159,7 @@ export default function(state = {}, action) {
             if (action.error) {
                 let newState = _.omit(state, "successfulFederationDeletion");
 
-                if (action.payload.response) {
+                if (action.payload.response && action.payload.response.data.error) {
                     const message = action.payload.response.data.error;
                     return { ...newState, federationDeletionError : message };
                 } else {
@@ -183,6 +184,45 @@ export default function(state = {}, action) {
                     };
                 }
             }
+        case INVITE_TO_FEDERATION:
+            if (action.error) {
+                if (action.payload.response && action.payload.response.data.error) {
+                    const message = action.payload.response.data;
+                    let newState = {};
+
+                    newState.federationInvitationError = message.error;
+                    return { ...removeErrors(state), ...newState};
+                } else {
+                    return {
+                        ...removeErrors(state),
+                        federationInvitationError: "Network Error: Could not contact server"
+                    };
+                }
+            }
+            else {
+                const pattern = new RegExp(`${ROOT_URL}$`);
+
+                if (pattern.test(action.payload.request.responseURL))
+                    return state;
+                else {
+                    const invitationRequest = JSON.parse(action.payload.config.data);
+                    const id =  invitationRequest["federationId"];
+                    const response = JSON.parse(action.payload.request.response);
+                    const federation = response[id];
+                    const successfulFederationInvitation = `Invitation to federation "${id}" was successful!`;
+
+                    let newFederations = {
+                        ...state.availableFederations,
+                        [id] : federation
+                    };
+
+                    return {
+                        ...removeErrors(state),
+                        availableFederations : newFederations,
+                        successfulFederationInvitation,
+                    };
+                }
+            }
         case DISMISS_FEDERATION_REGISTRATION_SUCCESS_ALERT:
             return _.omit(state, "successfulFederationRegistration");
         case DISMISS_FEDERATION_REGISTRATION_ERROR_ALERT:
@@ -195,6 +235,10 @@ export default function(state = {}, action) {
             return _.omit(state, "successfulFederationDeletion");
         case DISMISS_FEDERATION_DELETION_ERROR_ALERT:
             return _.omit(state, "federationDeletionError");
+        case DISMISS_FEDERATION_INVITATION_SUCCESS_ALERT:
+            return _.omit(state, "successfulFederationInvitation");
+        case DISMISS_FEDERATION_INVITATION_ERROR_ALERT:
+            return _.omit(state, "federationInvitationError");
         case REMOVE_FEDERATION_REGISTRATION_ERRORS:
             return {...removeErrors(state)};
         default:
@@ -207,7 +251,7 @@ const removeErrors = (state) => {
         "id_error", "error_platforms_id", "qosConstraints_metric_error",
         "qosConstraints_comparator_error", "qosConstraints_threshold_error",
         "qosConstraints_duration_error", "federationRegistrationError",
-        "federationLeaveError", "federationDeletionError"
+        "federationLeaveError", "federationDeletionError", "federationInvitationError"
     ];
 
     let newState = {...state};

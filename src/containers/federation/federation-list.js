@@ -5,17 +5,23 @@ import _ from "lodash";
 import CollapsibleFederationPanel from "../../components/federation/collapsible-federation-panel";
 import FederationLeaveModal from "../../components/federation/federation-leave-modal";
 import FederationDeleteModal from "../../components/federation/federation-delete-modal";
+import FederationInviteModal from "../../components/federation/federation-invite-modal";
 import { FieldError, AlertDismissable } from "../../helpers/errors";
 import { fetchAllInformationModels, fetchUserInformationModels } from "../../actions/info-model-actions";
 import {
     fetchFederations, deleteFederation, leaveFederation,
     activateFederationDeleteModal, deactivateFederationDeleteModal,
-    activateFederationLeaveModal, deactivateFederationLeaveModal
+    activateFederationLeaveModal, deactivateFederationLeaveModal,
+    activateFederationInviteModal
 } from "../../actions/federation-actions";
 import {
-    changeModalState, dismissAlert,
-    DISMISS_FEDERATION_DELETION_SUCCESS_ALERT, DISMISS_FEDERATION_DELETION_ERROR_ALERT,
-    DISMISS_FEDERATION_LEAVE_SUCCESS_ALERT, DISMISS_FEDERATION_LEAVE_ERROR_ALERT
+    changeModalState,
+    dismissAlert,
+    DISMISS_FEDERATION_DELETION_SUCCESS_ALERT,
+    DISMISS_FEDERATION_DELETION_ERROR_ALERT,
+    DISMISS_FEDERATION_LEAVE_SUCCESS_ALERT,
+    DISMISS_FEDERATION_LEAVE_ERROR_ALERT,
+    DISMISS_FEDERATION_INVITATION_SUCCESS_ALERT
 } from "../../actions";
 import { ROOT_URL } from "../../configuration";
 import { USER_LOGIN_MODAL } from "../../reducers/modal/modal-reducer";
@@ -31,6 +37,7 @@ class FederationList extends Component {
         this.dismissFederationLeaveErrorAlert = this.dismissFederationLeaveErrorAlert.bind(this);
         this.dismissFederationDeletionSuccessAlert = this.dismissFederationDeletionSuccessAlert.bind(this);
         this.dismissFederationDeletionErrorAlert = this.dismissFederationDeletionErrorAlert.bind(this);
+        this.dismissFederationInvitationSuccessAlert = this.dismissFederationInvitationSuccessAlert.bind(this);
     }
 
     componentDidMount() {
@@ -79,7 +86,7 @@ class FederationList extends Component {
                 <FederationLeaveModal
                     federation={availableUserFederations[federationIdToLeave]}
                     platformId={platformIdToLeave}
-                    leaveModalOpen={!!federationIdToLeave}
+                    modalOpen={!!federationIdToLeave}
                     closeModal={deactivateFederationLeaveModal}
                     handleLeaveFederation={handleLeaveFederation} />
                 : null
@@ -92,7 +99,7 @@ class FederationList extends Component {
             availableFederations ?
                 <FederationDeleteModal
                     federation={availableFederations[federationIdToDelete]}
-                    deleteModalOpen={!!federationIdToDelete}
+                    modalOpen={!!federationIdToDelete}
                     closeModal={deactivateFederationDeleteModal}
                     handleDeleteFederation={handleDeleteFederation} />
                 : null
@@ -115,9 +122,14 @@ class FederationList extends Component {
         this.props.dismissAlert(DISMISS_FEDERATION_DELETION_ERROR_ALERT)
     }
 
+    dismissFederationInvitationSuccessAlert() {
+        this.props.dismissAlert(DISMISS_FEDERATION_INVITATION_SUCCESS_ALERT)
+    }
+
     render() {
         const { availableFederations, successfulFederationLeave, successfulFederationDeletion,
-            federationLeaveError, federationDeletionError, fetching_error } = this.props.federations;
+            successfulFederationInvitation, federationLeaveError, federationDeletionError,
+            fetching_error } = this.props.federations;
         const { federationIdToDelete } = this.props.federationDeleteModal;
         const federationIdToLeave = this.props.federationLeaveModal.federationId;
         const platformIdToLeave = this.props.federationLeaveModal.platformId;
@@ -136,6 +148,8 @@ class FederationList extends Component {
                                   dismissHandler={this.dismissFederationLeaveErrorAlert} />
                 <AlertDismissable alertStyle="success" message={successfulFederationLeave}
                                   dismissHandler={this.dismissFederationLeaveSuccessAlert} />
+                <AlertDismissable alertStyle="success" message={successfulFederationInvitation}
+                                  dismissHandler={this.dismissFederationInvitationSuccessAlert} />
 
                 {_.map(federations, (federation) => {
                     return (
@@ -146,6 +160,7 @@ class FederationList extends Component {
                             informationModels={this.props.informationModels}
                             openLeaveModal={this.props.activateFederationLeaveModal}
                             openDeleteModal={this.props.activateFederationDeleteModal}
+                            openInviteModal={this.props.activateFederationInviteModal}
                             isAdmin={isAdmin} />
                     )
                 })}
@@ -160,6 +175,8 @@ class FederationList extends Component {
                         this.props.deactivateFederationLeaveModal, this.handleLeaveFederation)
                 }
 
+                <FederationInviteModal />
+
             </Fragment>
         );
     }
@@ -173,7 +190,8 @@ function mapStateToProps(state) {
         informationModels: state.informationModels,
         userFederations: getUserFederations(state),
         federationDeleteModal: state.federationDeleteModal,
-        federationLeaveModal: state.federationLeaveModal
+        federationLeaveModal: state.federationLeaveModal,
+        federationInviteModal: state.federationInviteModal
     };
 }
 
@@ -188,5 +206,6 @@ export default connect(mapStateToProps, {
     deactivateFederationDeleteModal,
     activateFederationLeaveModal,
     deactivateFederationLeaveModal,
+    activateFederationInviteModal,
     dismissAlert
 })(withRouter(FederationList));

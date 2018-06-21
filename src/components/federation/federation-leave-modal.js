@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-const FederationLeaveModal = ({ federation, platformId, leaveModalOpen, closeModal, handleLeaveFederation }) => {
+const FederationLeaveModal = ({ federation, platformId, modalOpen, closeModal, handleLeaveFederation }) => {
 
     // This function is used in order to preserve the animation on closing the modal
     const modalContent = () => {
@@ -24,7 +24,7 @@ const FederationLeaveModal = ({ federation, platformId, leaveModalOpen, closeMod
     };
 
     return(
-        <Modal show={leaveModalOpen} onHide={closeModal}>
+        <Modal show={modalOpen} onHide={closeModal}>
             {modalContent()}
         </Modal>
     );
