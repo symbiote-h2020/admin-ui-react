@@ -7,7 +7,7 @@ const PlatformDetails = () => {
     return(
         <Fragment>
             <PlatformRegistrationModal />
-            <PlatformUpdateModal/>
+            <PlatformUpdateModal />
             <PlatformList />
         </Fragment>
     );

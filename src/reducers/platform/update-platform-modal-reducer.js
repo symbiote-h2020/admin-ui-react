@@ -1,6 +1,6 @@
 import {
     ACTIVATE_PLATFORM_UPDATE_MODAL, DEACTIVATE_PLATFORM_UPDATE_MODAL
-} from "../../actions/index";
+} from "../../actions";
 
 const INITIAL_STATE = { platformIdToUpdate : "" };
 

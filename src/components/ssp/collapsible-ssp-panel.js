@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Panel, Glyphicon, Button } from "react-bootstrap";
 import {
-    ACTIVATE_SSP_CONFIG_MODAL,
-    ACTIVATE_SSP_DELETE_MODAL
+    ACTIVATE_SSP_CONFIG_MODAL, ACTIVATE_SSP_DELETE_MODAL, ACTIVATE_SSP_UPDATE_MODAL
 } from "../../actions";
 import SSPPanelBody from "./ssp-panel-body";
 
@@ -36,6 +35,10 @@ export default class CollapsibleSSPPanel extends Component {
 
     handleOpenDeleteModal = () => {
         this.props.openModal(ACTIVATE_SSP_DELETE_MODAL, this.props.ssp.id);
+    };
+
+    handleOpenUpdateModal = () => {
+        this.props.openModal(ACTIVATE_SSP_UPDATE_MODAL, this.props.ssp.id);
     };
 
     handleOpenConfigModal = () => {
@@ -72,16 +75,22 @@ export default class CollapsibleSSPPanel extends Component {
                     />
                 </Panel.Collapse>
                 <Panel.Footer className="platform-info-footer">
-                    <Button
-                        bsStyle="info"
-                        onClick={this.handleOpenConfigModal}>
-                        Get Configuration
-                    </Button>
+                    {/*<Button*/}
+                        {/*bsStyle="info"*/}
+                        {/*onClick={this.handleOpenConfigModal}>*/}
+                        {/*Get Configuration*/}
+                    {/*</Button>*/}
                     <Button
                         className="panel-footer-btn"
                         bsStyle="warning"
                         onClick={this.handleOpenDeleteModal}>
                         Delete
+                    </Button>
+                    <Button
+                        className="panel-footer-btn"
+                        bsStyle="info"
+                        onClick={this.handleOpenUpdateModal}>
+                        Update
                     </Button>
                 </Panel.Footer>
             </Panel>

@@ -4,6 +4,7 @@ import _ from "lodash";
 const getPlatformRegistrationForm = (state) => state.form.PlatformRegistrationForm;
 const getSSPRegistrationForm = (state) => state.form.SSPRegistrationForm;
 const getPlatformUpdateForm = (state) => state.form.PlatformUpdateForm;
+const getSSPUpdateForm = (state) => state.form.SSPUpdateForm;
 const getInfoModelRegistrationForm = (state) => state.form.InformationModelRegistrationForm;
 const getPlatformConfigurationForm = (state) => state.form.PlatformConfigurationForm;
 const getSSPConfigurationForm = (state) => state.form.SSPConfigurationForm;
@@ -15,6 +16,7 @@ const getUserPlatforms = (state) => state.userPlatforms.availablePlatforms;
 const getUserSSPs = (state) => state.userSSPs.availableSSPs;
 const getFederations = (state) => state.federations.availableFederations;
 const getPlatformIdToUpdate = (state) => state.platformUpdateModal.platformIdToUpdate;
+const getSSPIdToUpdate = (state) => state.sspUpdateModal.sspIdToUpdate;
 const getUserDetails = (state) => state.userDetails;
 
 const checkForm =  (form) => {
@@ -57,6 +59,10 @@ export const getPlatformUpdateValidity = createSelector(
     [ getPlatformUpdateForm ], checkForm
 );
 
+export const getSSPUpdateValidity = createSelector(
+    [ getSSPUpdateForm ], checkForm
+);
+
 export const getInfoModelRegistrationValidity = createSelector(
     [ getInfoModelRegistrationForm ], checkForm
 );
@@ -85,7 +91,6 @@ export const getChangePasswordFormValidity = createSelector(
     [ getChangePasswordForm ], checkForm
 );
 
-
 export const getFieldsForPlatformToUpdate = createSelector(
     [ getUserPlatforms, getPlatformIdToUpdate ],
     (userPlatforms, platformIdToUpdate) => {
@@ -106,6 +111,32 @@ export const getFieldsForPlatformToUpdate = createSelector(
                 interworkingServiceUrl : platformToBeUpdated.interworkingServices[0].url,
                 informationModel : platformToBeUpdated.interworkingServices[0].informationModelId,
                 type : platformToBeUpdated.isEnabler ? "true" : "false"
+            }
+        }
+    }
+);
+
+export const getFieldsForSSPToUpdate = createSelector(
+    [ getUserSSPs, getSSPIdToUpdate ],
+    (userSSPs, sspIdToUpdate) => {
+
+        if (!sspIdToUpdate)
+            return {};
+        else {
+            const sspToBeUpdated = userSSPs[sspIdToUpdate];
+            let descriptions = [];
+
+            for(let desc of sspToBeUpdated.description)
+                descriptions.push({description: desc.description})
+
+            return {
+                id : sspToBeUpdated.id,
+                name : sspToBeUpdated.name,
+                descriptions : descriptions,
+                externalAddress : sspToBeUpdated.externalAddress,
+                siteLocalAddress : sspToBeUpdated.siteLocalAddress,
+                informationModelId : sspToBeUpdated.informationModelId,
+                exposingSiteLocalAddress : sspToBeUpdated.exposingSiteLocalAddress ? "true" : "false"
             }
         }
     }
