@@ -26,7 +26,7 @@ class Success extends Component {
                 <div className="popupContent success">
                     <div className="title">Registration Successful!</div>
 
-                    <Alert bsStyle="warning">Please login with your new account.</Alert>
+                    <Alert bsStyle="warning">{this.props.userRegistrationState.successMessage}</Alert>
 
                     <FormGroup>
                         <Col sm={12} className="controls">
@@ -40,4 +40,10 @@ class Success extends Component {
 
 }
 
-export default connect(null, { changeModalState, setSuccessfulUserRegistrationFlag })(Success)
+function mapStateToProps(state) {
+    return {
+        userRegistrationState: state.userRegistrationState
+    };
+}
+
+export default connect(mapStateToProps, { changeModalState, setSuccessfulUserRegistrationFlag })(Success)

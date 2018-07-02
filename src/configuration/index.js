@@ -300,26 +300,24 @@ export const termsAndConditions = () => {
                     <h5><strong>Right of access</strong></h5>
                     <p>Each data subject shall have the right granted by the European legislator to obtain from the controller free information about his or her personal data stored at any time and a copy of this information. Furthermore, the European directives and regulations grant the data subject access to the following information:
                     </p>
-                    <p>
-                        <ul>
-                            <li>the purposes of the processing;</li>
-                            <li>the categories of personal data concerned;</li>
-                            <li>the recipients or categories of recipients to whom the personal data have been or will be
-                                disclosed, in particular recipients in third countries or international organisations;</li>
-                            <li>where possible, the envisaged period for which the personal data will be stored, or, if
-                                not possible, the criteria used to determine that period;</li>
-                            <li>the existence of the right to request from the controller rectification or erasure of
-                                personal data, or restriction of processing of personal data concerning the data subject,
-                                or to object to such processing;</li>
-                            <li>the existence of the right to lodge a complaint with a supervisory authority;</li>
-                            <li>where the personal data are not collected from the data subject, any available information
-                                as to their source;</li>
-                            <li>the existence of automated decision-making, including profiling, referred to in Article
-                                22(1) and (4) of the GDPR and, at least in those cases, meaningful information about the
-                                logic involved, as well as the significance and envisaged consequences of such processing
-                                for the data subject.</li>
-                        </ul>
-                    </p>
+                    <ul style={{fontWeight: "normal"}}>
+                        <li>the purposes of the processing;</li>
+                        <li>the categories of personal data concerned;</li>
+                        <li>the recipients or categories of recipients to whom the personal data have been or will be
+                            disclosed, in particular recipients in third countries or international organisations;</li>
+                        <li>where possible, the envisaged period for which the personal data will be stored, or, if
+                            not possible, the criteria used to determine that period;</li>
+                        <li>the existence of the right to request from the controller rectification or erasure of
+                            personal data, or restriction of processing of personal data concerning the data subject,
+                            or to object to such processing;</li>
+                        <li>the existence of the right to lodge a complaint with a supervisory authority;</li>
+                        <li>where the personal data are not collected from the data subject, any available information
+                            as to their source;</li>
+                        <li>the existence of automated decision-making, including profiling, referred to in Article
+                            22(1) and (4) of the GDPR and, at least in those cases, meaningful information about the
+                            logic involved, as well as the significance and envisaged consequences of such processing
+                            for the data subject.</li>
+                    </ul>
                     <p>Furthermore, the data subject shall have a right to obtain information as to whether personal data are transferred to a third country or to an international organisation. Where this is the case, the data subject shall have the right to be informed of the appropriate safeguards relating to the transfer.
                     </p>
                     <p>If a data subject wishes to avail himself of this right of access, he or she may, at any time, contact any employee of the controller.
@@ -345,23 +343,21 @@ export const termsAndConditions = () => {
                         controller shall have the obligation to erase personal data without undue delay where one of the
                         following grounds applies, as long as the processing is not necessary:
                     </p>
-                    <p>
-                        <ul>
-                            <li>The personal data are no longer necessary in relation to the purposes for which they
-                                were collected or otherwise processed.</li>
-                            <li>The data subject withdraws consent to which the processing is based according to point
-                                (a) of Article 6(1) of the GDPR, or point (a) of Article 9(2) of the GDPR, and where
-                                there is no other legal ground for the processing.</li>
-                            <li>The data subject objects to the processing pursuant to Article 21(1) of the GDPR and
-                                there are no overriding legitimate grounds for the processing, or the data subject
-                                objects to the processing pursuant to Article 21(2) of the GDPR.</li>
-                            <li>The personal data have been unlawfully processed.</li>
-                            <li>The personal data must be erased for compliance with a legal obligation in Union or
-                                Member State law to which the controller is subject.</li>
-                            <li>The personal data have been collected in relation to the offer of information society
-                                services referred to in Article 8(1) of the GDPR.</li>
-                        </ul>
-                    </p>
+                    <ul style={{fontWeight: "normal"}}>
+                        <li>The personal data are no longer necessary in relation to the purposes for which they
+                            were collected or otherwise processed.</li>
+                        <li>The data subject withdraws consent to which the processing is based according to point
+                            (a) of Article 6(1) of the GDPR, or point (a) of Article 9(2) of the GDPR, and where
+                            there is no other legal ground for the processing.</li>
+                        <li>The data subject objects to the processing pursuant to Article 21(1) of the GDPR and
+                            there are no overriding legitimate grounds for the processing, or the data subject
+                            objects to the processing pursuant to Article 21(2) of the GDPR.</li>
+                        <li>The personal data have been unlawfully processed.</li>
+                        <li>The personal data must be erased for compliance with a legal obligation in Union or
+                            Member State law to which the controller is subject.</li>
+                        <li>The personal data have been collected in relation to the offer of information society
+                            services referred to in Article 8(1) of the GDPR.</li>
+                    </ul>
                     <p>If one of the aforementioned reasons applies, and a data subject wishes to request the erasure of
                         personal data stored by the symbIoTe, he or she may, at any time, contact any employee of the
                         controller. An employee of symbIoTe shall promptly ensure that the erasure request is complied with immediately.
@@ -380,18 +376,16 @@ export const termsAndConditions = () => {
                         Each data subject shall have the right granted by the European legislator to obtain from the
                         controller restriction of processing where one of the following applies:
                     </p>
-                    <p>
-                        <ul>
-                            <li>The accuracy of the personal data is contested by the data subject, for a period enabling
-                                the controller to verify the accuracy of the personal data.</li>
-                            <li>The processing is unlawful and the data subject opposes the erasure of the personal data
-                                and requests instead the restriction of their use instead.</li>
-                            <li>The controller no longer needs the personal data for the purposes of the processing, but
-                                they are required by the data subject for the establishment, exercise or defence of legal claims.</li>
-                            <li>The data subject has objected to processing pursuant to Article 21(1) of the GDPR pending
-                                the verification whether the legitimate grounds of the controller override those of the data subject.</li>
-                        </ul>
-                    </p>
+                    <ul style={{fontWeight: "normal"}}>
+                        <li>The accuracy of the personal data is contested by the data subject, for a period enabling
+                            the controller to verify the accuracy of the personal data.</li>
+                        <li>The processing is unlawful and the data subject opposes the erasure of the personal data
+                            and requests instead the restriction of their use instead.</li>
+                        <li>The controller no longer needs the personal data for the purposes of the processing, but
+                            they are required by the data subject for the establishment, exercise or defence of legal claims.</li>
+                        <li>The data subject has objected to processing pursuant to Article 21(1) of the GDPR pending
+                            the verification whether the legitimate grounds of the controller override those of the data subject.</li>
+                    </ul>
                     <p>If one of the aforementioned conditions is met, and a data subject wishes to request the
                         restriction of the processing of personal data stored by the symbIoTe, he or she may at any time
                         contact any employee of the controller. The employee of the symbIoTe will arrange the restriction of the processing.
