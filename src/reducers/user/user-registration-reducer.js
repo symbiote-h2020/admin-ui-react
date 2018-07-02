@@ -6,12 +6,15 @@ export default function(state = INITIAL_STATE, action) {
     switch(action.type) {
         case REGISTER_USER:
             if (action.error) {
-                if (action.payload.response)
+                if (action.payload.response) {
+                    const { validationErrors, errorMessage } = action.payload.response.data;
+
                     return {
-                        validationErrors: action.payload.response.data.validationErrors,
-                        errorMessage: action.payload.response.data.errorMessage,
+                        validationErrors: validationErrors ? validationErrors : {},
+                        errorMessage : errorMessage ? errorMessage : "",
                         successful: false
                     };
+                }
                 else
                     return {
                         validationErrors: {},
