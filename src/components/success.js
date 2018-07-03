@@ -22,17 +22,18 @@ class Success extends Component {
 
     render() {
         return(
-            <div className="popup" style={{marginTop : "113px"}}>
-                <div className="popupContent success">
-                    <div className="title">Registration Successful!</div>
+            <div className="container">
+                <div className="row text-center">
+                    <div className="col-sm-6 col-sm-offset-3">
+                        <br/>
+                        <br/>
+                        <h2 style={{color : "color:#0fad00"}}>Registration Successful!</h2>
+                        <p style={{fontSize: "20px" ,color: "#5C5C5C"}}>{this.props.userRegistrationState.successMessage}</p>
+                        <Button bsStyle="success" className="login" onClick={this.handleClick}>Login</Button>
+                        <br/>
+                        <br/>
+                    </div>
 
-                    <Alert bsStyle="warning">{this.props.userRegistrationState.successMessage}</Alert>
-
-                    <FormGroup>
-                        <Col sm={12} className="controls">
-                            <Button bsStyle="success" className="login" onClick={this.handleClick}>Login</Button>
-                        </Col>
-                    </FormGroup>
                 </div>
             </div>
         );
