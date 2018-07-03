@@ -27,10 +27,7 @@ export function registerUser(userInfo, cb) {
     formData.append("role", userInfo.role);
     formData.append("termsAccepted", getCheckBoxValue(userInfo.termsAccepted));
     formData.append("conditionsAccepted", getCheckBoxValue(userInfo.conditionsAccepted));
-    formData.append("usernamePermission", getCheckBoxValue(userInfo.usernamePermission));
-    formData.append("emailPermission", getCheckBoxValue(userInfo.emailPermission));
-    formData.append("publicKeysPermission", getCheckBoxValue(userInfo.publicKeysPermission));
-    formData.append("jwtPermission", getCheckBoxValue(userInfo.jwtPermission));
+    formData.append("analyticsAndResearchConsent", getCheckBoxValue(userInfo.analyticsAndResearchConsent));
 
     const config = {
         url: url,

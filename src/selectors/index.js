@@ -146,10 +146,7 @@ export const getFieldsForPermissionsUpdate = createSelector(
     [ getUserDetails ],
     (userDetails) => {
         return {
-            usernamePermission : userDetails.usernamePermission,
-            emailPermission : userDetails.emailPermission,
-            publicKeysPermission : userDetails.publicKeysPermission,
-            jwtPermission : userDetails.jwtPermission
+            analyticsAndResearchConsent : userDetails.analyticsAndResearchConsent
         }
     }
 );

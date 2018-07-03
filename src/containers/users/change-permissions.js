@@ -49,7 +49,7 @@ class ChangePermissions extends Component {
 
         return (
             <form onSubmit={handleSubmit(this.onSubmit)}>
-                <ControlLabel>Change your permissions</ControlLabel>
+                <ControlLabel>Research and Analysis Consent</ControlLabel>
                 <AlertDismissable alertStyle="success" message={userDetails.successfulPermissionsChange}
                                   dismissHandler={this.dismissChangePermissionsSuccessAlert} />
                 <AlertDismissable alertStyle="danger" message={userDetails.changePermissionsError}
@@ -57,37 +57,21 @@ class ChangePermissions extends Component {
 
                 <FormGroup>
                     <Field
-                        name="usernamePermission"
+                        name="analyticsAndResearchConsent"
                         component="input"
                         type="checkbox"
                     />
-                    Username
+                    I agree on my following data being used for analysis and research purposes
                 </FormGroup>
 
-                <FormGroup>
-                    <Field
-                        name="emailPermission"
-                        component="input"
-                        type="checkbox"
-                    />
-                    Email
-                </FormGroup>
-                <FormGroup>
-                    <Field
-                        name="publicKeysPermission"
-                        component="input"
-                        type="checkbox"
-                    />
-                    Public Keys, bound to the user clients
-                </FormGroup>
-                <FormGroup>
-                    <Field
-                        name="jwtPermission"
-                        component="input"
-                        type="checkbox"
-                    />
+                <p>
+                    Username<br/>
+                    Email<br/>
+                    Public Keys, bound to the user clients<br/>
                     JWT tokens, issued for clients
-                </FormGroup>
+                </p>
+
+
                 <Button type="submit" bsStyle="warning">Submit</Button>
 
             </form>

@@ -214,32 +214,20 @@ class UserRegistrationModal extends Component {
                                 <Row>
                                     <Col xs={12} sm={3} md={3} lg={3}>
                                         <ControlLabel>Permissions</ControlLabel>
-                                        <p>Please, specify permissions for the data that symbIoTe can use for analysis and
-                                            research purposes</p>
                                     </Col>
                                     <Col xs={12} sm={9} md={9} lg={9}>
+                                        <p>
+                                            Username<br/>
+                                            Email<br/>
+                                            Public Keys, bound to the user clients<br/>
+                                            JWT tokens, issued for clients
+                                        </p>
+
                                         <Field
-                                            placeholder="Username"
-                                            name="usernamePermission"
-                                            error={validationErrors.usernamePermission}
-                                            component={this.renderCheckbox}
-                                        />
-                                        <Field
-                                            placeholder="Email"
-                                            name="emailPermission"
-                                            error={validationErrors.emailPermission}
-                                            component={this.renderCheckbox}
-                                        />
-                                        <Field
-                                            placeholder="Public Keys, bound to the user clients"
-                                            name="publicKeysPermission"
-                                            error={validationErrors.publicKeysPermission}
-                                            component={this.renderCheckbox}
-                                        />
-                                        <Field
-                                            placeholder="JWT tokens, issued for clients"
-                                            name="jwtPermission"
-                                            error={validationErrors.jwtPermission}
+                                            placeholder="Please, specify if the data above can be used for analysis and
+                                            research purposes"
+                                            name="analyticsAndResearchConsent"
+                                            error={validationErrors.analyticsAndResearchConsent}
                                             component={this.renderCheckbox}
                                         />
                                     </Col>

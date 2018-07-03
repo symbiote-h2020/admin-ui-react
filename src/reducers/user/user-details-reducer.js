@@ -13,10 +13,7 @@ const INITIAL_STATE = {
     email: "",
     role: "",
     clients: {},
-    usernamePermission : false,
-    emailPermission : false,
-    publicKeysPermission : false,
-    jwtPermission : false
+    analyticsAndResearchConsent : false
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -55,15 +52,14 @@ export default function(state = INITIAL_STATE, action) {
 
         case CHANGE_PERMISSIONS:
 
+            console.log(action)
             if (action.error) {
                 if (action.payload.response) {
-                    const message = action.payload.response.data;
-                    let errors = {};
+                    const { changePermissionsError } = action.payload.response.data;
 
-                    errors.changePermissionsError = message["changePermissionsError"];
                     return {
                         ...removeChangePermissionsErrors(_.omit(state, "successfulPermissionsChange")),
-                        changePermissionsError: message
+                        changePermissionsError
                     };
                 }
                 return { ...removeChangePermissionsErrors(_.omit(state, "successfulPermissionsChange")),
@@ -72,13 +68,10 @@ export default function(state = INITIAL_STATE, action) {
             }
 
             const permissionsResponse = JSON.parse(action.payload.config.data);
-            const { usernamePermission, emailPermission, publicKeysPermission, jwtPermission } = permissionsResponse;
+            const { analyticsAndResearchConsent } = permissionsResponse;
             return {
                 ...removeChangePermissionsErrors(state),
-                usernamePermission,
-                emailPermission,
-                publicKeysPermission,
-                jwtPermission,
+                analyticsAndResearchConsent,
                 successfulPermissionsChange: "Your permissions were updated successfully"
             };
 
