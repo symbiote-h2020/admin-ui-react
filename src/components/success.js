@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Alert, FormGroup, Col, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { USER_CPANEL_URL } from "../configuration";
 import { changeModalState } from "../actions";
 import { setSuccessfulUserRegistrationFlag } from "../actions/user-actions";
@@ -27,7 +27,7 @@ class Success extends Component {
                     <div className="col-sm-6 col-sm-offset-3">
                         <br/>
                         <br/>
-                        <h2 style={{color : "color:#0fad00"}}>Registration Successful!</h2>
+                        <h2 style={{color : "#0fad00"}}>Registration Successful!</h2>
                         <p style={{fontSize: "20px" ,color: "#5C5C5C"}}>{this.props.userRegistrationState.successMessage}</p>
                         <Button bsStyle="success" className="login" onClick={this.handleClick}>Login</Button>
                         <br/>

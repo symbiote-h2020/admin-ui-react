@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, FormGroup, Col, Alert } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import "../style/denied.css";
 import {USER_CPANEL_URL} from "../configuration";
 
@@ -11,19 +11,21 @@ const Denied = ({ history }) => {
     };
 
     return(
-        <div className="popup">
-            <div className="popupContent denied">
-                <div className="title">Access Denied</div>
-                <Alert bsStyle="error"><h4>You are not authorized to access this page</h4></Alert>
-                <FormGroup>
-                    <Col sm={12} className="controls">
-                        <Button type="button" bsStyle="info" onClick={handleClick}>
-                            User Control Panel
-                        </Button>
-                    </Col>
-                </FormGroup>
+        <div className="container">
+            <div className="row text-center">
+                <div className="col-sm-6 col-sm-offset-3">
+                    <br/>
+                    <br/>
+                    <h2 style={{color : "#ff1a1a"}}>Access Denied</h2>
+                    <p style={{fontSize: "20px" ,color: "#5C5C5C"}}>You are not authorized to access this page</p>
+                    <Button bsStyle="info" className="login" onClick={handleClick}>User Control Panel</Button>
+                    <br/>
+                    <br/>
+                </div>
+
             </div>
-        </div>);
+        </div>
+     );
 };
 
 export default Denied;
