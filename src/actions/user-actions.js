@@ -1,8 +1,18 @@
 import axios from "axios";
 import { USER_CPANEL_URL, ROOT_URL, ADMIN_CPANEL_URL } from "../configuration";
 import {
-    FETCH_USER_ROLES, headers, REGISTER_USER, USER_LOGIN, USER_LOGOUT, FETCH_USER_INFORMATION,
-    SET_SUCCESSFUL_USER_REGISTRATION_FLAG, CHANGE_EMAIL, CHANGE_PASSWORD, DELETE_USER, CHANGE_PERMISSIONS
+    FETCH_USER_ROLES,
+    headers,
+    REGISTER_USER,
+    USER_LOGIN,
+    USER_LOGOUT,
+    FETCH_USER_INFORMATION,
+    SET_SUCCESSFUL_USER_REGISTRATION_FLAG,
+    CHANGE_EMAIL,
+    CHANGE_PASSWORD,
+    DELETE_USER,
+    CHANGE_PERMISSIONS,
+    FORGOT_PASSWORD, SET_SUCCESSFUL_PASSWORD_RESET_FLAG
 } from "./index";
 
 
@@ -104,6 +114,26 @@ export function userLogout(cb) {
     };
 }
 
+export function forgotPassword(req, cb) {
+    const config = {
+        url: `${ROOT_URL}/forgot_password`,
+        method: 'post',
+        data: req,
+        headers
+    };
+
+    const request = axios.request(config)
+        .then(res => {
+            cb();
+            return res;
+        });
+
+    return {
+        type: FORGOT_PASSWORD,
+        payload: request
+    };
+}
+
 export function fetchUserInformation() {
     const request = axios.get(`${ROOT_URL}/user/information`);
 
@@ -116,6 +146,13 @@ export function fetchUserInformation() {
 export function setSuccessfulUserRegistrationFlag(value) {
     return {
         type: SET_SUCCESSFUL_USER_REGISTRATION_FLAG,
+        payload: value
+    };
+}
+
+export function setSuccessfulPasswordResetFlag(value) {
+    return {
+        type: SET_SUCCESSFUL_PASSWORD_RESET_FLAG,
         payload: value
     };
 }

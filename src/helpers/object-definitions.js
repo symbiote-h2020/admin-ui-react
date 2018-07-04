@@ -72,3 +72,8 @@ export function InvitationRequest(federationId, invitedPlatforms) {
     this.federationId = federationId;
     this.invitedPlatforms = invitedPlatforms;
 }
+
+export function ForgotPasswordRequest(username, email) {
+    this.username = username;
+    this.email = email;
+}

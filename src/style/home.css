@@ -6,6 +6,11 @@ body {
     font-family: "PT Sans Narrow",sans-serif;
 }
 
+.col-centered {
+    float: none;
+    margin: auto auto;
+}
+
 .my-container {
     width: 100%;
     padding: 0 0 0 0;
@@ -106,7 +111,7 @@ a {
 .content .login.button, .register.button {
     display: block;
     margin: 0.8em 0.8em 0.8em 0.8em;
-    width: 35%;
+    width: 80%;
 }
 
 .registration-textarea {
