@@ -77,3 +77,8 @@ export function ForgotPasswordRequest(username, email) {
     this.username = username;
     this.email = email;
 }
+
+export function ResendVerificationEmailRequest(username, password) {
+    this.username = username;
+    this.password = password;
+}

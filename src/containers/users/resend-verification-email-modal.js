@@ -5,14 +5,14 @@ import { Modal, Button, FormControl, InputGroup, Glyphicon } from "react-bootstr
 import {
     dismissAlert,
     changeModalState,
-    DISMISS_FORGOT_PASSWORD_ALERT
+    DISMISS_RESEND_VERIFICATION_EMAIL_ALERT
 } from "../../actions";
 import { AlertDismissable } from "../../helpers/errors";
-import { forgotPassword, setSuccessfulPasswordResetFlag } from "../../actions/user-actions";
-import { ForgotPasswordRequest } from "../../helpers/object-definitions";
-import { RESET_PASSWORD_URL } from "../../configuration";
+import { resendVerificationEmail, setSuccessfulResendVerificationEmailFlag } from "../../actions/user-actions";
+import { ResendVerificationEmailRequest } from "../../helpers/object-definitions";
+import { RESEND_VERIFICATION_EMAIL_URL } from "../../configuration";
 
-class ForgotPasswordModal extends Component {
+class ResendVerificationEmail extends Component {
 
     constructor(props) {
         super(props);
@@ -21,7 +21,7 @@ class ForgotPasswordModal extends Component {
         this.close = this.close.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
-        this.dismissForgotPasswordAlert = this.dismissForgotPasswordAlert.bind(this);
+        this.dismissResendVerificationEmailAlert = this.dismissResendVerificationEmailAlert.bind(this);
     }
 
     open() {
@@ -31,19 +31,19 @@ class ForgotPasswordModal extends Component {
     close() {
         this.props.changeModalState(this.props.modalName, false);
         this.props.reset();
-        this.dismissForgotPasswordAlert();
+        this.dismissResendVerificationEmailAlert();
     }
 
-    dismissForgotPasswordAlert() {
-        this.props.dismissAlert(DISMISS_FORGOT_PASSWORD_ALERT);
+    dismissResendVerificationEmailAlert() {
+        this.props.dismissAlert(DISMISS_RESEND_VERIFICATION_EMAIL_ALERT);
     }
 
     onSubmit(props) {
-        const req = new ForgotPasswordRequest(props.username, props.email);
-        this.props.forgotPassword(req, () => {
+        const req = new ResendVerificationEmailRequest(props.username, props.password);
+        this.props.resendVerificationEmail(req, () => {
             this.props.changeModalState(this.props.modalName, false);
-            this.props.setSuccessfulPasswordResetFlag(true);
-            this.props.history.push(RESET_PASSWORD_URL);
+            this.props.setSuccessfulResendVerificationEmailFlag(true);
+            this.props.history.push(RESEND_VERIFICATION_EMAIL_URL);
 
         });
     }
@@ -64,7 +64,7 @@ class ForgotPasswordModal extends Component {
     };
 
     render() {
-        const { handleSubmit, modalState, forgotPasswordState, buttonTitle, buttonClass, buttonBsStyle } = this.props;
+        const { handleSubmit, modalState, resendVerificationEmailState, buttonTitle, buttonClass, buttonBsStyle } = this.props;
 
         return(
             <Fragment>
@@ -77,11 +77,11 @@ class ForgotPasswordModal extends Component {
 
                 <Modal show={modalState[this.props.modalName]} onHide={this.close}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Forgot your password?</Modal.Title>
+                        <Modal.Title>Resend Verification Email</Modal.Title>
                     </Modal.Header>
                     <form onSubmit={handleSubmit(this.onSubmit)}>
                         <Modal.Body>
-                            Enter your username and email to reset it. You will get an email with your new password
+                            Enter your username and password in order to receive again the verification email
                             <br/>
                             <br/>
                             <Field
@@ -90,12 +90,12 @@ class ForgotPasswordModal extends Component {
                                 name="username" component={this.renderInputField}
                             />
                             <Field
-                                type="text"
-                                icon="envelope" placeholder="Email"
-                                name="email" component={this.renderInputField}
+                                type="password"
+                                icon="lock" placeholder="Password"
+                                name="password" component={this.renderInputField}
                             />
-                            <AlertDismissable alertStyle="danger" message={forgotPasswordState.error}
-                                              dismissHandler={this.dismissForgotPasswordAlert} />
+                            <AlertDismissable alertStyle="danger" message={resendVerificationEmailState.error}
+                                              dismissHandler={this.dismissResendVerificationEmailAlert} />
                         </Modal.Body>
                         <Modal.Footer>
                             <Button type="submit" bsStyle="primary">Submit</Button>
@@ -111,12 +111,12 @@ class ForgotPasswordModal extends Component {
 function mapStateToProps(state) {
     return {
         modalState: state.modalState,
-        forgotPasswordState: state.forgotPasswordState
+        resendVerificationEmailState: state.resendVerificationEmailState
     };
 }
 
 export default reduxForm({
-    form: 'ForgotYourPasswordForm'
+    form: 'ResendVerificationEmailForm'
 })(
-    connect(mapStateToProps, { forgotPassword, dismissAlert, changeModalState, setSuccessfulPasswordResetFlag })(ForgotPasswordModal)
+    connect(mapStateToProps, { resendVerificationEmail, dismissAlert, changeModalState, setSuccessfulResendVerificationEmailFlag })(ResendVerificationEmail)
 );

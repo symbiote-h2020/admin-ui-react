@@ -52,7 +52,6 @@ export default function(state = INITIAL_STATE, action) {
 
         case CHANGE_PERMISSIONS:
 
-            console.log(action)
             if (action.error) {
                 if (action.payload.response) {
                     const { changePermissionsError } = action.payload.response.data;

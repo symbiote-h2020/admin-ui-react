@@ -3,11 +3,10 @@ import { Route, Redirect,} from 'react-router-dom'
 import {connect} from "react-redux";
 
 
-class PasswordResetPrivateRoute extends Component {
+class ResendVerificationEmailPrivateRoute extends Component {
 
     render() {
         const { component: Component, successful, ...rest } = this.props;
-
         return(
             <Route
                 {...rest}
@@ -30,8 +29,8 @@ class PasswordResetPrivateRoute extends Component {
 
 function mapStateToProps(state) {
     return {
-        successful: state.forgotPasswordState.successful
+        successful: state.resendVerificationEmailState.successful
     };
 }
 
-export default connect(mapStateToProps)(PasswordResetPrivateRoute);
+export default connect(mapStateToProps)(ResendVerificationEmailPrivateRoute);

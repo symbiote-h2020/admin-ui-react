@@ -5,6 +5,7 @@ import UserDetailsReducer from "./user/user-details-reducer";
 import UserRegistrationReducer from "./user/user-registration-reducer";
 import UserLoginReducer from "./user/user-login-reducer";
 import ForgotPasswordReducer from "./user/forgot-password-reducer";
+import ResendVerificationEmail from "./user/resend-verification-email-reducer";
 import UserLogoutReducer from "./user/user-logout-reducer";
 import ModalReducer from "./modal/modal-reducer";
 import ClientDeleteModalReducer from "./client/delete-client-modal-reducer";
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
     userRegistrationState: UserRegistrationReducer,
     userLoginState: UserLoginReducer,
     forgotPasswordState: ForgotPasswordReducer,
+    resendVerificationEmailState: ResendVerificationEmail,
     userLogoutState: UserLogoutReducer,
     modalState: ModalReducer,
     clientDeleteModal: ClientDeleteModalReducer,

@@ -12,7 +12,10 @@ import {
     CHANGE_PASSWORD,
     DELETE_USER,
     CHANGE_PERMISSIONS,
-    FORGOT_PASSWORD, SET_SUCCESSFUL_PASSWORD_RESET_FLAG
+    FORGOT_PASSWORD,
+    SET_SUCCESSFUL_PASSWORD_RESET_FLAG,
+    SET_SUCCESSFUL_RESEND_VERIFICATION_EMAIL_FLAG,
+    RESEND_VERIFICATION_EMAIL
 } from "./index";
 
 
@@ -134,6 +137,26 @@ export function forgotPassword(req, cb) {
     };
 }
 
+export function resendVerificationEmail(req, cb) {
+    const config = {
+        url: `${ROOT_URL}/resend_verification_email`,
+        method: 'post',
+        data: req,
+        headers
+    };
+
+    const request = axios.request(config)
+        .then(res => {
+            cb();
+            return res;
+        });
+
+    return {
+        type: RESEND_VERIFICATION_EMAIL,
+        payload: request
+    };
+}
+
 export function fetchUserInformation() {
     const request = axios.get(`${ROOT_URL}/user/information`);
 
@@ -153,6 +176,13 @@ export function setSuccessfulUserRegistrationFlag(value) {
 export function setSuccessfulPasswordResetFlag(value) {
     return {
         type: SET_SUCCESSFUL_PASSWORD_RESET_FLAG,
+        payload: value
+    };
+}
+
+export function setSuccessfulResendVerificationEmailFlag(value) {
+    return {
+        type: SET_SUCCESSFUL_RESEND_VERIFICATION_EMAIL_FLAG,
         payload: value
     };
 }

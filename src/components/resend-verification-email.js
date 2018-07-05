@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 import { Button } from "react-bootstrap";
 import { USER_CPANEL_URL } from "../configuration";
 import { changeModalState } from "../actions";
-import { setSuccessfulPasswordResetFlag } from "../actions/user-actions";
+import { setSuccessfulResendVerificationEmailFlag } from "../actions/user-actions";
 import { USER_LOGIN_MODAL } from "../reducers/modal/modal-reducer";
 
-class PasswordReset extends Component {
+class ResendVerificationEmail extends Component {
 
     constructor(){
         super();
@@ -15,7 +15,7 @@ class PasswordReset extends Component {
 
     handleClick = (e) => {
         e.preventDefault();
-        this.props.setSuccessfulPasswordResetFlag(false);
+        this.props.setSuccessfulResendVerificationEmailFlag(false);
         this.props.changeModalState(USER_LOGIN_MODAL, true);
         this.props.history.push(USER_CPANEL_URL);
     };
@@ -27,9 +27,9 @@ class PasswordReset extends Component {
                     <div className="col-sm-6 col-sm-offset-3">
                         <br/>
                         <br/>
-                        <h2 style={{color : "#0fad00"}}>Your password was reset successfully!</h2>
+                        <h2 style={{color : "#0fad00"}}>The verification email has been resent!</h2>
                         <p style={{fontSize: "20px" ,color: "#5C5C5C"}}>
-                            {this.props.forgotPasswordState.successMessage}
+                            {this.props.resendVerificationEmailState.successMessage}
                         </p>
                         <Button bsStyle="success" className="login" onClick={this.handleClick}>Login</Button>
                         <br/>
@@ -45,8 +45,8 @@ class PasswordReset extends Component {
 
 function mapStateToProps(state) {
     return {
-        forgotPasswordState: state.forgotPasswordState
+        resendVerificationEmailState: state.resendVerificationEmailState
     };
 }
 
-export default connect(mapStateToProps, { changeModalState, setSuccessfulPasswordResetFlag })(PasswordReset)
+export default connect(mapStateToProps, { changeModalState, setSuccessfulResendVerificationEmailFlag })(ResendVerificationEmail)
