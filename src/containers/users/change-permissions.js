@@ -64,12 +64,12 @@ class ChangePermissions extends Component {
                     I agree on my following data being used for analysis and research purposes
                 </FormGroup>
 
-                <p>
-                    Username<br/>
-                    Email<br/>
-                    Public Keys, bound to the user clients<br/>
-                    JWT tokens, issued for clients
-                </p>
+                <ul style={{padding : 15, paddingTop: 0}}>
+                    <li>Username</li>
+                    <li>Email</li>
+                    <li>Public Keys, bound to the user clients</li>
+                    <li>JWT tokens, issued for clients</li>
+                </ul>
 
 
                 <Button type="submit" bsStyle="warning">Submit</Button>

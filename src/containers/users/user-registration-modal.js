@@ -216,12 +216,12 @@ class UserRegistrationModal extends Component {
                                         <ControlLabel>Permissions</ControlLabel>
                                     </Col>
                                     <Col xs={12} sm={9} md={9} lg={9}>
-                                        <p>
-                                            Username<br/>
-                                            Email<br/>
-                                            Public Keys, bound to the user clients<br/>
-                                            JWT tokens, issued for clients
-                                        </p>
+                                        <ul style={{padding : 15, paddingBottom: 0}}>
+                                            <li>Username</li>
+                                            <li>Email</li>
+                                            <li>Public Keys, bound to the user clients</li>
+                                            <li>JWT tokens, issued for clients</li>
+                                        </ul>
 
                                         <Field
                                             placeholder="Please, specify if the data above can be used for analysis and
