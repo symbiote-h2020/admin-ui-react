@@ -1,9 +1,21 @@
 import {
-    FETCH_USER_INFORMATION, CHANGE_EMAIL, CHANGE_PASSWORD, CHANGE_PERMISSIONS, DELETE_USER, DELETE_CLIENT,
-    DISMISS_EMAIL_CHANGE_SUCCESS_ALERT, DISMISS_EMAIL_CHANGE_ERROR_ALERT,
-    DISMISS_PERMISSIONS_CHANGE_ERROR_ALERT, DISMISS_PERMISSIONS_CHANGE_SUCCESS_ALERT,
-    DISMISS_USER_DELETION_ERROR_ALERT, DISMISS_PASSWORD_CHANGE_SUCCESS_ALERT, DISMISS_PASSWORD_CHANGE_ERROR_ALERT,
-    DISMISS_CLIENT_DELETION_SUCCESS_ALERT, DISMISS_CLIENT_DELETION_ERROR_ALERT
+    FETCH_USER_INFORMATION,
+    CHANGE_EMAIL,
+    CHANGE_PASSWORD,
+    CHANGE_PERMISSIONS,
+    DELETE_USER,
+    DELETE_CLIENT,
+    DISMISS_EMAIL_CHANGE_SUCCESS_ALERT,
+    DISMISS_EMAIL_CHANGE_ERROR_ALERT,
+    DISMISS_PERMISSIONS_CHANGE_ERROR_ALERT,
+    DISMISS_PERMISSIONS_CHANGE_SUCCESS_ALERT,
+    DISMISS_USER_DELETION_ERROR_ALERT,
+    DISMISS_PASSWORD_CHANGE_SUCCESS_ALERT,
+    DISMISS_PASSWORD_CHANGE_ERROR_ALERT,
+    DISMISS_CLIENT_DELETION_SUCCESS_ALERT,
+    DISMISS_CLIENT_DELETION_ERROR_ALERT,
+    ACCEPT_TERMS,
+    DISMISS_TERMS_ACCEPTANCE_SUCCESS_ALERT, DISMISS_TERMS_ACCEPTANCE_ERROR_ALERT
 } from "../../actions";
 import _ from "lodash";
 import {ROOT_URL} from "../../configuration";
@@ -13,7 +25,10 @@ const INITIAL_STATE = {
     email: "",
     role: "",
     clients: {},
-    analyticsAndResearchConsent : false
+    analyticsAndResearchConsent : false,
+    termsAccepted: true,
+    conditionsAccepted: true
+
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -103,6 +118,27 @@ export default function(state = INITIAL_STATE, action) {
                 ...removeChangePasswordErrors(state),
                 successfulPasswordChange: "Your password was updated successfully"
             };
+
+        case ACCEPT_TERMS:
+            if (action.error) {
+                if (action.payload.response) {
+                    const message = action.payload.response.data;
+                    let errors = {};
+
+                    errors.acceptTermsError = message["acceptTermsError"];
+                    return { ...removeAcceptTermsError(_.omit(state, "successfulTermsAcceptance")), ...errors };
+                }
+                return {
+                    ...removeAcceptTermsError(_.omit(state, "successfulTermsAcceptance")),
+                    acceptTermsError: "Could not contact the server"
+                };
+
+            }
+
+            return {
+                ...removeAcceptTermsError(state),
+                successfulTermsAcceptance: "The Terms and Conditions have been accepted"
+            };
         case DELETE_USER:
             if (action.error) {
                 if (action.payload.response) {
@@ -162,12 +198,16 @@ export default function(state = INITIAL_STATE, action) {
             return _.omit(state, "successfulPasswordChange");
         case DISMISS_PASSWORD_CHANGE_ERROR_ALERT:
             return _.omit(state, "changePasswordError");
+        case DISMISS_TERMS_ACCEPTANCE_SUCCESS_ALERT:
+            return _.omit(state, "successfulTermsAcceptance");
+        case DISMISS_TERMS_ACCEPTANCE_ERROR_ALERT:
+            return removeAcceptTermsError(state);
         case DISMISS_CLIENT_DELETION_SUCCESS_ALERT:
             return _.omit(state, "successfulClientDeletion");
         case DISMISS_CLIENT_DELETION_ERROR_ALERT:
             return _.omit(state, "clientDeletionError");
         case DISMISS_USER_DELETION_ERROR_ALERT:
-            return _.omit(state, "userDeletionError");
+            return removeUserDeletionError(state);
     }
 }
 
@@ -187,6 +227,10 @@ const removeChangePermissionsErrors = (state) => {
     return _.omit(state, "changePermissionsError");
 };
 
+const removeAcceptTermsError = (state) => {
+    return _.omit(state, "acceptTermsError")
+};
+
 const removeChangePasswordErrors = (state) => {
     const errors = [
         "error_oldPassword", "error_newPassword", "error_newPasswordRetyped", "changePasswordError"
@@ -200,5 +244,5 @@ const removeChangePasswordErrors = (state) => {
 };
 
 const removeUserDeletionError = (state) => {
-    return _.omit(...state, "userDeletionError");
+    return _.omit(state, "userDeletionError");
 };

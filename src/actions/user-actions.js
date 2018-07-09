@@ -15,7 +15,7 @@ import {
     FORGOT_PASSWORD,
     SET_SUCCESSFUL_PASSWORD_RESET_FLAG,
     SET_SUCCESSFUL_RESEND_VERIFICATION_EMAIL_FLAG,
-    RESEND_VERIFICATION_EMAIL
+    RESEND_VERIFICATION_EMAIL, ACCEPT_TERMS
 } from "./index";
 
 
@@ -133,6 +133,25 @@ export function forgotPassword(req, cb) {
 
     return {
         type: FORGOT_PASSWORD,
+        payload: request
+    };
+}
+
+export function acceptTerms(cb) {
+    const config = {
+        url: `${ROOT_URL}/user/accept_terms`,
+        method: 'post',
+        headers
+    };
+
+    const request = axios.request(config)
+        .then(res => {
+            cb();
+            return res;
+        });
+
+    return {
+        type: ACCEPT_TERMS,
         payload: request
     };
 }

@@ -7,7 +7,6 @@ const INITIAL_STATE = { error: "" };
 export default function(state = INITIAL_STATE, action) {
     switch(action.type) {
         case USER_LOGIN:
-            console.log(action)
             const { previous_cookie } = action.meta;
             const cookies = new Cookies();
             const new_cookie = cookies.get('XSRF-TOKEN');

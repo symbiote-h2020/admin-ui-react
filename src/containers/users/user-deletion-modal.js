@@ -60,7 +60,7 @@ class UserDeletionModal extends Component {
             <Fragment>
                 <AlertDismissable alertStyle="danger" message={userDeletionError}
                                   dismissHandler={this.dismissUserDeletionErrorAlert} />
-                <Row>
+                <Row style={{paddingRight: "1em"}}>
                     <Button
                         className="user-deletion-btn"
                         bsStyle="danger"
