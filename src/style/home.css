@@ -33,31 +33,25 @@ a {
 }
 
 .header.home .logo {
-    width: 180px;
-    height: 90px;
+    width: 12em;
+    height: 6em;
 
     vertical-align: middle;
 }
 
 .header.home .title {
-    margin-left: 3%;
     vertical-align: middle;
-
-    font-size: 32px;
+    font-size: 2em;
+    line-height: 3em;
 }
 
 .header.home .admin {
-    margin-left: 16%;
-    display: inline-block;
-    height: 90px;
-    padding: 0 10px;
-
-    line-height: 90px;
     text-align: center;
-
     border-left: 1px solid rgba(0,0,0, 0.08);
     border-right: 1px solid rgba(0,0,0, 0.08);
-    font-size: 16px;
+    font-size: 1em;
+    margin-top: 1.79em;
+    margin-bottom: 1.79em;
 }
 
 .header.home .admin:hover {
@@ -73,7 +67,7 @@ a {
 }
 
 .content .wrapper {
-    width: 50%;
+    width: 90%;
     max-width: 300px;
     margin: 0 20px;
     padding-bottom: 20px;
@@ -108,9 +102,9 @@ a {
     height: 34px;
 }
 
-.content .login.button, .register.button {
+.content .button {
     display: block;
-    margin: 0.8em 0.8em 0.8em 0.8em;
+    margin: 0.6em auto 0.6em auto;
     width: 80%;
 }
 
@@ -122,32 +116,12 @@ a {
     padding: 10px;
 }
 
-@media screen and (max-width: 992px) {
-    #registration-modal .modal-dialog {
-        width: 90vw
-    }
-}
-
-@media screen and (min-width: 992px) and (max-width: 1400px) {
-    #registration-modal .modal-dialog {
-        width: 70vw
-    }
-}
-
-@media screen and (min-width: 1400px) {
-    #registration-modal .modal-dialog {
-        width: 50vw
-    }
-}
-
 .content .login.button {
-    float: left;
-    margin-left: 2em;
+    margin-right: 0;
 }
 
 .content .register.button {
-    float: right;
-    margin-right: 2em;
+    margin-left: 0;
 }
 
 .footer {
@@ -160,7 +134,7 @@ a {
 }
 
 .footer .external {
-    margin: 40px 30px;
+    margin: 1em 0.5em;
     display: inline-block;
 }
 
@@ -172,11 +146,6 @@ a {
 
     .content {
         padding-top: 100px;
-    }
-
-    .footer {
-        position: absolute;
-        bottom: 40px;
     }
 }
 
@@ -190,6 +159,38 @@ a {
 
 ol li p {
     font-weight: normal;
+}
+
+.wordwrap {
+    white-space: pre-wrap;      /* CSS3 */
+    white-space: -moz-pre-wrap; /* Firefox */
+    white-space: -pre-wrap;     /* Opera <7 */
+    white-space: -o-pre-wrap;   /* Opera 7 */
+    word-wrap: break-word;      /* IE */
+}
+
+@media screen and (max-width: 768px) {
+    #registration-modal .modal-dialog {
+        width: 90vw
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+    #registration-modal .modal-dialog {
+        width: 90vw
+    }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1200px) {
+    #registration-modal .modal-dialog {
+        width: 70vw
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    #registration-modal .modal-dialog {
+        width: 50vw
+    }
 }
 
 /*Style the checkboxes in the registration form*/

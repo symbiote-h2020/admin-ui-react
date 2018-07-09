@@ -70,7 +70,7 @@ class SignInModal extends Component {
         return(
             <Fragment>
                 <Button
-                    className={buttonClass ? buttonClass : "login button"}
+                    className={buttonClass ? buttonClass : "login button wordwrap"}
                     bsStyle={buttonBsStyle}
                     onClick={this.open}>
                     {buttonTitle}

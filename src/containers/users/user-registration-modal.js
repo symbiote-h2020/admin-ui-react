@@ -124,7 +124,7 @@ class UserRegistrationModal extends Component {
         return(
             <Fragment>
                 <Button
-                    className="register button"
+                    className="register button wordwrap"
                     bsStyle="primary"
                     onClick={this.open}>
                     Register

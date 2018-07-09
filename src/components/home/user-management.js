@@ -18,7 +18,7 @@ const UserManagement = (props) => {
                 </div>
                 <div>
                     <Row>
-                        <Col xs={12} sm={12} md={6} lg={6}>
+                        <Col xs={6} sm={6} md={6} lg={6} style={{margin : "0 auto 0 auto", paddingRight: "0.4em", paddingLeft: "1em"}}>
                             <SignInModal
                                 history={props.history}
                                 modalName={USER_LOGIN_MODAL}
@@ -28,11 +28,13 @@ const UserManagement = (props) => {
                             />
                         </Col>
 
-                        <Col xs={12} sm={12} md={6} lg={6}>
+                        <Col xs={6} sm={6} md={6} lg={6} style={{margin : "0 auto 0 auto", paddingRight: "1em", paddingLeft: "0.4em"}}>
                             <UserRegisterModal history={props.history}/>
                         </Col>
+                    </Row>
 
-                        <Col xs={12} sm={12} md={12} lg={12}>
+                    <Row>
+                        <Col xs={12} sm={12} md={12} lg={12} style={{paddingRight: "1em", paddingLeft: "1em"}}>
                             <ForgotPasswordModal
                                 history={props.history}
                                 modalName={FORGOT_PASSWORD_MODAL}
@@ -41,7 +43,7 @@ const UserManagement = (props) => {
                             />
                         </Col>
 
-                        <Col xs={12} sm={12} md={12} lg={12}>
+                        <Col xs={12} sm={12} md={12} lg={12} style={{paddingRight: "1em", paddingLeft: "1em"}}>
                             <ResendVerificationEmailModal
                                 history={props.history}
                                 modalName={RESEND_VERIFICATION_EMAIL_MODAL}
