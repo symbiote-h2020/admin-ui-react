@@ -15,7 +15,7 @@ import {
     FORGOT_PASSWORD,
     SET_SUCCESSFUL_PASSWORD_RESET_FLAG,
     SET_SUCCESSFUL_RESEND_VERIFICATION_EMAIL_FLAG,
-    RESEND_VERIFICATION_EMAIL, ACCEPT_TERMS
+    RESEND_VERIFICATION_EMAIL, ACCEPT_TERMS, FETCH_SERVER_INFO
 } from "./index";
 
 
@@ -26,6 +26,15 @@ export function fetchUserRoles() {
 
     return {
         type: FETCH_USER_ROLES,
+        payload: request
+    };
+}
+
+export function fetchServerInfo() {
+    const request = axios.get(`${ROOT_URL}/generic/information`);
+
+    return {
+        type: FETCH_SERVER_INFO,
         payload: request
     };
 }

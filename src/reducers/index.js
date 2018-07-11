@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
+import ServerInfoReducer from "./server/server-info-reducer";
 import UserRolesReducer from "./user/user-roles-reducer";
 import UserDetailsReducer from "./user/user-details-reducer";
 import UserRegistrationReducer from "./user/user-registration-reducer";
@@ -28,6 +29,7 @@ import HandleFederationInvitationModalReducer from "./federation/handle-federati
 
 const rootReducer = combineReducers({
     userRoles: UserRolesReducer,
+    serverInfo: ServerInfoReducer,
     userDetails: UserDetailsReducer,
     userRegistrationState: UserRegistrationReducer,
     userLoginState: UserLoginReducer,

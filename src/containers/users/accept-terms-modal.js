@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { Modal, Button, FormControl, InputGroup, Glyphicon } from "react-bootstrap";
 import { dismissAlert, DISMISS_TERMS_ACCEPTANCE_ERROR_ALERT } from "../../actions";
-import { acceptTerms } from "../../actions/user-actions";
+import { acceptTerms, fetchServerInfo } from "../../actions/user-actions";
 import { termsAndConditions } from "../../configuration";
 import { AlertDismissable } from "../../helpers/errors";
 
@@ -20,6 +20,10 @@ class AcceptTermsModal extends Component {
         this.state = {
             closeModal : false
         };
+    }
+
+    componentWillMount() {
+        this.props.fetchServerInfo();
     }
 
     modalState() {
@@ -57,7 +61,8 @@ class AcceptTermsModal extends Component {
     };
 
     render() {
-        const { handleSubmit, userDetails } = this.props;
+        const { handleSubmit, userDetails,
+            serverInfo : {name, dataProtectionOrganization, address, country, phoneNumber, email, website} } = this.props;
 
         return(
             <Fragment>
@@ -73,7 +78,8 @@ class AcceptTermsModal extends Component {
                             <br/>
                             <br/>
                             <div className="registration-textarea">
-                                {termsAndConditions()}
+                                {termsAndConditions(name, dataProtectionOrganization, address,
+                                    country, phoneNumber, email, website)}
                             </div>
                             <br/>
                             <AlertDismissable alertStyle="danger"
@@ -96,12 +102,13 @@ class AcceptTermsModal extends Component {
 function mapStateToProps(state) {
     return {
         modalState: state.modalState,
-        userDetails: state.userDetails
+        userDetails: state.userDetails,
+        serverInfo: state.serverInfo
     };
 }
 
 export default reduxForm({
     form: 'AcceptTermsForm'
 })(
-    connect(mapStateToProps, { acceptTerms, dismissAlert })(AcceptTermsModal)
+    connect(mapStateToProps, { acceptTerms, fetchServerInfo, dismissAlert })(AcceptTermsModal)
 );

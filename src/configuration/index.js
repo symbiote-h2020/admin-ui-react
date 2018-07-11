@@ -62,7 +62,7 @@ export const COMPARATOR = [
     },
 ];
 
-export const termsAndConditions = () => {
+export const termsAndConditions = (name, dataProtectionOrganization, address, country, phoneNumber, email, website) => {
     return (
         <Fragment>
             <p>Data protection is of a particularly high priority for the management of the symbIoTe.
@@ -184,14 +184,13 @@ export const termsAndConditions = () => {
                 applicable in Member states of the European Union and other provisions related to data protection is:
             </p>
             <ul style={{fontWeight: "bold", listStyleType: "none"}}>
-                <li>symbIoTe</li>
-                <li>Wielkopolskie - Poznan - Institute Of Bioorganic Chemistry Polish Academy Of Science Poznan
-                    Supercomputing And Networking Center</li>
-                <li>61-131 Poznan</li>
-                <li>Poland</li>
-                <li>Phone: 0203 1220 810</li>
-                <li>Email: info@psnc.org.uk</li>
-                <li>Website: symbiote-open.man.poznan.pl</li>
+                <li>{name}</li>
+                <li>{dataProtectionOrganization}</li>
+                <li>{address}</li>
+                <li>{country}</li>
+                <li>Phone: {phoneNumber}</li>
+                <li>Email: {email}</li>
+                <li>Website: {website}</li>
             </ul>
 
             <h5><strong>3. Cookies</strong></h5>
@@ -591,14 +590,13 @@ export const termsAndConditions = () => {
             <p>For accessing/modifying/stopping participation you can contact the support organization:</p>
 
             <ul style={{fontWeight: "bold", listStyleType: "none"}}>
-                <li>symbIoTe</li>
-                <li>Wielkopolskie - Poznan - Institute Of Bioorganic Chemistry Polish Academy Of Science Poznan
-                    Supercomputing And Networking Center</li>
-                <li>61-131 Poznan</li>
-                <li>Poland</li>
-                <li>Phone: 0203 1220 810</li>
-                <li>Email: info@psnc.org.uk</li>
-                <li>Website: symbiote-open.man.poznan.pl</li>
+                <li>{name}</li>
+                <li>{dataProtectionOrganization}</li>
+                <li>{address}</li>
+                <li>{country}</li>
+                <li>Phone: {phoneNumber}</li>
+                <li>Email: {email}</li>
+                <li>Website: {website}</li>
             </ul>
         </Fragment>
     )

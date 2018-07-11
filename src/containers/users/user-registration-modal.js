@@ -7,7 +7,7 @@ import RFReactSelect from "../../helpers/redux-form-react-selector-integrator";
 import { removeErrors, changeModalState, REMOVE_USER_REGISTRATION_ERRORS } from "../../actions";
 import { USER_REGISTRATION_MODAL } from "../../reducers/modal/modal-reducer";
 import { FieldError } from "../../helpers/errors";
-import { fetchUserRoles, registerUser, setSuccessfulUserRegistrationFlag } from "../../actions/user-actions";
+import { fetchUserRoles, fetchServerInfo, registerUser, setSuccessfulUserRegistrationFlag } from "../../actions/user-actions";
 import { getValidationState, isNotEmpty } from "../../validation/helpers";
 import { getRegisterUserFormValidity } from "../../selectors";
 import {
@@ -26,6 +26,7 @@ class UserRegistrationModal extends Component {
 
     componentWillMount() {
         this.props.fetchUserRoles();
+        this.props.fetchServerInfo();
     }
 
     open() {
@@ -118,6 +119,7 @@ class UserRegistrationModal extends Component {
 
     render() {
         const { userRegistrationState : { validationErrors, errorMessage },
+            serverInfo : {name, dataProtectionOrganization, address, country, phoneNumber, email, website},
             userRoles, modalState, handleSubmit, registerUserFormValidity } = this.props;
         const opts = { disabled : !registerUserFormValidity };
 
@@ -188,7 +190,8 @@ class UserRegistrationModal extends Component {
                                     </Col>
                                     <Col xs={12} sm={9} md={9} lg={9}>
                                         <div className="registration-textarea">
-                                            {termsAndConditions()}
+                                            {termsAndConditions(name, dataProtectionOrganization, address,
+                                                country, phoneNumber, email, website)}
                                         </div>
 
                                         <Field
@@ -282,6 +285,7 @@ function validate(values) {
 function mapStateToProps(state) {
     return {
         userRoles: state.userRoles,
+        serverInfo: state.serverInfo,
         userRegistrationState: state.userRegistrationState,
         modalState: state.modalState,
         registerUserFormValidity: getRegisterUserFormValidity(state)
@@ -293,6 +297,6 @@ export default reduxForm({
     validate
 })(
     connect(mapStateToProps, {
-        fetchUserRoles, registerUser, removeErrors, changeModalState, setSuccessfulUserRegistrationFlag
+        fetchUserRoles, fetchServerInfo, registerUser, removeErrors, changeModalState, setSuccessfulUserRegistrationFlag
     })(UserRegistrationModal)
 );
