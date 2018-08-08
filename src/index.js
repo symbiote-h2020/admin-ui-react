@@ -13,11 +13,11 @@ import ResendVerificationEmail from "./components/resend-verification-email";
 import UserControlPanel from "./components/user-cpanel/user-control-panel";
 import AdminControlPanel from "./components/admin-cpanel/admin-cpanel";
 import Denied from "./components/denied";
-import UserPrivateRoute from "./components/user-private-route";
-import AdminPrivateRoute from "./components/admin-private-route";
-import SuccessPrivateRoute from "./components/success-private-route";
-import PasswordResetPrivateRoute from "./components/password-reset-private-route";
-import ResendVerificationEmailPrivateRoute from "./components/resend-verification-email-private-route";
+import UserPrivateRoute from "./components/routes/user-private-route";
+import AdminPrivateRoute from "./components/routes/admin-private-route";
+import SuccessPrivateRoute from "./components/routes/success-private-route";
+import PasswordResetPrivateRoute from "./components/routes/password-reset-private-route";
+import ResendVerificationEmailPrivateRoute from "./components/routes/resend-verification-email-private-route";
 import 'react-select/dist/react-select.css';
 import { RESEND_VERIFICATION_EMAIL_URL, RESET_PASSWORD_URL } from "./configuration";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect, Route } from 'react-router-dom'
-import { ADMIN } from "../configuration/roles";
+import { ADMIN } from "../../configuration/roles";
 import PrivateRoute, { AUTHENTICATED, AUTHENTICATION_PENDING } from "./private-route";
 
 export default class AdminPrivateRoute extends PrivateRoute {

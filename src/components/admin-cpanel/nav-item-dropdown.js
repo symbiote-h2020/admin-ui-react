@@ -28,23 +28,23 @@ export default class NavItemDropdown extends Component {
     render() {
         return (
             <NavDropdown
-                id="federation-dropdown"
-                title="Federations"
+                id={this.props.itemId}
+                title={this.props.title}
                 className={this.state.childrenIsSelected ? "dropdown-submenu has-active-child" : "dropdown-submenu"}
-                onMouseEnter = { this.handleOpen }
-                onMouseLeave = { this.handleClose }
-                open={ this.state.isOpen }
+                onMouseEnter = {this.handleOpen}
+                onMouseLeave = {this.handleClose}
+                open={this.state.isOpen}
                 onToggle={() => {}}
                 noCaret
             >
                 <Nav bsStyle="pills" stacked className="sidebar panel-primary shadow"
                      onClick={ this.handleClick }>
-                    <NavItem eventKey="federation-invitations">
-                        Federation Invitations
-                    </NavItem>
-                    <NavItem eventKey="federation-list">
-                        Federation List
-                    </NavItem>
+
+                    {Object.keys(this.props.dropDownList).map(key =>
+                            <NavItem eventKey={key}>
+                                {this.props.dropDownList[key]}
+                            </NavItem>
+                        )}
                 </Nav>
             </NavDropdown>
         )

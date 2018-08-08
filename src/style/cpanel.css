@@ -240,16 +240,17 @@ a.clickable:hover { text-decoration:none; }
 
 /*Dropdown menu*/
 
-.dropdown-submenu.has-active-child #federation-dropdown {
+.dropdown-submenu.has-active-child #federation-dropdown,
+.dropdown-submenu.has-active-child #mappings-dropdown {
     color: rgba(255, 255, 255, 0.9);
     background-color: rgb(51, 122, 183);
     text-decoration-color: rgba(255, 255, 255, 0.9);
 }
 
-
 .dropdown-submenu {
     position:relative;
 }
+
 .dropdown-submenu > .dropdown-menu {
     top:0;left:100%;
     margin-top:-6px;margin-left:-1px;

@@ -1,6 +1,6 @@
 import {Component} from "react";
 import axios from "axios";
-import {ROOT_URL} from "../configuration";
+import {ROOT_URL} from "../../configuration/index";
 
 export const NOT_AUTHENTICATED = "NOT_AUTHENTICATED";
 export const AUTHENTICATED = "AUTHENTICATED";

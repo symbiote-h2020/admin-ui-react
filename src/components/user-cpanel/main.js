@@ -10,20 +10,44 @@ import FederationDetails from "./tabs/federations-tab";
 import FederationInvitationDetails from "./tabs/federation-invitations-tab";
 import {connect} from "react-redux";
 import {SERVICE_OWNER} from "../../configuration/roles";
+import _ from "lodash";
+import MyMappings from "./tabs/my-mappings-tab";
+import AllMappings from "./tabs/all-mappings-tab";
 
 class Main extends Component {
     constructor() {
         super();
-        this.state = { hasNavItemDropDownActiveChild: false };
-        this.activateChild = this.activateChild.bind(this);
+        this.state = { hasFederationsDropDownActiveChild: false };
+        this.activateFederationsChild = this.activateFederationsChild.bind(this);
+        this.activateMappingsChild = this.activateMappingsChild.bind(this);
+
+        this.federationDropDownList = {
+            "federation-invitations" : "Federation Invitations",
+            "federation-list" : "Federation List"
+        };
+
+        this.mappingDropDownList = {
+            "my-mappings" : "My Mappings",
+            "all-mappings" : "All Mappings"
+        };
     }
 
     handleSelect = () => {
-        this.setState({ hasNavItemDropDownActiveChild: false })
+        this.setState(_.mapValues(this.state, () => false));
     };
 
-    activateChild = () => {
-        this.setState({ hasNavItemDropDownActiveChild: true })
+    activateFederationsChild = () => {
+        this.setState({
+            ..._.mapValues(this.state, () => false),
+            hasFederationsDropDownActiveChild: true
+        })
+    };
+
+    activateMappingsChild = () => {
+        this.setState({
+            ..._.mapValues(this.state, () => false),
+            hasMappingsDropDownActiveChild: true
+        })
     };
 
     navigation = (role) => {
@@ -45,8 +69,18 @@ class Main extends Component {
                     Information Models
                 </NavItem>
                 <NavItemDropDown
-                    hasActiveChild={this.state.hasNavItemDropDownActiveChild}
-                    activateChild={this.activateChild}
+                    itemId="mappings-dropdown"
+                    title="Mappings"
+                    hasActiveChild={this.state.hasMappingsDropDownActiveChild}
+                    activateChild={this.activateMappingsChild}
+                    dropDownList={this.mappingDropDownList}
+                />
+                <NavItemDropDown
+                    itemId="federation-dropdown"
+                    title="Federations"
+                    hasActiveChild={this.state.hasFederationsDropDownActiveChild}
+                    activateChild={this.activateFederationsChild}
+                    dropDownList={this.federationDropDownList}
                 />
             </Nav> :
             <Nav bsStyle="pills" stacked className="sidebar panel-primary shadow">
@@ -79,6 +113,12 @@ class Main extends Component {
                         </Tab.Pane>
                         <Tab.Pane eventKey="information-models">
                             <InformationModels />
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="my-mappings">
+                            <MyMappings />
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="all-mappings">
+                            <AllMappings />
                         </Tab.Pane>
                         <Tab.Pane eventKey="federation-invitations">
                             <FederationInvitationDetails />
