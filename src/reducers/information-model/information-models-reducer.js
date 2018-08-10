@@ -7,7 +7,7 @@ import {
 } from "../../actions/index";
 import {ROOT_URL} from "../../configuration/index";
 
-const INITIAL_STATE = { availableInfoModels : {} };
+const INITIAL_STATE = { availableInfoModels : {}, availableUserInfoModels : {} };
 export default function(state = INITIAL_STATE, action) {
     switch(action.type) {
         case FETCH_ALL_INFORMATION_MODELS:

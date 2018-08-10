@@ -16,8 +16,10 @@ import PlatformConfigModalReducer from "./platform/config-platform-modal-reducer
 import SSPConfigModalReducer from "./ssp/config-ssp-modal-reducer";
 import SSPUpdateModalReducer from "./ssp/update-ssp-modal-reducer";
 import SSPDeleteModalReducer from "./ssp/delete-ssp-modal-reducer";
-import InfoModelDeleteModalReducer from "./information-model/delete-info-model-modal-reducer";
 import InformationModelReducer from "./information-model/information-models-reducer";
+import InfoModelDeleteModalReducer from "./information-model/delete-info-model-modal-reducer";
+import MappingReducer from "./mapping/mappings-reducer";
+import MappingDeleteModalReducer from "./mapping/delete-mapping-modal-reducer";
 import UserPlatformsReducer from "./platform/user-platforms-reducer";
 import UserSSPsReducer from "./ssp/user-ssps-reducer";
 import FederationsReducer from "./federation/federations-reducer";
@@ -44,8 +46,10 @@ const rootReducer = combineReducers({
     sspDeleteModal: SSPDeleteModalReducer,
     sspUpdateModal: SSPUpdateModalReducer,
     sspConfigModal: SSPConfigModalReducer,
-    infoModelDeleteModal: InfoModelDeleteModalReducer,
     informationModels: InformationModelReducer,
+    infoModelDeleteModal: InfoModelDeleteModalReducer,
+    mappings: MappingReducer,
+    mappingDeleteModal: MappingDeleteModalReducer,
     userPlatforms: UserPlatformsReducer,
     userSSPs: UserSSPsReducer,
     federations: FederationsReducer,
