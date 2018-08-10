@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-const MappingDeleteModal = ({ mapping, deleteModalOpen, closeDeleteModal, handleDeleteInfoModel }) => {
+const MappingDeleteModal = ({ mapping, deleteModalOpen, closeDeleteModal, handleDeleteMapping }) => {
 
     // This function is used in order to preserve the animation on closing the modal
     const modalContent = () => {
@@ -14,7 +14,7 @@ const MappingDeleteModal = ({ mapping, deleteModalOpen, closeDeleteModal, handle
                     </Modal.Header>
                     <Modal.Footer>
                         <Button type="button" bsStyle="danger"
-                                onClick={handleDeleteInfoModel}>Verify Deletion</Button>
+                                onClick={handleDeleteMapping}>Verify Deletion</Button>
                         <Button type="button" bsStyle="default"
                                 onClick={closeDeleteModal}>Close</Button>
                     </Modal.Footer>

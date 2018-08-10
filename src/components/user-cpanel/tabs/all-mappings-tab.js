@@ -1,10 +1,10 @@
 import React, {Fragment} from "react";
-import AllMappingsList from "../../../containers/mapping/all-mappings-list";
+import MappingsList from "../../../containers/mapping/mappings-list";
 
 const AllMappings = () => {
     return(
         <Fragment>
-            <AllMappingsList />
+            <MappingsList all={true}/>
         </Fragment>
     );
 };

@@ -74,7 +74,7 @@ export default function(state = INITIAL_STATE, action) {
                 let newState = _.omit(state, "successfulMappingDeletion");
 
                 if (action.payload.response) {
-                    const message = action.payload.response.data;
+                    const message = action.payload.response.data.errorMessage;
                     return { ...newState, mappingDeletionError : message };
                 } else {
                     return {...newState, mappingDeletionError: "Network Error: Could not contact server"};

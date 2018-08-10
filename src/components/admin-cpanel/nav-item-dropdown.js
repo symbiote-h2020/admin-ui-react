@@ -41,7 +41,7 @@ export default class NavItemDropdown extends Component {
                      onClick={ this.handleClick }>
 
                     {Object.keys(this.props.dropDownList).map(key =>
-                            <NavItem eventKey={key}>
+                            <NavItem eventKey={key} key={key}>
                                 {this.props.dropDownList[key]}
                             </NavItem>
                         )}

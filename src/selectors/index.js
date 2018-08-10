@@ -18,6 +18,7 @@ const getFederations = (state) => state.federations.availableFederations;
 const getPlatformIdToUpdate = (state) => state.platformUpdateModal.platformIdToUpdate;
 const getSSPIdToUpdate = (state) => state.sspUpdateModal.sspIdToUpdate;
 const getUserDetails = (state) => state.userDetails;
+const getMappings = (state) => state.mappings;
 
 const checkForm =  (form) => {
     if (!form)
@@ -188,5 +189,13 @@ export const hasUserAnyServices = createSelector(
         const noPlatforms = !platforms ? 0 :  Object.keys(platforms).length;
         const noSSPs = !ssps ? 0 : Object.keys(ssps).length;
         return noPlatforms + noSSPs !== 0;
+    }
+);
+
+export const getUserMappings = createSelector(
+    [ getUserDetails, getMappings ], ({ username }, { allMappings }) => {
+        console.log(username);
+        console.log(allMappings);
+        return _.omitBy(allMappings, (mapping) => mapping.owner !== username);
     }
 );

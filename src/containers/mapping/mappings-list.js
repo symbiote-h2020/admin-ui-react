@@ -21,8 +21,9 @@ import {
     MAPPING_REGISTRATION_MODAL,
     USER_LOGIN_MODAL
 } from "../../reducers/modal/modal-reducer";
+import {getUserMappings} from "../../selectors";
 
-class AllMappingsList extends Component {
+class MappingsList extends Component {
 
     constructor() {
         super();
@@ -43,7 +44,7 @@ class AllMappingsList extends Component {
 
     };
 
-    handleDeleteMapping= () => {
+    handleDeleteMapping = () => {
         this.props.deleteMapping(this.props.mappingDeleteModal.mappingIdToDelete, (res) => {
             const pattern = new RegExp(`${ROOT_URL}$`);
 
@@ -83,9 +84,11 @@ class AllMappingsList extends Component {
     }
 
     render() {
-        const { allMappings, successfulMappingDeletion, successfulMappingRegistration,
+        const { successfulMappingDeletion, successfulMappingRegistration,
             mappingDeletionError, fetching_error } = this.props.mappings;
         const { mappingIdToDelete } = this.props.mappingDeleteModal;
+        const mappings = this.props.all ? this.props.mappings.allMappings : this.props.userMappings;
+        const { username } = this.props.userDetails;
 
         return(
             <Fragment>
@@ -104,15 +107,17 @@ class AllMappingsList extends Component {
                     Register New Mapping
                 </Button>
 
-                {_.map(allMappings, (mapping) => {
+                {_.map(mappings, (mapping) => {
                     return <CollapsibleMappingPanel
                         key={mapping.id}
                         mapping={mapping}
-                        openDeleteModal={this.props.activateMappingDeleteModal} />
+                        openDeleteModal={this.props.activateMappingDeleteModal}
+                        username = {username}
+                    />
                 })}
 
                 {
-                    this.showMappingDeleteModal(mappingIdToDelete, allMappings,
+                    this.showMappingDeleteModal(mappingIdToDelete, mappings,
                         this.props.deactivateMappingDeleteModal, this.handleDeleteMapping)
                 }
             </Fragment>
@@ -124,7 +129,9 @@ class AllMappingsList extends Component {
 function mapStateToProps(state) {
     return {
         mappings: state.mappings,
-        mappingDeleteModal: state.mappingDeleteModal
+        userDetails: state.userDetails,
+        mappingDeleteModal: state.mappingDeleteModal,
+        userMappings: getUserMappings(state)
     };
 }
 
@@ -135,4 +142,4 @@ export default connect(mapStateToProps, {
     dismissAlert,
     activateMappingDeleteModal,
     deactivateMappingDeleteModal
-})(withRouter(AllMappingsList));
+})(withRouter(MappingsList));

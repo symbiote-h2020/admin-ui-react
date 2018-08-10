@@ -43,13 +43,16 @@ export default class CollapsibleMappingPanel extends Component {
                     <MappingPanelBody mapping={mapping} />
                 </Panel.Collapse>
                 <Panel.Footer className="info-model-info-footer">
-                    <Button
-                        className="panel-footer-btn"
-                        bsStyle="warning"
-                        onClick={this.handleOpenDeleteModal.bind(this)}>
-                        Delete
-                    </Button>
-
+                    {
+                        this.props.username === this.props.mapping.owner ?
+                            <Button
+                                className="panel-footer-btn"
+                                bsStyle="warning"
+                                onClick={this.handleOpenDeleteModal.bind(this)}>
+                                Delete
+                            </Button>
+                            : ""
+                    }
                 </Panel.Footer>
             </Panel>
         );
