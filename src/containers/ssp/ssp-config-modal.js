@@ -15,7 +15,8 @@ import { getSSPConfigurationValidity } from "../../selectors";
 import { AlertDismissable } from "../../helpers/errors";
 import ServiceConfigModal from "../../components/service-config-modal";
 import { deactivateSSPModal, getSSPConfiguration } from "../../actions/ssp-actions";
-import {PlatformConfigurationMessage} from "../../helpers/object-definitions";
+import { PlatformConfigurationMessage } from "../../helpers/object-definitions";
+import downloadZipFile from "../../helpers/download-zip-file";
 
 class SSPConfigModal extends ServiceConfigModal {
 
@@ -56,7 +57,7 @@ class SSPConfigModal extends ServiceConfigModal {
         );
 
         this.props.getSSPConfiguration(sspConfigurationMessage, (res) => {
-            this.downloadZipFile(res, this.close.bind(this), this.props.history, this.props.changeModalState);
+            downloadZipFile(res, this.close.bind(this), this.props.history, this.props.changeModalState);
 
         });
     }

@@ -4,7 +4,7 @@ import {
     ACTIVATE_MAPPING_DELETE_MODAL,
     DEACTIVATE_MAPPING_DELETE_MODAL,
     DELETE_MAPPING,
-    FETCH_ALL_MAPPINGS,
+    FETCH_ALL_MAPPINGS, GET_MAPPING_DEFINITION,
     headers,
     REGISTER_MAPPING,
     UPLOADING_MAPPING_PROGRESS
@@ -91,6 +91,33 @@ export function deleteMapping(mappingIdToDelete, cb) {
 
     return {
         type: DELETE_MAPPING,
+        payload: request
+    };
+}
+
+export function getMappingDefinition(mappingId, cb) {
+    const url = `${ROOT_URL}/user/cpanel/get_mapping_definition`;
+    // eslint-disable-next-line
+    const customHeaders = {...headers, ['Content-Type']: 'application/x-www-form-urlencoded; charset=UTF-8'};
+    let formData = new FormData();
+    formData.append('mappingId', mappingId);
+
+    const config = {
+        url: url,
+        method: 'post',
+        data: formData,
+        headers: customHeaders,
+        responseType: 'arraybuffer'
+    };
+
+    const request = axios.request(config)
+        .then((res) => {
+            cb(res);
+            return res;
+        });
+
+    return {
+        type: GET_MAPPING_DEFINITION,
         payload: request
     };
 }

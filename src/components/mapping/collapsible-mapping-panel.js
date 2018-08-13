@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Panel, Glyphicon, Button } from "react-bootstrap";
 import MappingPanelBody from "./mapping-panel-body";
+import downloadZipFile from "../../helpers/download-zip-file";
 
 export default class CollapsibleMappingPanel extends Component {
     constructor(props) {
@@ -24,6 +25,13 @@ export default class CollapsibleMappingPanel extends Component {
 
     togglePanel = () => {
         this.setState({...this.state, open : !this.state.open});
+    };
+
+    handleGetMappingDefinition = () => {
+        this.props.getMappingDefinition(this.props.mapping.id, (res) => {
+            downloadZipFile(res, () => {}, this.props.history, this.props.changeModalState);
+
+        });
     };
 
     handleOpenDeleteModal = () => {
@@ -56,6 +64,12 @@ export default class CollapsibleMappingPanel extends Component {
                             </Button>
                             : ""
                     }
+                    <Button
+                        className="panel-footer-btn"
+                        bsStyle="info"
+                        onClick={this.handleGetMappingDefinition.bind(this)}>
+                        Get Mapping Definition
+                    </Button>
                 </Panel.Footer>
             </Panel>
         );

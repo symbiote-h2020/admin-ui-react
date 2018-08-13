@@ -13,6 +13,7 @@ import { PlatformConfigurationMessage } from "../../helpers/object-definitions";
 import { AlertDismissable } from "../../helpers/errors";
 import { DISMISS_PLATFORM_CONFIG_ERROR_ALERT, DEACTIVATE_PLATFORM_CONFIG_MODAL } from "../../actions";
 import ServiceConfigModal from "../../components/service-config-modal";
+import downloadZipFile from "../../helpers/download-zip-file";
 
 class PlatformConfigModal extends ServiceConfigModal {
 
@@ -71,8 +72,7 @@ class PlatformConfigModal extends ServiceConfigModal {
             deployment_type
         } = props;
 
-        const {
-            paam_username, paam_password } = props;
+        const { paam_username, paam_password } = props;
 
         const { id } = this.props.platform;
 
@@ -95,7 +95,7 @@ class PlatformConfigModal extends ServiceConfigModal {
         );
 
         this.props.getPlatformConfiguration(platformConfigurationMessage, (res) => {
-            this.downloadZipFile(res, this.close.bind(this), this.props.history, this.props.changeModalState);
+            downloadZipFile(res, this.close.bind(this), this.props.history, this.props.changeModalState);
 
         });
     }

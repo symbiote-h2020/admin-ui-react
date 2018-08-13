@@ -7,14 +7,15 @@ import CollapsibleMappingPanel from "../../components/mapping/collapsible-mappin
 import MappingDeleteModal from "../../components/mapping/mapping-delete-modal";
 import { FieldError, AlertDismissable } from "../../helpers/errors";
 import {
-    fetchAllMappings, deleteMapping, activateMappingDeleteModal, deactivateMappingDeleteModal
+    fetchAllMappings, deleteMapping, getMappingDefinition,
+    activateMappingDeleteModal, deactivateMappingDeleteModal
 } from "../../actions/mapping-actions";
 import {
     changeModalState,
     dismissAlert,
     DISMISS_MAPPING_DELETION_ERROR_ALERT,
     DISMISS_MAPPING_DELETION_SUCCESS_ALERT,
-    DISMISS_MAPPING_REGISTRATION_SUCCESS_ALERT
+    DISMISS_MAPPING_REGISTRATION_SUCCESS_ALERT, DISMISS_MAPPING_DEFINITION_ERROR_ALERT
 } from "../../actions";
 import { ROOT_URL } from "../../configuration";
 import {
@@ -31,11 +32,13 @@ class MappingsList extends Component {
         this.dismissMappingRegistrationSuccessAlert = this.dismissMappingRegistrationSuccessAlert.bind(this);
         this.dismissMappingDeletionSuccessAlert = this.dismissMappingDeletionSuccessAlert.bind(this);
         this.dismissMappingDeletionErrorAlert = this.dismissMappingDeletionErrorAlert.bind(this);
+        this.dismissMappingDefinitionErrorAlert = this.dismissMappingDefinitionErrorAlert.bind(this);
         this.handleDeleteMapping = this.handleDeleteMapping.bind(this);
     }
 
     componentDidMount() {
-        this.props.fetchAllMappings();
+        if (this.props.all)
+            this.props.fetchAllMappings();
     }
 
     // The federation models are loaded in federation-list
@@ -72,20 +75,26 @@ class MappingsList extends Component {
     };
 
     dismissMappingRegistrationSuccessAlert() {
-        this.props.dismissAlert(DISMISS_MAPPING_REGISTRATION_SUCCESS_ALERT)
+        this.props.dismissAlert(DISMISS_MAPPING_REGISTRATION_SUCCESS_ALERT);
     }
 
     dismissMappingDeletionSuccessAlert() {
-        this.props.dismissAlert(DISMISS_MAPPING_DELETION_SUCCESS_ALERT)
+        this.props.dismissAlert(DISMISS_MAPPING_DELETION_SUCCESS_ALERT);
     }
 
     dismissMappingDeletionErrorAlert() {
-        this.props.dismissAlert(DISMISS_MAPPING_DELETION_ERROR_ALERT)
+        this.props.dismissAlert(DISMISS_MAPPING_DELETION_ERROR_ALERT);
+    }
+
+    dismissMappingDefinitionErrorAlert() {
+        this.props.dismissAlert(DISMISS_MAPPING_DEFINITION_ERROR_ALERT);
     }
 
     render() {
-        const { successfulMappingDeletion, successfulMappingRegistration,
-            mappingDeletionError, fetching_error } = this.props.mappings;
+        const {
+            successfulMappingDeletion, successfulMappingRegistration,
+            mappingDeletionError, mappingDefinitionError, fetching_error
+        } = this.props.mappings;
         const { mappingIdToDelete } = this.props.mappingDeleteModal;
         const mappings = this.props.all ? this.props.mappings.allMappings : this.props.userMappings;
         const { username } = this.props.userDetails;
@@ -99,6 +108,8 @@ class MappingsList extends Component {
                                   dismissHandler={this.dismissMappingDeletionErrorAlert} />
                 <AlertDismissable alertStyle="success" message={successfulMappingDeletion}
                                   dismissHandler={this.dismissMappingDeletionSuccessAlert} />
+                <AlertDismissable alertStyle="danger" message={mappingDefinitionError}
+                                  dismissHandler={this.dismissMappingDefinitionErrorAlert} />
 
                 <Button
                     className="registration-btn"
@@ -111,6 +122,9 @@ class MappingsList extends Component {
                     return <CollapsibleMappingPanel
                         key={mapping.id}
                         mapping={mapping}
+                        history={this.props.history}
+                        changeModalState={this.props.changeModalState.bind(this)}
+                        getMappingDefinition={this.props.getMappingDefinition}
                         informationModelOptions={this.props.informationModelOptions}
                         openDeleteModal={this.props.activateMappingDeleteModal}
                         username = {username}
@@ -142,6 +156,7 @@ export default connect(mapStateToProps, {
     changeModalState,
     fetchAllMappings,
     deleteMapping,
+    getMappingDefinition,
     dismissAlert,
     activateMappingDeleteModal,
     deactivateMappingDeleteModal

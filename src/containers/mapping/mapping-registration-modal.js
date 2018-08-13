@@ -51,7 +51,7 @@ class MappingRegistrationModal extends Component {
     }
 
     dismissMappingRegistrationErrorAlert() {
-        this.props.dismissAlert(DISMISS_MAPPING_REGISTRATION_ERROR_ALERT)
+        this.props.dismissAlert(DISMISS_MAPPING_REGISTRATION_ERROR_ALERT);
     }
 
     informationModelsOptions = () => {
