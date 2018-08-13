@@ -8,14 +8,17 @@ export default class CollapsibleMappingPanel extends Component {
         this.state = {
             open : false,
             mapping : props.mapping,
+            informationModelOptions: props.informationModelOptions
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.mapping !== this.state.mapping)
+        if (nextProps.mapping !== this.state.mapping
+            || nextProps.informationModelOptions !== this.state.informationModelOptions)
             this.setState({
                 open : this.state.open,
-                mapping : nextProps.mapping
+                mapping : nextProps.mapping,
+                informationModelOptions : nextProps.informationModelOptions
             });
     }
 
@@ -28,7 +31,7 @@ export default class CollapsibleMappingPanel extends Component {
     };
 
     render() {
-        const { mapping } = this.state;
+        const { mapping, informationModelOptions } = this.state;
 
         return(
             <Panel id="id" bsStyle="primary" className="info-model-panel-entry"
@@ -40,7 +43,7 @@ export default class CollapsibleMappingPanel extends Component {
                     <Glyphicon glyph={this.state.open ? "minus" : "plus"} className="pull-right" />
                 </Panel.Heading>
                 <Panel.Collapse>
-                    <MappingPanelBody mapping={mapping} />
+                    <MappingPanelBody mapping={mapping} informationModelOptions={informationModelOptions}/>
                 </Panel.Collapse>
                 <Panel.Footer className="info-model-info-footer">
                     {

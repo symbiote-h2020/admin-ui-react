@@ -3,11 +3,10 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { reduxForm } from "redux-form";
 import { Modal, Button } from "react-bootstrap";
-import _ from "lodash";
 import { PLATFORM_REGISTRATION_MODAL, USER_LOGIN_MODAL } from "../../reducers/modal/modal-reducer";
 import PlatformFormBody from "../../components/platform/platform-form-body";
 import { InterworkingService, Platform } from "../../helpers/object-definitions";
-import { getPlatformRegistrationValidity } from "../../selectors";
+import { getInformationModelOptions, getPlatformRegistrationValidity } from "../../selectors";
 import { FieldError, AlertDismissable } from "../../helpers/errors";
 import { ROOT_URL, PLATFORM_TYPES } from "../../configuration";
 import { registerPlatform } from "../../actions/platform-actions";
@@ -36,9 +35,7 @@ class PlatformRegistrationModal extends Component {
     }
 
     informationModels = () => {
-        return _.map(this.props.informationModels.availableInfoModels, (model) => {
-            return({ value: model.id, label: model.name});
-        });
+        return Object.values(this.props.informationModelOptions);
     };
 
     dismissPlatformRegistrationErrorAlert() {
@@ -126,6 +123,7 @@ function mapStateToProps(state) {
         modalState: state.modalState,
         informationModels: state.informationModels,
         userPlatforms: state.userPlatforms,
+        informationModelOptions: getInformationModelOptions(state),
         platformRegistrationValidity: getPlatformRegistrationValidity(state),
         initialValues: { type: "false" },
     };

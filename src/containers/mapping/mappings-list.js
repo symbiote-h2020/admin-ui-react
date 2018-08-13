@@ -21,7 +21,7 @@ import {
     MAPPING_REGISTRATION_MODAL,
     USER_LOGIN_MODAL
 } from "../../reducers/modal/modal-reducer";
-import {getUserMappings} from "../../selectors";
+import { getInformationModelOptions, getUserMappings } from "../../selectors";
 
 class MappingsList extends Component {
 
@@ -111,6 +111,7 @@ class MappingsList extends Component {
                     return <CollapsibleMappingPanel
                         key={mapping.id}
                         mapping={mapping}
+                        informationModelOptions={this.props.informationModelOptions}
                         openDeleteModal={this.props.activateMappingDeleteModal}
                         username = {username}
                     />
@@ -130,7 +131,9 @@ function mapStateToProps(state) {
     return {
         mappings: state.mappings,
         userDetails: state.userDetails,
+        informationModels: state.informationModels,
         mappingDeleteModal: state.mappingDeleteModal,
+        informationModelOptions: getInformationModelOptions(state),
         userMappings: getUserMappings(state)
     };
 }

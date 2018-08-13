@@ -37,7 +37,7 @@ export function registerMapping(props, cb, uploadingMappingProgress) {
     formData.append('name', props.name);
     formData.append('sourceModelId', props.sourceModelId);
     formData.append('destinationModelId', props.destinationModelId);
-    formData.append('definition', props.mapping.definition);
+    formData.append('definition', props.definition.file);
 
     const config = {
         url: url,

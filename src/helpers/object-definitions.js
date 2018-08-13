@@ -82,3 +82,10 @@ export function ResendVerificationEmailRequest(username, password) {
     this.username = username;
     this.password = password;
 }
+
+export function Mapping(name, sourceModelId, destinationModelId, definition) {
+    this.name = name;
+    this.sourceModelId = sourceModelId;
+    this.destinationModelId = destinationModelId;
+    this.definition = definition;
+}

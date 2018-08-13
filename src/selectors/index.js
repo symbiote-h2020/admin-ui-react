@@ -6,6 +6,7 @@ const getSSPRegistrationForm = (state) => state.form.SSPRegistrationForm;
 const getPlatformUpdateForm = (state) => state.form.PlatformUpdateForm;
 const getSSPUpdateForm = (state) => state.form.SSPUpdateForm;
 const getInfoModelRegistrationForm = (state) => state.form.InformationModelRegistrationForm;
+const getMappingRegistrationForm = (state) => state.form.MappingRegistrationForm;
 const getPlatformConfigurationForm = (state) => state.form.PlatformConfigurationForm;
 const getSSPConfigurationForm = (state) => state.form.SSPConfigurationForm;
 const getFederationRegistrationForm = (state) => state.form.FederationRegistrationForm;
@@ -14,6 +15,7 @@ const getChangeEmailForm = (state) => state.form.ChangeEmailForm;
 const getChangePasswordForm = (state) => state.form.ChangePasswordForm;
 const getUserPlatforms = (state) => state.userPlatforms.availablePlatforms;
 const getUserSSPs = (state) => state.userSSPs.availableSSPs;
+const getInformationModels = (state) => state.informationModels;
 const getFederations = (state) => state.federations.availableFederations;
 const getPlatformIdToUpdate = (state) => state.platformUpdateModal.platformIdToUpdate;
 const getSSPIdToUpdate = (state) => state.sspUpdateModal.sspIdToUpdate;
@@ -66,6 +68,10 @@ export const getSSPUpdateValidity = createSelector(
 
 export const getInfoModelRegistrationValidity = createSelector(
     [ getInfoModelRegistrationForm ], checkForm
+);
+
+export const getMappingRegistrationValidity = createSelector(
+    [ getMappingRegistrationForm ], checkForm
 );
 
 export const getPlatformConfigurationValidity = createSelector(
@@ -192,10 +198,16 @@ export const hasUserAnyServices = createSelector(
     }
 );
 
+export const getInformationModelOptions = createSelector(
+    [ getInformationModels ], ({ availableInfoModels }) => {
+        const models =  _.map(availableInfoModels, (model) => {
+            return({ value: model.id, label: model.name});
+        });
+        return _.mapKeys(models, "value");    }
+);
+
 export const getUserMappings = createSelector(
     [ getUserDetails, getMappings ], ({ username }, { allMappings }) => {
-        console.log(username);
-        console.log(allMappings);
         return _.omitBy(allMappings, (mapping) => mapping.owner !== username);
     }
 );
