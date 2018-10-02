@@ -74,10 +74,15 @@ class PlatformConfigModal extends ServiceConfigModal {
 
         const { paam_username, paam_password } = props;
 
-        const { id } = this.props.platform;
+        const { id, isEnabler } = this.props.platform;
 
         built_in_plugin = built_in_plugin ? (built_in_plugin === "true") : (this.typeDefault === "true");
-        level = level ? level : this.levelDefault;
+
+        if (isEnabler) {
+            level = "ENABLER";
+        } else {
+            level = level ? level : this.levelDefault;
+        }
         deployment_type = deployment_type ? deployment_type : this.deploymentTypeDefault;
 
         if (!component_keystore_password)
@@ -210,21 +215,6 @@ class PlatformConfigModal extends ServiceConfigModal {
                                             </FormGroup>
                                         </Col>
                                         <Col lg={6} md={6} sm={6} xs={6}>
-                                            <FormGroup controlId="Level">
-                                                <ControlLabel>Compliance Level</ControlLabel>
-                                                <Field
-                                                    name="level" options={this.levelOptions}
-                                                    clearable={false} searchable={false}
-                                                    defaultValue={this.levelDefault}
-                                                    component={RFReactSelect}
-                                                />
-                                                <FormControl.Feedback />
-                                                <HelpBlock>Choose your compliance level</HelpBlock>
-                                            </FormGroup>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col lg={6} md={6} sm={6} xs={6}>
                                             <FormGroup controlId="deployment">
                                                 <ControlLabel>Deployment Type</ControlLabel>
                                                 <Field
@@ -237,6 +227,24 @@ class PlatformConfigModal extends ServiceConfigModal {
                                                 <HelpBlock>Choose your deployment type</HelpBlock>
                                             </FormGroup>
                                         </Col>
+                                    </Row>
+                                    <Row>
+                                        {
+                                            platform.isEnabler ? "" :
+                                                <Col lg={6} md={6} sm={6} xs={6}>
+                                                    <FormGroup controlId="Level">
+                                                        <ControlLabel>Compliance Level</ControlLabel>
+                                                        <Field
+                                                            name="level" options={this.levelOptions}
+                                                            clearable={false} searchable={false}
+                                                            defaultValue={this.levelDefault}
+                                                            component={RFReactSelect}
+                                                        />
+                                                        <FormControl.Feedback />
+                                                        <HelpBlock>Choose your compliance level</HelpBlock>
+                                                    </FormGroup>
+                                                </Col>
+                                        }
                                     </Row>
                                 </Modal.Body>
                                 <Modal.Footer>
