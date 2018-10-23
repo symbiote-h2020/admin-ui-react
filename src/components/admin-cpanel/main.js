@@ -4,21 +4,30 @@ import DeletePlatformResources from "./tabs/delete-platform-resources-tab";
 import DeleteInformationModel from "./tabs/delete-information-model-tab";
 import FederationInvitations from "./tabs/federation-invitations-tab";
 import FederationList from "./tabs/federations-tab";
-import NavItemDropdown from "./nav-item-dropdown";
+import NavItemDropDown from "./nav-item-dropdown";
+import _ from "lodash";
 
 export default class Main extends Component {
     constructor() {
         super();
         this.state = { hasNavItemDropDownActiveChild: false }
-        this.activateChild = this.activateChild.bind(this);
+        this.activateFederationsChild = this.activateFederationsChild.bind(this);
+
+        this.federationDropDownList = {
+            "federation-invitations" : "Federation Invitations",
+            "federation-list" : "Federation List"
+        };
     }
 
     handleSelect = () => {
         this.setState({ hasNavItemDropDownActiveChild: false })
     };
 
-    activateChild = () => {
-        this.setState({ hasNavItemDropDownActiveChild: true })
+    activateFederationsChild = () => {
+        this.setState({
+            ..._.mapValues(this.state, () => false),
+            hasFederationsDropDownActiveChild: true
+        })
     };
 
     render() {
@@ -35,9 +44,12 @@ export default class Main extends Component {
                                     <NavItem eventKey="delete-information-model" onSelect={this.handleSelect}>
                                         Delete Information model
                                     </NavItem>
-                                    <NavItemDropdown
-                                        hasActiveChild={this.state.hasNavItemDropDownActiveChild}
-                                        activateChild={this.activateChild}
+                                    <NavItemDropDown
+                                        itemId="federation-dropdown"
+                                        title="Federations"
+                                        hasActiveChild={this.state.hasFederationsDropDownActiveChild}
+                                        activateChild={this.activateFederationsChild}
+                                        dropDownList={this.federationDropDownList}
                                     />
                                 </Nav>
                             </Col>
