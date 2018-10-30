@@ -6,14 +6,15 @@ import { COMPARATOR, QOS_METRICS, FEDERATION_VISIBILITY_TYPES} from "../../confi
 
 const FederationPanelBody = ({ federation, userPlatforms, availableInfoModels, onOpenLeaveModal, isAdmin }) => {
 
-    const informationModelId = federation.informationModel.id;
+    const notSpecified = "NOT_SPECIFIED";
+    const informationModelId = federation.informationModel ? federation.informationModel.id : notSpecified;
     const informationModelOptions = availableInfoModels[informationModelId] ? [{
         label : availableInfoModels[informationModelId].name,
         value : informationModelId
     }] :
         [{
-        label: "",
-        value: ""
+        label: "Not Specified",
+        value: notSpecified
     }];
     userPlatforms = userPlatforms ? userPlatforms : {};
 

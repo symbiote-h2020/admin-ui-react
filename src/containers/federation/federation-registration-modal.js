@@ -48,7 +48,7 @@ class FederationRegistrationModal extends Component {
     onSubmit = (props) => {
         const { id, name, informationModel, members, slaConstraints} = props;
         const isPublic = props.public;
-        const infoModel = new InformationModel(informationModel, null, null, null, null, null);
+        const infoModel = informationModel ? new InformationModel(informationModel, null, null, null, null, null) : null;
         const federationMembers = members.map(
             // If there is no platformId in member and just put empty string
             member => new FederationMember(member.platformId ? member.platformId : "", null)
@@ -136,7 +136,6 @@ function validate(values) {
     const validationFunctions = {
         "id" : validateId,
         "name" : validateName,
-        "informationModel" : validateInformationModel,
         "public" : isNotEmpty,
         "members" : validatePlatformIds,
         "slaConstraints" : validateQoSConstraints
